@@ -29,6 +29,40 @@ public static class ConnectionExtensions
 {
 
     /// <summary>
+    /// Sends a <see cref="GameServerEnteredS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="playerId">The player id.</param>
+    /// <param name="versionString">The version string.</param>
+    /// <param name="version">The version.</param>
+    /// <param name="success">The success.</param>
+    /// <remarks>
+    /// Is sent by the server when: After a game client has connected to the game.
+    /// Causes reaction on client side: It shows the login dialog.
+    /// </remarks>
+    public static async ValueTask SendGameServerEnteredS21Async(this IConnection? connection, ushort @playerId, string @versionString, Memory<byte> @version, bool @success = true)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = GameServerEnteredS21Ref.Length;
+            var packet = new GameServerEnteredS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Success = @success;
+            packet.PlayerId = @playerId;
+            packet.VersionString = @versionString;
+            @version.Span.CopyTo(packet.Version);
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="GameServerEntered" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -2585,6 +2619,46 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="CharacterCreationSuccessfulS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="characterName">The character name.</param>
+    /// <param name="characterSlot">The character slot.</param>
+    /// <param name="level">The level.</param>
+    /// <param name="class">The class.</param>
+    /// <param name="characterStatus">The character status.</param>
+    /// <param name="previewData">The preview data.</param>
+    /// <param name="success">The success.</param>
+    /// <remarks>
+    /// Is sent by the server when: After the server successfully processed a character creation request.
+    /// Causes reaction on client side: The new character is shown in the character list
+    /// </remarks>
+    public static async ValueTask SendCharacterCreationSuccessfulS21Async(this IConnection? connection, string @characterName, byte @characterSlot, ushort @level, byte @class, byte @characterStatus, Memory<byte> @previewData, bool @success = true)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = CharacterCreationSuccessfulS21Ref.Length;
+            var packet = new CharacterCreationSuccessfulS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Success = @success;
+            packet.CharacterName = @characterName;
+            packet.CharacterSlot = @characterSlot;
+            packet.Level = @level;
+            packet.Class = @class;
+            packet.CharacterStatus = @characterStatus;
+            @previewData.Span.CopyTo(packet.PreviewData);
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="CharacterCreationFailed" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -3290,6 +3364,90 @@ public static class ConnectionExtensions
             packet.UsedNegativeFruitPoints = @usedNegativeFruitPoints;
             packet.MaxNegativeFruitPoints = @maxNegativeFruitPoints;
             packet.InventoryExtensions = @inventoryExtensions;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="CharacterInformationS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="x">The x.</param>
+    /// <param name="y">The y.</param>
+    /// <param name="mapId">The map id.</param>
+    /// <param name="direction">The direction.</param>
+    /// <param name="currentExperience">The current experience.</param>
+    /// <param name="experienceForNextLevel">The experience for next level.</param>
+    /// <param name="levelUpPoints">The level up points.</param>
+    /// <param name="strength">The strength.</param>
+    /// <param name="agility">The agility.</param>
+    /// <param name="vitality">The vitality.</param>
+    /// <param name="energy">The energy.</param>
+    /// <param name="currentHealth">The current health.</param>
+    /// <param name="maximumHealth">The maximum health.</param>
+    /// <param name="currentMana">The current mana.</param>
+    /// <param name="maximumMana">The maximum mana.</param>
+    /// <param name="currentShield">The current shield.</param>
+    /// <param name="maximumShield">The maximum shield.</param>
+    /// <param name="currentAbility">The current ability.</param>
+    /// <param name="maximumAbility">The maximum ability.</param>
+    /// <param name="money">The money.</param>
+    /// <param name="heroState">The hero state.</param>
+    /// <param name="status">The status.</param>
+    /// <param name="usedFruitPoints">The used fruit points.</param>
+    /// <param name="maxFruitPoints">The max fruit points.</param>
+    /// <param name="leadership">The leadership.</param>
+    /// <param name="usedNegativeFruitPoints">The used negative fruit points.</param>
+    /// <param name="maxNegativeFruitPoints">The max negative fruit points.</param>
+    /// <param name="inventoryExtensions">The inventory extensions.</param>
+    /// <param name="ruud">The ruud.</param>
+    /// <remarks>
+    /// Is sent by the server when: After the character was selected by the player and entered the game.
+    /// Causes reaction on client side: The characters enters the game world.
+    /// </remarks>
+    public static async ValueTask SendCharacterInformationS21Async(this IConnection? connection, byte @x, byte @y, ushort @mapId, byte @direction, ulong @currentExperience, ulong @experienceForNextLevel, ushort @levelUpPoints, ushort @strength, ushort @agility, ushort @vitality, ushort @energy, ushort @currentHealth, ushort @maximumHealth, ushort @currentMana, ushort @maximumMana, ushort @currentShield, ushort @maximumShield, ushort @currentAbility, ushort @maximumAbility, uint @money, CharacterHeroState @heroState, CharacterStatus @status, ushort @usedFruitPoints, ushort @maxFruitPoints, ushort @leadership, ushort @usedNegativeFruitPoints, ushort @maxNegativeFruitPoints, byte @inventoryExtensions, uint @ruud)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = CharacterInformationS21Ref.Length;
+            var packet = new CharacterInformationS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.X = @x;
+            packet.Y = @y;
+            packet.MapId = @mapId;
+            packet.Direction = @direction;
+            packet.CurrentExperience = @currentExperience;
+            packet.ExperienceForNextLevel = @experienceForNextLevel;
+            packet.LevelUpPoints = @levelUpPoints;
+            packet.Strength = @strength;
+            packet.Agility = @agility;
+            packet.Vitality = @vitality;
+            packet.Energy = @energy;
+            packet.CurrentHealth = @currentHealth;
+            packet.MaximumHealth = @maximumHealth;
+            packet.CurrentMana = @currentMana;
+            packet.MaximumMana = @maximumMana;
+            packet.CurrentShield = @currentShield;
+            packet.MaximumShield = @maximumShield;
+            packet.CurrentAbility = @currentAbility;
+            packet.MaximumAbility = @maximumAbility;
+            packet.Money = @money;
+            packet.HeroState = @heroState;
+            packet.Status = @status;
+            packet.UsedFruitPoints = @usedFruitPoints;
+            packet.MaxFruitPoints = @maxFruitPoints;
+            packet.Leadership = @leadership;
+            packet.UsedNegativeFruitPoints = @usedNegativeFruitPoints;
+            packet.MaxNegativeFruitPoints = @maxNegativeFruitPoints;
+            packet.InventoryExtensions = @inventoryExtensions;
+            packet.Ruud = @ruud;
 
             return packet.Header.Length;
         }

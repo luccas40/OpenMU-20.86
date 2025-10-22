@@ -486,7 +486,7 @@ using static System.Buffers.Binary.BinaryPrimitives;</xsl:text>
     <xsl:value-of select="pd:Index"/>
     <xsl:text> + index * </xsl:text>
     <xsl:value-of select="pd:TypeName"/>
-    <xsl:text>Ref.Length</xsl:text>
+    <xsl:text>.Length</xsl:text> <!-- <xsl:text>Ref.Length</xsl:text> -->
     <xsl:text>));</xsl:text>
 
     <xsl:value-of select="$newline"/>

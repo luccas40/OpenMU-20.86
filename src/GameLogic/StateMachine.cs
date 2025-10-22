@@ -59,6 +59,8 @@ public class StateMachine
     /// <returns>The success.</returns>
     public async ValueTask<bool> TryAdvanceToAsync(State nextState)
     {
+        if (this.CurrentState == nextState) return true;
+
         if (this.CurrentState?.PossibleTransitions is null)
         {
             return false;

@@ -2689,6 +2689,36 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="CreateCharacterS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="name">The name of the character which should be created.</param>
+    /// <param name="class">The character class of the character which should be created.</param>
+    /// <remarks>
+    /// Is sent by the client when: The game client is at the character selection screen and the player requests to add a new character.
+    /// Causes reaction on server side: The server checks if the player is allowed to create the character and sends a response back.
+    /// </remarks>
+    public static async ValueTask SendCreateCharacterS21Async(this IConnection? connection, string @name, byte @class)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = CreateCharacterS21Ref.Length;
+            var packet = new CreateCharacterS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Name = @name;
+            packet.Class = @class;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="DeleteCharacter" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>

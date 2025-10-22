@@ -11,13 +11,13 @@ using MUnique.OpenMU.Network.Packets.ClientToServer;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
-/// Packet handler for character creation packets (0xF3, 0x01 identifier).
+/// S21 Packet handler for character creation packets (0xF3, 0x01 identifier).
 /// </summary>
-[PlugIn("Character - Create", "Packet handler for character creation packets (0xF3, 0x01 identifier).")]
-[Guid("A26831DE-4D67-44CD-9434-12BDC4B07F47")]
-[MinimumClient(0, 0, Network.PlugIns.ClientLanguage.English)]
+[PlugIn("Character - Create S21", "S21 Packet handler for character creation packets (0xF3, 0x01 identifier).")]
+[Guid("05DC7153-FA0A-4BE8-97A9-BE8C4D85261F")]
+[MinimumClient(20, 0, Network.PlugIns.ClientLanguage.Korean)]
 [BelongsToGroup(CharacterGroupHandlerPlugIn.GroupKey)]
-internal class CharacterCreatePacketHandlerPlugIn : ISubPacketHandlerPlugIn
+internal class CharacterCreatePacketHandlerPlugInS21 : ISubPacketHandlerPlugIn
 {
     private readonly CreateCharacterAction _createCharacterAction = new();
 
@@ -30,7 +30,7 @@ internal class CharacterCreatePacketHandlerPlugIn : ISubPacketHandlerPlugIn
     /// <inheritdoc />
     public async ValueTask HandlePacketAsync(Player player, Memory<byte> packet)
     {
-        CreateCharacter message = packet;
-        await this._createCharacterAction.CreateCharacterAsync(player, message.Name, (byte)message.Class).ConfigureAwait(false);
+        CreateCharacterS21 message = packet;
+        await this._createCharacterAction.CreateCharacterAsync(player, message.Name, message.Class).ConfigureAwait(false);
     }
 }

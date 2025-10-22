@@ -113,7 +113,9 @@ public class PacketHandlerPlugInContainer<THandler> : StrategyPlugInProvider<byt
         }
 
         using var loggingScope = this.Logger.BeginScope(("EventId", handler.GetType().Name));
-        if (handler.IsEncryptionExpected && (packet.Span[0] < 0xC3))
+
+        // Hack to bypass the IsEncryptionExpected since my client is not encrypting anything for now
+        if (this._clientVersionProvider.ClientVersion.Season != 21 && handler.IsEncryptionExpected && (packet.Span[0] < 0xC3))
         {
             this.Logger.LogWarning($"Packet was not encrypted and will not be handled: {packet.Span.AsString()}");
             return;

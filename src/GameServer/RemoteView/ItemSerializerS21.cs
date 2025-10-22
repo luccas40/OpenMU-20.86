@@ -21,10 +21,10 @@ using static ItemSerializerHelper;
 /// At the moment, each item is serialized into a dynamical length 5 to 15-byte
 /// long part of an array.
 /// </summary>
-[Guid("9EBB4761-93D4-49DE-AC53-BD8744315439")]
-[PlugIn("Item Serializer", "The extended item serializer. It's most likely only correct for season 6.")]
-[MinimumClient(6, 3, ClientLanguage.Invariant)]
-public class ItemSerializerExtended : IItemSerializer
+[Guid("A1C9BEBF-FD23-4F89-A2CD-AE9F4CF7D652")]
+[PlugIn("Item Serializer S21", "The S21 item serializer. It's most likely only correct for season 21.")]
+[MinimumClient(21, 0, ClientLanguage.Korean)]
+public class ItemSerializerS21 : IItemSerializer
 {
     [Flags]
     private enum OptionFlags : byte
@@ -38,6 +38,10 @@ public class ItemSerializerExtended : IItemSerializer
         HasHarmony = 0x20,
         HasGuardian = 0x40,
         HasSockets = 0x80,
+
+
+
+
     }
 
     /// <inheritdoc/>
@@ -48,26 +52,29 @@ public class ItemSerializerExtended : IItemSerializer
     {
         item.ThrowNotInitializedProperty(item.Definition is null, nameof(item.Definition));
         var targetStruct = new ItemStruct(target);
-        targetStruct.Group = (byte)item.Definition.Group;
-        targetStruct.Number = (ushort)item.Definition.Number;
+        targetStruct.ItemID = (ushort)((item.Definition.Group * 512) + item.Definition.Number);
         targetStruct.Level = item.IsTrainablePet() ? (byte)0 : (byte)item.Level;
         targetStruct.Durability = item.Durability();
-        targetStruct.Options = this.GetOptionFlags(item);
+        targetStruct.Luck = item.ItemOptions.Any(o => o.ItemOption?.OptionType == ItemOptionTypes.Luck);
+        targetStruct.Skill = item.HasSkill;
 
         if (item.ItemOptions.FirstOrDefault(o => o.ItemOption?.OptionType == ItemOptionTypes.Option) is { } itemOption)
         {
-            targetStruct.OptionLevel = (byte)(itemOption.Level & 0xF);
-
-            // Some items (wings) can have different options (3rd wings up to 3!)
-            targetStruct.OptionType = (byte)((itemOption.ItemOption?.Number ?? 0) & 0xF);
+            targetStruct.Option = (byte)(itemOption.Level & 0xF);
         }
 
-        if (targetStruct.Options.HasFlag(OptionFlags.HasExcellent))
-        {
-            targetStruct.Excellent = GetExcellentByte(item);
-            targetStruct.Excellent |= GetFenrirByte(item);
-        }
+        targetStruct.Unk = 0xFF;
+        targetStruct.Unk2 = 0xFF;
+        targetStruct.Unk3 = 0xFF;
+        targetStruct.Unk4 = 0xFF;
+        targetStruct.Unk5 = 0xFF;
+        targetStruct.Unk6 = 0xFF;
+        targetStruct.Unk7 = 0xFF;
+        targetStruct.Unk8 = 0xFF;
+        targetStruct.Excellent = GetExcellentByte(item);
+        targetStruct.Excellent |= GetFenrirByte(item);
 
+        /*
         if (targetStruct.Options.HasFlag(OptionFlags.HasAncient)
             && item.ItemSetGroups.FirstOrDefault(set => set.AncientSetDiscriminator != 0) is { } ancientSet)
         {
@@ -91,13 +98,14 @@ public class ItemSerializerExtended : IItemSerializer
             targetStruct.SocketBonus = GetSocketBonusByte(item);
             SetSocketBytes(targetStruct.Sockets, item);
         }
-
-        return targetStruct.Length;
+        */
+        return 15;
     }
 
     /// <inheritdoc />
     public Item DeserializeItem(Span<byte> array, GameConfiguration gameConfiguration, IContext persistenceContext)
     {
+        /*
         var itemStruct = new ItemStruct(array);
         var itemGroup = itemStruct.Group;
         var itemNumber = itemStruct.Number;
@@ -154,6 +162,8 @@ public class ItemSerializerExtended : IItemSerializer
         }
 
         return item;
+        */
+        throw new NotImplementedException();
     }
 
     private OptionFlags GetOptionFlags(Item item)
@@ -210,7 +220,7 @@ public class ItemSerializerExtended : IItemSerializer
     /// Layout:
     ///   Group:  4 bit
     ///   Number: 12 bit
-    ///   Level:  8 bit
+    ///   Level:  4 bit
     ///   Dura:   8 bit
     ///   OptFlags: 8 bit
     ///     HasOpt
@@ -233,175 +243,128 @@ public class ItemSerializerExtended : IItemSerializer
     ///     Sockets n * 8 bit
     ///
     ///  Total: 5 ~ 15 bytes.
+    ///  1st byte  = left to right
+    ///  Skill 1 bit
+    ///  Level 4 bit = max lvl 15 or 0xF
+    ///  Luck 1 bit
+    ///  Option 2 bit and continue
+    ///  if option value is greater than 3
+    ///  3rt byte 
     /// </summary>
     private readonly ref struct ItemStruct(Span<byte> data)
     {
         private readonly Span<byte> _data = data;
 
-        public byte Group
+        public ushort ItemID
         {
-            get => (byte)((this._data[0] >> 4) & 0xF);
+            get => (ushort)(this._data[0] | (this._data[3] & 0x80) << 1 | this._data[5] & 0xf0 << 5 | (this._data[5] & 1) << 0xd);
             set
             {
-                value <<= 4;
-                value |= (byte)(this._data[0] & 0xF);
-                this._data[0] = value;
-            }
-        }
-
-        public ushort Number
-        {
-            get => (ushort)(((this._data[0] & 0xF) << 8) + this._data[1]);
-            set
-            {
-                // Higher 4 bits of the first byte for the higher bits of the value
-                this._data[0] = (byte)((this._data[0] & 0xF0) | (((value & 0x0F00) >> 8) & 0xF));
-
-                // The lower bits in the second byte
-                this._data[1] = (byte)(value & 0xFF);
+                this._data[0] |= (byte)value;
+                this._data[3] |= (byte)((value & 0x100) >> 1);
+                this._data[5] |= (byte)((value & 0x1E00) >> 5);
+                this._data[5] |= (byte)((value & 0x2000) >> 13);
             }
         }
 
         public byte Level
         {
-            get => this._data[2];
-            set => this._data[2] = value;
+            get => (byte)(this._data[1] >> 3 & 0xF);
+            set => this._data[1] |= (byte)(value << 3);
+        }
+
+        public bool Skill
+        {
+            get => ((this._data[1] & 128) >> 7) == 1;
+            set => this._data[1] |= (byte)(value ? 0x80 : 0);
+        }
+
+        public bool Luck
+        {
+            get => (this._data[1] & 4) == 4;
+            set => this._data[1] |= (byte)(value ? 4 : 0);
+        }
+
+        public int Option
+        {
+            get => (this._data[1] & 3) + (((this._data[3] & 0x40) >> 6) * 4);
+            set
+            {
+                value &= 7;
+
+                // Set low 2 bits
+                this._data[1] = (byte)((this._data[1] & ~3) | (value & 3));
+
+                // Bit 6 -> _data[3]  (0x40)
+                if ((value & 4) != 0)
+                {
+                    this._data[3] |= 0x40;   // set bit 6
+                }
+                else
+                {
+                    this._data[3] &= 0xBF;   // clear bit 6
+                }
+            }
         }
 
         public byte Durability
         {
-            get => this._data[3];
-            set => this._data[3] = value;
-        }
-
-        public OptionFlags Options
-        {
-            get => (OptionFlags)this._data[4];
-            set => this._data[4] = (byte)value;
-        }
-
-        public byte OptionByte
-        {
-            get => this.Options.HasFlag(OptionFlags.HasOption) ? this._data[5] : default;
-            set => this._data[5] = value;
-        }
-
-        public byte OptionLevel
-        {
-            get => this.Options.HasFlag(OptionFlags.HasOption) ? (byte)(this._data[5] & 0xF) : default;
-            set => this._data[5] = (byte)((this._data[5] & 0xF0) | (value & 0xF));
-        }
-
-        public byte OptionType
-        {
-            get => this.Options.HasFlag(OptionFlags.HasOption) ? (byte)((this._data[5] & 0xF0) >> 4) : default;
-            set
-            {
-                value = (byte)((value & 0xF) << 4);
-                value |= (byte)(this._data[5] & 0xF);
-                this._data[5] = value;
-            }
+            get => this._data[2];
+            set => this._data[2] = value;
         }
 
         public byte Excellent
         {
-            get => this.Options.HasFlag(OptionFlags.HasExcellent) ? this._data[this.ExcellentIndex] : default;
-            set => this._data[this.ExcellentIndex] = value;
+            get => (byte)(this._data[3] & 0x3f);
+            set => this._data[3] = (byte)((this._data[3] & 0xC0) | (value & 0x3F));
         }
 
-        public byte AncientByte
+        public int Unk8
         {
-            get => this.Options.HasFlag(OptionFlags.HasAncient) ? this._data[this.AncientIndex] : default;
-            set => this._data[this.AncientIndex] = value;
+            get => this._data[7];
+            set => this._data[7] = Convert.ToByte(value);
         }
 
-        public byte AncientDiscriminator
+        public int Unk
         {
-            get => this.Options.HasFlag(OptionFlags.HasAncient) ? (byte)(this._data[this.AncientIndex] & 0xF) : default;
-            set => this._data[this.AncientIndex] = (byte)((this._data[this.AncientIndex] & 0xF0) | (value & 0xF));
+            get => this._data[8];
+            set => this._data[8] = Convert.ToByte(value);
         }
 
-        public byte AncientBonusLevel
+        public int Unk2
         {
-            get => this.Options.HasFlag(OptionFlags.HasAncient) ? (byte)((this._data[this.AncientIndex] & 0xF0) >> 4) : default;
-            set
-            {
-                value = (byte)((value & 0xF) << 4);
-                value |= (byte)(this._data[this.AncientIndex] & 0xF);
-                this._data[this.AncientIndex] = value;
-            }
+            get => this._data[9];
+            set => this._data[9] = Convert.ToByte(value);
         }
 
-        public byte Harmony
+        public int Unk3
         {
-            get => this.Options.HasFlag(OptionFlags.HasHarmony) ? this._data[this.HarmonyIndex] : default;
-            set => this._data[this.HarmonyIndex] = value;
+            get => this._data[10];
+            set => this._data[10] = Convert.ToByte(value);
         }
 
-        public byte SocketBonus
+        public int Unk4
         {
-            get => this.Options.HasFlag(OptionFlags.HasSockets) ? (byte)((this._data[this.SocketStartIndex] & 0xF0) >> 4) : default;
-            set
-            {
-                value = (byte)((value & 0xF) << 4);
-                value |= (byte)(this._data[this.SocketStartIndex] & 0xF);
-                this._data[this.SocketStartIndex] = value;
-            }
+            get => this._data[11];
+            set => this._data[11] = Convert.ToByte(value);
         }
 
-        public byte SocketCount
+        public int Unk5
         {
-            get => this.Options.HasFlag(OptionFlags.HasSockets) ? (byte)(this._data[this.SocketStartIndex] & 0xF) : default;
-            set => this._data[this.SocketStartIndex] = (byte)((this._data[this.SocketStartIndex] & 0xF0) | (value & 0xF));
+            get => this._data[12];
+            set => this._data[12] = Convert.ToByte(value);
         }
 
-        public Span<byte> Sockets => this.Options.HasFlag(OptionFlags.HasSockets)
-            ? this._data.Slice(this.SocketStartIndex + 1, this.SocketCount)
-            : [];
-
-        public int Length
+        public int Unk6
         {
-            get
-            {
-                int size = 5;
-                if (this.Options.HasFlag(OptionFlags.HasOption))
-                {
-                    size++;
-                }
-
-                if (this.Options.HasFlag(OptionFlags.HasExcellent))
-                {
-                    size++;
-                }
-
-                if (this.Options.HasFlag(OptionFlags.HasAncient))
-                {
-                    size++;
-                }
-
-                if (this.Options.HasFlag(OptionFlags.HasHarmony))
-                {
-                    size++;
-                }
-
-                if (this.Options.HasFlag(OptionFlags.HasSockets))
-                {
-                    size++;
-                    size += this.SocketCount;
-                }
-
-                return size;
-            }
+            get => this._data[13];
+            set => this._data[13] = Convert.ToByte(value);
         }
 
-        private int AdditionalOptionIndex => this.Options.HasFlag(OptionFlags.HasOption) ? 5 : 4;
-
-        private int ExcellentIndex => this.Options.HasFlag(OptionFlags.HasExcellent) ? this.AdditionalOptionIndex + 1 : this.AdditionalOptionIndex;
-
-        private int AncientIndex => this.Options.HasFlag(OptionFlags.HasAncient) ? this.ExcellentIndex + 1 : this.ExcellentIndex;
-
-        private int HarmonyIndex => this.Options.HasFlag(OptionFlags.HasHarmony) ? this.AncientIndex + 1 : this.AncientIndex;
-
-        private int SocketStartIndex => this.Options.HasFlag(OptionFlags.HasSockets) ? this.HarmonyIndex + 1 : this.HarmonyIndex;
+        public int Unk7
+        {
+            get => this._data[14];
+            set => this._data[14] = Convert.ToByte(value);
+        }
     }
 }

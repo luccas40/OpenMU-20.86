@@ -436,7 +436,7 @@ internal sealed class Program : IDisposable
         var parameter = args.FirstOrDefault(a => a.StartsWith("-version:", StringComparison.InvariantCultureIgnoreCase));
         if (parameter is null)
         {
-            return "season6"; // default
+            return "season21"; // default
         }
 
         return parameter.Substring(parameter.IndexOf(':') + 1);

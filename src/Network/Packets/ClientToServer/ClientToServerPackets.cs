@@ -8372,6 +8372,101 @@ public readonly struct CreateCharacter
 
 
 /// <summary>
+/// Is sent by the client when: The game client is at the character selection screen and the player requests to add a new character.
+/// Causes reaction on server side: The server checks if the player is allowed to create the character and sends a response back.
+/// </summary>
+public readonly struct CreateCharacterS21
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CreateCharacterS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public CreateCharacterS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CreateCharacterS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private CreateCharacterS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0xF3;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x01;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 15;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCode Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the name of the character which should be created.
+    /// </summary>
+    public string Name
+    {
+        get => this._data.Span.ExtractString(4, 10, System.Text.Encoding.UTF8);
+        set => this._data.Slice(4, 10).Span.WriteString(value, System.Text.Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Gets or sets the character class of the character which should be created.
+    /// </summary>
+    public byte Class
+    {
+        get => this._data.Span[14];
+        set => this._data.Span[14] = value;
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="CreateCharacterS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator CreateCharacterS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="CreateCharacterS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(CreateCharacterS21 packet) => packet._data; 
+}
+
+
+/// <summary>
 /// Is sent by the client when: The game client is at the character selection screen and the player requests to delete an existing character.
 /// Causes reaction on server side: The server checks if the player transmitted the correct security code and if the character actually exists. If all is valid, it deletes the character from the account. It then sends a response with a result code back to the game client.
 /// </summary>

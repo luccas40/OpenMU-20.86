@@ -14,7 +14,7 @@ using MUnique.OpenMU.PlugIns;
 /// <summary>
 /// Provides initial data for Season 6 Episode 3.
 /// </summary>
-[Guid("9C21C359-F192-4AF5-8C05-1AC4AFD10897")]
+[Guid("9b58ea5e-038a-4c6c-9f27-8b0a8f576e7c")]
 [PlugIn("Season 6 Episode 3 Initialization", "Provides initial data for Season 6 Episode 3.")]
 public class DataInitialization : DataInitializationBase
 {

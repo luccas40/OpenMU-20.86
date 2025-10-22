@@ -2078,6 +2078,31 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>F3</Code>
+			<SubCode>01</SubCode>
+			<Name>CreateCharacterS21</Name>
+			<Length>15</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>The game client is at the character selection screen and the player requests to add a new character.</SentWhen>
+			<CausedReaction>The server checks if the player is allowed to create the character and sends a response back.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>String</Type>
+					<Name>Name</Name>
+					<Description>The name of the character which should be created.</Description>
+					<Length>10</Length>
+				</Field>
+				<Field>
+					<Index>14</Index>
+					<Type>Byte</Type>
+					<Name>Class</Name>
+					<Description>The character class of the character which should be created.</Description>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1HeaderWithSubCode</HeaderType>
       <Code>F3</Code>

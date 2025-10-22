@@ -214,7 +214,7 @@ public class ObjectMovedPlugIn : IObjectMovedPlugIn
             case ClientLanguage.Vietnamese:
                 return 0xD9;
             case ClientLanguage.Filipino: return 0xDD;
-            case ClientLanguage.Korean: return 0xD3;
+            case ClientLanguage.Korean: return (byte)PacketType.Walk;
             case ClientLanguage.Thai: return 0xD7;
             default:
                 return (byte)PacketType.Walk;
