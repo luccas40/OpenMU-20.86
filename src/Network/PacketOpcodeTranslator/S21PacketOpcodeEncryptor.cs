@@ -34,12 +34,14 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xF302, 0x8105 }, // Delete Character Response
         { 0xF303, 0x8122 }, // CharacterJoin
         { 0xF310, 0x8101 }, // CharacterInventory
+        { 0xF311, 0x8113 }, // Character Skill List Update
         { 0xF315, 0x8123 }, // Character Select Confirm
         { 0x12FF, 0x12FF }, // Add Player to Scope
         { 0x13FF, 0x13FF }, // Add Creature to Scope
         { 0x14FF, 0x14FF }, // Remove Object from Scope
-        //{ 0x15FF, 0x15FF }, // Object in Scope Moved
         { 0xD4FF, 0x5AFF }, // Object in Scope Moved
+        { 0x24FF, 0xA7FF }, // Inventory Item Move Result
+        { 0x28FF, 0x28FF }, // Inventory Item Removed
     };
 
     /// <summary>

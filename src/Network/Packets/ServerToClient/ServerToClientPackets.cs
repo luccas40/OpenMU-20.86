@@ -9561,6 +9561,104 @@ public readonly struct ItemMoved
 
 
 /// <summary>
+/// Is sent by the server when: An item in the inventory or vault of the player has been moved.
+/// Causes reaction on client side: The client updates the position of item in the user interface.
+/// </summary>
+public readonly struct ItemMovedS21
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ItemMovedS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public ItemMovedS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ItemMovedS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private ItemMovedS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)data.Length;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x24;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the target storage type.
+    /// </summary>
+    public byte TargetStorageType
+    {
+        get => this._data.Span[4];
+        set => this._data.Span[4] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the target slot.
+    /// </summary>
+    public byte TargetSlot
+    {
+        get => this._data.Span[6];
+        set => this._data.Span[6] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the item data.
+    /// </summary>
+    public Span<byte> ItemData
+    {
+        get => this._data.Slice(8).Span;
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="ItemMovedS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator ItemMovedS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="ItemMovedS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(ItemMovedS21 packet) => packet._data; 
+
+    /// <summary>
+    /// Calculates the size of the packet for the specified length of <see cref="ItemData"/>.
+    /// </summary>
+    /// <param name="itemDataLength">The length in bytes of <see cref="ItemData"/> on which the required size depends.</param>
+        
+    public static int GetRequiredSize(int itemDataLength) => itemDataLength + 8;
+}
+
+
+/// <summary>
 /// Is sent by the server when: An item in the inventory or vault of the player could not be moved as requested by the player.
 /// Causes reaction on client side: The client restores the position of item in the user interface.
 /// </summary>
@@ -16440,6 +16538,158 @@ public readonly struct SkillListUpdate
     /// <param name="skillsCount">The count of <see cref="SkillEntry"/> from which the size will be calculated.</param>
         
     public static int GetRequiredSize(int skillsCount) => skillsCount * SkillEntry.Length + 6;
+
+
+/// <summary>
+/// Structure for a skill entry of the skill list..
+/// </summary>
+public readonly struct SkillEntry
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SkillEntry"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public SkillEntry(Memory<byte> data)
+    {
+        this._data = data;
+    }
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 4;
+
+    /// <summary>
+    /// Gets or sets the skill index.
+    /// </summary>
+    public byte SkillIndex
+    {
+        get => this._data.Span[0];
+        set => this._data.Span[0] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the skill number.
+    /// </summary>
+    public ushort SkillNumber
+    {
+        get => ReadUInt16LittleEndian(this._data.Span[1..]);
+        set => WriteUInt16LittleEndian(this._data.Span[1..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the skill level.
+    /// </summary>
+    public byte SkillLevel
+    {
+        get => this._data.Span[3];
+        set => this._data.Span[3] = value;
+    }
+}
+}
+
+
+/// <summary>
+/// Is sent by the server when: Usually, when the player entered the game with a character. When skills get added or removed, this message is sent as well, but with a misleading count.
+/// Causes reaction on client side: The skill list gets initialized.
+/// </summary>
+public readonly struct SkillListUpdateS21
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SkillListUpdateS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public SkillListUpdateS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SkillListUpdateS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private SkillListUpdateS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (ushort)data.Length;
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC2;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0xF3;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x11;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C2HeaderWithSubCode Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets mixed usage: Skill list count (when list). 0xFE when adding a skill, 0xFF when removing a Skill.
+    /// </summary>
+    public byte Count
+    {
+        get => this._data.Span[5];
+        set => this._data.Span[5] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets mixed usage: Skill list count (when list). 0xFE when adding a skill, 0xFF when removing a Skill.
+    /// </summary>
+    public byte Mode
+    {
+        get => this._data.Span[6];
+        set => this._data.Span[6] = value;
+    }
+
+    /// <summary>
+    /// Gets the <see cref="SkillEntry"/> of the specified index.
+    /// </summary>
+        public SkillEntry this[int index] => new (this._data.Slice(7 + index * SkillEntry.Length));
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="SkillListUpdateS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator SkillListUpdateS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="SkillListUpdateS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(SkillListUpdateS21 packet) => packet._data; 
+
+    /// <summary>
+    /// Calculates the size of the packet for the specified count of <see cref="SkillEntry"/>.
+    /// </summary>
+    /// <param name="skillsCount">The count of <see cref="SkillEntry"/> from which the size will be calculated.</param>
+        
+    public static int GetRequiredSize(int skillsCount) => skillsCount * SkillEntry.Length + 7;
 
 
 /// <summary>

@@ -1,4 +1,4 @@
-﻿// <copyright file="SkillListViewPlugIn.cs" company="MUnique">
+﻿// <copyright file="SkillListViewPlugInS21.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -16,10 +16,10 @@ using MUnique.OpenMU.PlugIns;
 /// <summary>
 /// The default implementation of the <see cref="ISkillListViewPlugIn"/> which is forwarding everything to the game client with specific data packets.
 /// </summary>
-[PlugIn("SkillListViewPlugIn", "The default implementation of the ISkillListViewPlugIn which is forwarding everything to the game client with specific data packets.")]
-[Guid("E67BB791-5BE7-4CC8-B2C9-38E86158A356")]
-[MinimumClient(3, 0, ClientLanguage.Invariant)]
-public class SkillListViewPlugIn : ISkillListViewPlugIn
+[PlugIn("SkillListViewPlugInS21", "The S21 implementation of the ISkillListViewPlugIn which is forwarding everything to the game client with specific data packets.")]
+[Guid("7CC15AFE-7D9B-40FD-A65B-6FC29CD05FDB")]
+[MinimumClient(21, 0, ClientLanguage.Korean)]
+public class SkillListViewPlugInS21 : ISkillListViewPlugIn
 {
     private const short Explosion79SkillId = 79;
     private const short ForceSkillId = 60;
@@ -34,10 +34,10 @@ public class SkillListViewPlugIn : ISkillListViewPlugIn
     private IList<Skill?>? _skillList;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SkillListViewPlugIn"/> class.
+    /// Initializes a new instance of the <see cref="SkillListViewPlugInS21"/> class.
     /// </summary>
     /// <param name="player">The player.</param>
-    public SkillListViewPlugIn(RemotePlayer player)
+    public SkillListViewPlugInS21(RemotePlayer player)
     {
         this._player = player;
     }
@@ -55,13 +55,33 @@ public class SkillListViewPlugIn : ISkillListViewPlugIn
     /// <inheritdoc/>
     public virtual async ValueTask AddSkillAsync(Skill skill)
     {
+        var connection = this._player.Connection;
+        if (connection is null)
+        {
+            return;
+        }
+
         if (skill.Number == ForceWaveSkillId)
         {
             return;
         }
 
         var skillIndex = this.AddSkillToList(skill);
-        await this._player.Connection.SendSkillAddedAsync(skillIndex, (ushort)skill.Number, 0).ConfigureAwait(false);
+
+        int WritePacket()
+        {
+            var length = SkillListUpdateS21Ref.GetRequiredSize(1);
+            var packet = new SkillListUpdateS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Count = 0xFE; // adding
+            var skillEntry = packet[0];
+            skillEntry.SkillIndex = skillIndex;
+            skillEntry.SkillNumber = (ushort)skill.Number;
+            skillEntry.SkillLevel = 0;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -96,9 +116,9 @@ public class SkillListViewPlugIn : ISkillListViewPlugIn
 
         int Write()
         {
-            var size = SkillListUpdateRef.GetRequiredSize(this.SkillList.Count);
+            var size = SkillListUpdateS21Ref.GetRequiredSize(this.SkillList.Count);
             var span = connection.Output.GetSpan(size)[..size];
-            var packet = new SkillListUpdateRef(span)
+            var packet = new SkillListUpdateS21Ref(span)
             {
                 Count = (byte)this.SkillList.Count,
             };
@@ -148,7 +168,7 @@ public class SkillListViewPlugIn : ISkillListViewPlugIn
         skills.RemoveAll(s => replacedSkills.Contains(s.Skill));
         skills.RemoveAll(s => s.Skill?.SkillType == SkillType.PassiveBoost);
 
-        //skills.RemoveAll(s => s.Skill?.Number == ForceWaveSkillId || s.Skill?.Number == Explosion79SkillId);
+        skills.RemoveAll(s => s.Skill?.Number == ForceWaveSkillId || s.Skill?.Number == Explosion79SkillId);
         if (skills.Any(s => s.Skill?.Number == ForceWaveStrengSkillId))
         {
             skills.RemoveAll(s => s.Skill?.Number == ForceSkillId);

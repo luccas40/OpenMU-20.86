@@ -2,12 +2,15 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace MUnique.OpenMU.Persistence.Initialization.Version2086;
+namespace MUnique.OpenMU.Persistence.Initialization.Version2086.Skills;
 
 using MUnique.OpenMU.AttributeSystem;
 using MUnique.OpenMU.DataModel.Attributes;
 using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.GameLogic.Attributes;
+using MUnique.OpenMU.Persistence;
+using MUnique.OpenMU.Persistence.Initialization;
+using MUnique.OpenMU.Persistence.Initialization.CharacterClasses;
 using MUnique.OpenMU.Persistence.Initialization.Skills;
 using MUnique.OpenMU.Persistence.Initialization.Version2086.CharacterClasses;
 
@@ -49,9 +52,8 @@ internal abstract class SkillsInitializerBase : InitializerBase
     /// <param name="movesTarget">If set to <c>true</c>, it moves target randomly.</param>
     /// <param name="cooldownMinutes">The cooldown minutes.</param>
     protected void CreateSkill(
-        SkillNumber number,
+        short number,
         string name,
-        IEnumerable<CharacterClassNumber>? characterClasses = default,
         DamageType damageType = DamageType.None,
         int damage = 0,
         short distance = 0,
@@ -67,22 +69,23 @@ internal abstract class SkillsInitializerBase : InitializerBase
         SkillTargetRestriction targetRestriction = SkillTargetRestriction.Undefined,
         bool movesToTarget = false,
         bool movesTarget = false,
-        int cooldownMinutes = 0)
+        int cooldownMinutes = 0,
+        int wizardClass = 0, int knightClass = 0, int elfClass = 0, int magicGladiatorClass = 0, int darkLordClass = 0, int summonerClass = 0, int ragefighterClass = 0, int growLancerClass = 0, int runeWizardClass = 0, int slayerClass = 0, int gunCrusherClass = 0, int whiteWizardClass = 0, int lemuriaClass = 0, int illusionKnightClass = 0, int alchemistClass = 0, int crusaderClass = 0
+        )
     {
-        characterClasses ??= [];
-        var skill = this.Context.CreateNew<Skill>();
-        this.GameConfiguration.Skills.Add(skill);
-        skill.Number = (short)number;
+        var skill = Context.CreateNew<Skill>();
+        GameConfiguration.Skills.Add(skill);
+        skill.Number = number;
         skill.Name = name;
         skill.MovesToTarget = movesToTarget;
         skill.MovesTarget = movesTarget;
         skill.AttackDamage = damage;
 
-        this.CreateSkillRequirementIfNeeded(skill, Stats.Level, levelRequirement);
-        this.CreateSkillRequirementIfNeeded(skill, Stats.TotalLeadership, leadershipRequirement);
-        this.CreateSkillRequirementIfNeeded(skill, Stats.TotalEnergy, energyRequirement);
-        this.CreateSkillConsumeRequirementIfNeeded(skill, Stats.CurrentMana, manaConsumption);
-        this.CreateSkillConsumeRequirementIfNeeded(skill, Stats.CurrentAbility, abilityConsumption);
+        CreateSkillRequirementIfNeeded(skill, Stats.Level, levelRequirement);
+        CreateSkillRequirementIfNeeded(skill, Stats.TotalLeadership, leadershipRequirement);
+        CreateSkillRequirementIfNeeded(skill, Stats.TotalEnergy, energyRequirement);
+        CreateSkillConsumeRequirementIfNeeded(skill, Stats.CurrentMana, manaConsumption);
+        CreateSkillConsumeRequirementIfNeeded(skill, Stats.CurrentAbility, abilityConsumption);
 
         skill.Range = distance;
         skill.DamageType = damageType;
@@ -91,7 +94,7 @@ internal abstract class SkillsInitializerBase : InitializerBase
         skill.ImplicitTargetRange = implicitTargetRange;
         skill.Target = skillTarget;
         skill.TargetRestriction = targetRestriction;
-        var classes = this.GameConfiguration.DetermineCharacterClasses(characterClasses);
+        var classes = GameConfiguration.DetermineCharacterClasses(false, wizardClass, knightClass, elfClass, magicGladiatorClass, darkLordClass, summonerClass, ragefighterClass, growLancerClass, runeWizardClass, slayerClass, gunCrusherClass, whiteWizardClass, lemuriaClass, illusionKnightClass, alchemistClass, crusaderClass);
         foreach (var characterClass in classes)
         {
             skill.QualifiedCharacters.Add(characterClass);
@@ -99,7 +102,7 @@ internal abstract class SkillsInitializerBase : InitializerBase
 
         if (elementalModifier != ElementalType.Undefined)
         {
-            this.ApplyElementalModifier(elementalModifier, skill);
+            ApplyElementalModifier(elementalModifier, skill);
         }
 
         skill.SetGuid(skill.Number);
@@ -138,8 +141,8 @@ internal abstract class SkillsInitializerBase : InitializerBase
         bool useTargetAreaFilter = false,
         float targetAreaDiameter = default)
     {
-        var skill = this.GameConfiguration.Skills.First(s => s.Number == (short)skillNumber);
-        var areaSkillSettings = this.Context.CreateNew<AreaSkillSettings>();
+        var skill = GameConfiguration.Skills.First(s => s.Number == (short)skillNumber);
+        var areaSkillSettings = Context.CreateNew<AreaSkillSettings>();
         skill.AreaSkillSettings = areaSkillSettings;
 
         areaSkillSettings.UseFrustumFilter = useFrustumFilter;
@@ -161,39 +164,39 @@ internal abstract class SkillsInitializerBase : InitializerBase
     {
         if ((SkillNumber)skill.Number is SkillNumber.IceArrow or SkillNumber.IceArrowStrengthener)
         {
-            skill.ElementalModifierTarget = Stats.IceResistance.GetPersistent(this.GameConfiguration);
-            skill.MagicEffectDef = this.CreateEffect(ElementalType.Ice, MagicEffectNumber.Freeze, Stats.IsFrozen, 5);
+            skill.ElementalModifierTarget = Stats.IceResistance.GetPersistent(GameConfiguration);
+            skill.MagicEffectDef = CreateEffect(ElementalType.Ice, MagicEffectNumber.Freeze, Stats.IsFrozen, 5);
             return;
         }
 
         switch (elementalModifier)
         {
             case ElementalType.Ice:
-                skill.ElementalModifierTarget = Stats.IceResistance.GetPersistent(this.GameConfiguration);
-                skill.MagicEffectDef = this.CreateEffect(ElementalType.Ice, MagicEffectNumber.Iced, Stats.IsIced, 10);
+                skill.ElementalModifierTarget = Stats.IceResistance.GetPersistent(GameConfiguration);
+                skill.MagicEffectDef = CreateEffect(ElementalType.Ice, MagicEffectNumber.Iced, Stats.IsIced, 10);
                 break;
             case ElementalType.Poison:
-                skill.ElementalModifierTarget = Stats.PoisonResistance.GetPersistent(this.GameConfiguration);
+                skill.ElementalModifierTarget = Stats.PoisonResistance.GetPersistent(GameConfiguration);
 
                 // Poison Skill applies damage 7 times, while decay three times. We assume that we apply each damage
                 // every 3 seconds. We leave one or two extra seconds, so that the damage is applied for sure.
                 var durationInSeconds = skill.Number == (short)SkillNumber.Poison ? 20 : 10;
-                skill.MagicEffectDef = this.CreateEffect(ElementalType.Poison, MagicEffectNumber.Poisoned, Stats.IsPoisoned, durationInSeconds);
+                skill.MagicEffectDef = CreateEffect(ElementalType.Poison, MagicEffectNumber.Poisoned, Stats.IsPoisoned, durationInSeconds);
                 break;
             case ElementalType.Lightning:
-                skill.ElementalModifierTarget = Stats.LightningResistance.GetPersistent(this.GameConfiguration);
+                skill.ElementalModifierTarget = Stats.LightningResistance.GetPersistent(GameConfiguration);
                 break;
             case ElementalType.Fire:
-                skill.ElementalModifierTarget = Stats.FireResistance.GetPersistent(this.GameConfiguration);
+                skill.ElementalModifierTarget = Stats.FireResistance.GetPersistent(GameConfiguration);
                 break;
             case ElementalType.Earth:
-                skill.ElementalModifierTarget = Stats.EarthResistance.GetPersistent(this.GameConfiguration);
+                skill.ElementalModifierTarget = Stats.EarthResistance.GetPersistent(GameConfiguration);
                 break;
             case ElementalType.Wind:
-                skill.ElementalModifierTarget = Stats.WindResistance.GetPersistent(this.GameConfiguration);
+                skill.ElementalModifierTarget = Stats.WindResistance.GetPersistent(GameConfiguration);
                 break;
             case ElementalType.Water:
-                skill.ElementalModifierTarget = Stats.WaterResistance.GetPersistent(this.GameConfiguration);
+                skill.ElementalModifierTarget = Stats.WaterResistance.GetPersistent(GameConfiguration);
                 break;
             default:
                 // None
@@ -203,7 +206,7 @@ internal abstract class SkillsInitializerBase : InitializerBase
 
     private MagicEffectDefinition CreateEffect(ElementalType type, MagicEffectNumber effectNumber, AttributeDefinition targetAttribute, float durationInSeconds)
     {
-        if (this.GameConfiguration.MagicEffects.FirstOrDefault(
+        if (GameConfiguration.MagicEffects.FirstOrDefault(
                 e => e.Number == (short)effectNumber
                      && e.SubType == (byte)(0xFF - type)
                      && Equals(e.Duration?.ConstantValue.Value, durationInSeconds)
@@ -212,20 +215,20 @@ internal abstract class SkillsInitializerBase : InitializerBase
             return existingEffect;
         }
 
-        var effect = this.Context.CreateNew<MagicEffectDefinition>();
-        this.GameConfiguration.MagicEffects.Add(effect);
+        var effect = Context.CreateNew<MagicEffectDefinition>();
+        GameConfiguration.MagicEffects.Add(effect);
         effect.Name = Enum.GetName(effectNumber) ?? string.Empty;
         effect.InformObservers = true;
         effect.Number = (short)effectNumber;
         effect.StopByDeath = true;
         effect.SubType = (byte)(0xFF - type);
-        effect.Duration = this.Context.CreateNew<PowerUpDefinitionValue>();
+        effect.Duration = Context.CreateNew<PowerUpDefinitionValue>();
         effect.Duration.ConstantValue.Value = durationInSeconds;
-        var powerUpDefinition = this.Context.CreateNew<PowerUpDefinition>();
+        var powerUpDefinition = Context.CreateNew<PowerUpDefinition>();
         effect.PowerUpDefinitions.Add(powerUpDefinition);
-        powerUpDefinition.Boost = this.Context.CreateNew<PowerUpDefinitionValue>();
+        powerUpDefinition.Boost = Context.CreateNew<PowerUpDefinitionValue>();
         powerUpDefinition.Boost.ConstantValue.Value = 1;
-        powerUpDefinition.TargetAttribute = targetAttribute.GetPersistent(this.GameConfiguration);
+        powerUpDefinition.TargetAttribute = targetAttribute.GetPersistent(GameConfiguration);
         return effect;
     }
 
@@ -236,7 +239,7 @@ internal abstract class SkillsInitializerBase : InitializerBase
             return;
         }
 
-        var requirement = this.CreateRequirement(attribute, requiredValue);
+        var requirement = CreateRequirement(attribute, requiredValue);
         skill.ConsumeRequirements.Add(requirement);
     }
 
@@ -247,7 +250,7 @@ internal abstract class SkillsInitializerBase : InitializerBase
             return;
         }
 
-        var requirement = this.CreateRequirement(attribute, requiredValue);
+        var requirement = CreateRequirement(attribute, requiredValue);
         skill.Requirements.Add(requirement);
     }
 }

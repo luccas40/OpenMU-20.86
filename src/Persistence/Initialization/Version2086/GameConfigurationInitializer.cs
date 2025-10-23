@@ -1,4 +1,12 @@
-﻿using MUnique.OpenMU.DataModel.Configuration;
+﻿namespace MUnique.OpenMU.Persistence.Initialization.Version2086;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.DataModel.Configuration.Items;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.Persistence.Initialization.Items;
@@ -6,14 +14,6 @@ using MUnique.OpenMU.Persistence.Initialization.Version2086.CharacterClasses;
 using MUnique.OpenMU.Persistence.Initialization.VersionSeasonSix;
 using MUnique.OpenMU.Persistence.Initialization.VersionSeasonSix.Events;
 using MUnique.OpenMU.Persistence.Initialization.VersionSeasonSix.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MUnique.OpenMU.Persistence.Initialization.Version2086;
 
 /// <summary>
 /// Initializes the <see cref="GameConfiguration"/>.
@@ -52,17 +52,17 @@ public class GameConfigurationInitializer : GameConfigurationInitializerBase
         this.GameConfiguration.ItemOptions.Add(this.CreateOptionDefinition(Stats.CurseBaseDmg, ItemOptionDefinitionNumbers.CurseAttack));
 
         new CharacterClassInitialization(this.Context, this.GameConfiguration).Initialize();
-        new SkillsInitializer(this.Context, this.GameConfiguration).Initialize();
-        new Orbs(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.Skills.SkillsInitializer(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.Items.Orbs(this.Context, this.GameConfiguration).Initialize();
         new Scrolls(this.Context, this.GameConfiguration).Initialize();
         new EventTicketItems(this.Context, this.GameConfiguration).Initialize();
-        new Wings(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.Items.Wings(this.Context, this.GameConfiguration).Initialize();
         new Version2086.Items.Pets(this.Context, this.GameConfiguration).Initialize();
         new ExcellentOptions(this.Context, this.GameConfiguration).Initialize();
         new HarmonyOptions(this.Context, this.GameConfiguration).Initialize();
         new GuardianOptions(this.Context, this.GameConfiguration).Initialize();
-        new Armors(this.Context, this.GameConfiguration).Initialize();
-        new Weapons(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.Items.Armors(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.Items.Weapons(this.Context, this.GameConfiguration).Initialize();
         new Potions(this.Context, this.GameConfiguration).Initialize();
         new Jewels(this.Context, this.GameConfiguration).Initialize();
         new Misc(this.Context, this.GameConfiguration).Initialize();
@@ -71,7 +71,7 @@ public class GameConfigurationInitializer : GameConfigurationInitializerBase
         new AncientSets(this.Context, this.GameConfiguration).Initialize();
         new BoxOfLuck(this.Context, this.GameConfiguration).Initialize();
         this.CreateJewelMixes();
-        new NpcInitialization(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.NpcInitialization(this.Context, this.GameConfiguration).Initialize();
         new InvasionMobsInitialization(this.Context, this.GameConfiguration).Initialize();
         new GameMapsInitializer(this.Context, this.GameConfiguration).Initialize();
         this.AssignCharacterClassHomeMaps();

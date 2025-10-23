@@ -494,6 +494,50 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>24</Code>
+			<Name>ItemMoveRequestS21</Name>
+			<Length>24</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>A player requests to move an item within or between his available item storage, such as inventory, vault, trade or chaos machine.</SentWhen>
+			<CausedReaction></CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>Enum</Type>
+					<TypeName>ItemStorageKind</TypeName>
+					<Name>FromStorage</Name>
+				</Field>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>FromSlot</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Binary</Type>
+					<Name>ItemData</Name>
+					<Length>16</Length>
+				</Field>
+				<Field>
+					<Index>21</Index>
+					<Type>Enum</Type>
+					<TypeName>ItemStorageKind</TypeName>
+					<Name>ToStorage</Name>
+				</Field>
+				<Field>
+					<Index>22</Index>
+					<Type>Byte</Type>
+					<Name>ToSlot</Name>
+				</Field>
+				<Field>
+					<Index>23</Index>
+					<Type>Byte</Type>
+					<Name>Unk</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C3Header</HeaderType>
       <Code>24</Code>

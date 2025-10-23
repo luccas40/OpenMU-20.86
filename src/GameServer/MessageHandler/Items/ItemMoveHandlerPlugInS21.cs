@@ -1,4 +1,4 @@
-﻿// <copyright file="ItemMoveExtendedHandlerPlugIn.cs" company="MUnique">
+﻿// <copyright file="ItemMoveHandlerPlugInS21.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -13,12 +13,12 @@ using MUnique.OpenMU.Network.PlugIns;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
-/// Packet handler for extended item move packets.
+/// Packet handler for S21 item move packets.
 /// </summary>
-[PlugIn(nameof(ItemMoveExtendedHandlerPlugIn), "Packet handler for extended item move packets.")]
-[Guid("F68AFB2B-CEE0-420E-89F2-30694045ED46")]
-[MinimumClient(5, 3, ClientLanguage.Invariant)]
-internal class ItemMoveExtendedHandlerPlugIn : IPacketHandlerPlugIn
+[PlugIn(nameof(ItemMoveHandlerPlugInS21), "Packet handler for extended item move packets.")]
+[Guid("DC02EB39-241C-46FB-B552-5CB8F1F0FC6E")]
+[MinimumClient(21, 0, ClientLanguage.Korean)]
+internal class ItemMoveHandlerPlugInS21 : IPacketHandlerPlugIn
 {
     private readonly MoveItemAction _moveAction = new();
 
@@ -31,7 +31,7 @@ internal class ItemMoveExtendedHandlerPlugIn : IPacketHandlerPlugIn
     /// <inheritdoc/>
     public async ValueTask HandlePacketAsync(Player player, Memory<byte> packet)
     {
-        ItemMoveRequestExtended message = packet;
+        ItemMoveRequestS21 message = packet;
 
         // we don't transmit the item binary data anymore in this extended message.
         await this._moveAction.MoveItemAsync(player, message.FromSlot, message.FromStorage.Convert(), message.ToSlot, message.ToStorage.Convert()).ConfigureAwait(false);

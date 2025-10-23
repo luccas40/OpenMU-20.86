@@ -12,29 +12,6 @@ using MUnique.OpenMU.DataModel.Configuration;
 /// </summary>
 public static class CharacterClassHelper
 {
-    /*
-    private static readonly (CharacterClasses Classes, CharacterClassNumber Number)[] NumberMapping =
-    {
-        (CharacterClasses.GrandMaster, CharacterClassNumber.GrandMaster),
-        (CharacterClasses.SoulMaster, CharacterClassNumber.SoulMaster),
-        (CharacterClasses.DarkWizard, CharacterClassNumber.DarkWizard),
-        (CharacterClasses.BladeMaster, CharacterClassNumber.BladeMaster),
-        (CharacterClasses.BladeKnight, CharacterClassNumber.BladeKnight),
-        (CharacterClasses.DarkKnight, CharacterClassNumber.DarkKnight),
-        (CharacterClasses.HighElf, CharacterClassNumber.HighElf),
-        (CharacterClasses.MuseElf, CharacterClassNumber.MuseElf),
-        (CharacterClasses.FairyElf, CharacterClassNumber.FairyElf),
-        (CharacterClasses.DuelMaster, CharacterClassNumber.DuelMaster),
-        (CharacterClasses.MagicGladiator, CharacterClassNumber.MagicGladiator),
-        (CharacterClasses.LordEmperor, CharacterClassNumber.LordEmperor),
-        (CharacterClasses.DarkLord, CharacterClassNumber.DarkLord),
-        (CharacterClasses.DimensionMaster, CharacterClassNumber.DimensionMaster),
-        (CharacterClasses.BloodySummoner, CharacterClassNumber.BloodySummoner),
-        (CharacterClasses.Summoner, CharacterClassNumber.Summoner),
-        (CharacterClasses.FistMaster, CharacterClassNumber.FistMaster),
-        (CharacterClasses.RageFighter, CharacterClassNumber.RageFighter),
-    };
-    */
     /// <summary>
     /// Determines the <see cref="CharacterClass" />es, depending on the given class ranks which are provided by original configuration files.
     /// </summary>
@@ -48,14 +25,30 @@ public static class CharacterClassHelper
     {
         var characterClasses = gameConfiguration.CharacterClasses;
 
-        // var test = classes.Select(@class => characterClasses.First(c => c.Number == (int)@class));
-
         foreach (var characterClassNumber in classes)
         {
             yield return characterClasses.First(c => c.Number == (int)characterClassNumber);
         }
     }
-    
+
+    public static IEnumerable<CharacterClass> DetermineCharacterClasses(this GameConfiguration gameConfiguration, bool ignoreMissing = false, params int[] classes)
+    {
+        var characterClasses = gameConfiguration.CharacterClasses;
+
+        for (int i = 0; i < classes.Length; i++)
+        {
+            if (classes[i] == 0) continue;
+            int classId = i * 16;
+            if (classes[i] == 5) classId += 15;
+            else if (classes[i] == 4) classId += 14;
+            else if (classes[i] == 3) classId += 12;
+            else if (classes[i] == 2) classId += 8;
+
+            yield return characterClasses.First(c => c.Number == classId);
+
+        }
+    }
+
     /// <summary>
     /// Determines the <see cref="CharacterClass"/>es, depending on the given classes which are provided by original configuration files.
     /// </summary>

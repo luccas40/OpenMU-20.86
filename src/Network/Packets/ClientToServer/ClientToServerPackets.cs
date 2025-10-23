@@ -1917,6 +1917,129 @@ public readonly struct ItemMoveRequest
 /// Is sent by the client when: A player requests to move an item within or between his available item storage, such as inventory, vault, trade or chaos machine.
 /// Causes reaction on server side: 
 /// </summary>
+public readonly struct ItemMoveRequestS21
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ItemMoveRequestS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public ItemMoveRequestS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ItemMoveRequestS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private ItemMoveRequestS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x24;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 24;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the from storage.
+    /// </summary>
+    public ItemStorageKind FromStorage
+    {
+        get => (ItemStorageKind)this._data.Span[3];
+        set => this._data.Span[3] = (byte)value;
+    }
+
+    /// <summary>
+    /// Gets or sets the from slot.
+    /// </summary>
+    public byte FromSlot
+    {
+        get => this._data.Span[4];
+        set => this._data.Span[4] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the item data.
+    /// </summary>
+    public Span<byte> ItemData
+    {
+        get => this._data.Slice(5, 16).Span;
+    }
+
+    /// <summary>
+    /// Gets or sets the to storage.
+    /// </summary>
+    public ItemStorageKind ToStorage
+    {
+        get => (ItemStorageKind)this._data.Span[21];
+        set => this._data.Span[21] = (byte)value;
+    }
+
+    /// <summary>
+    /// Gets or sets the to slot.
+    /// </summary>
+    public byte ToSlot
+    {
+        get => this._data.Span[22];
+        set => this._data.Span[22] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the unk.
+    /// </summary>
+    public byte Unk
+    {
+        get => this._data.Span[23];
+        set => this._data.Span[23] = value;
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="ItemMoveRequestS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator ItemMoveRequestS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="ItemMoveRequestS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(ItemMoveRequestS21 packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the client when: A player requests to move an item within or between his available item storage, such as inventory, vault, trade or chaos machine.
+/// Causes reaction on server side: 
+/// </summary>
 public readonly struct ItemMoveRequestExtended
 {
     private readonly Memory<byte> _data;

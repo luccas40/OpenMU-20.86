@@ -44,6 +44,7 @@ internal class TestAccount : AccountInitializerBase
         character.Inventory.Items.Add(this.CreateWings(InventoryConstants.WingsSlot, 30, 13, 13)); // Cape +13
         character.Inventory.Items.Add(this.CreateHorse(InventoryConstants.PetSlot));
 
+        //character.LearnedSkills.Add();
         this.AddDarkLordItems(character.Inventory);
         this.AddTestJewelsAndPotions(character.Inventory);
 

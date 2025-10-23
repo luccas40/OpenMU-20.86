@@ -65,7 +65,7 @@ public partial class ItemDefinition
     /// <summary>
     /// Gets or sets the item drop level, which indicates the minimum monster lvl of which this item can be dropped.
     /// </summary>
-    public byte DropLevel { get; set; }
+    public int DropLevel { get; set; }
 
     /// <summary>
     /// Gets or sets the maximum item level.

@@ -76,11 +76,60 @@ internal partial class CharacterClassInitialization : InitializerBase
         var fistMaster = this.CreateFistMaster(fistBlazer);
         this.CreateRageFighter(CharacterClassNumber.RageFighter, "Rage Fighter", false, fistMaster, true);
 
+        var gc5 = this.CreateArcaneLancer();
+        var gc4 = this.CreateShiningLancer(gc5);
+        var gc3 = this.CreateMirageLancer(gc4);
+        this.CreateGrowLancer(CharacterClassNumber.GrowLancer, "Grow Lancer", false, gc3, true);
+
+        var rw5 = this.CreateInfinityRuneWizard();
+        var rw4 = this.CreateMajesticRuneWizard(rw5);
+        var rw3 = this.CreateGrandRuneMaster(rw4);
+        var rw2 = this.CreateRuneSpellMaster(rw3);
+        this.CreateRuneWizard(CharacterClassNumber.RuneWizard, "Rune Wizard", false, rw2, true);
+
+        var sl5 = this.CreateRogueSlayer();
+        var sl4 = this.CreateSlaughterer(sl5);
+        var sl3 = this.CreateMasterSlayer(sl4);
+        var sl2 = this.CreateRoyalSlayer(sl3);
+        this.CreateSlayer(CharacterClassNumber.Slayer, "Slayer", false, sl2, true);
+
+        var gu5 = this.CreateMagnusGunCrusher();
+        var gu4 = this.CreateHeistGunCrusher(gu5);
+        var gu3 = this.CreateMasterGunBreaker(gu4);
+        var gu2 = this.CreateGunBreaker(gu3);
+        this.CreateGunCrusher(CharacterClassNumber.GunCrusher, "Gun Crusher", false, gu2, true);
+
+        var ww5 = this.CreateGloryWizard();
+        var ww4 = this.CreateLuminousWizard(ww5);
+        var ww3 = this.CreateShineWizard(ww4);
+        var ww2 = this.CreateLightMaster(ww3);
+        this.CreateWhiteWizard(CharacterClassNumber.WhiteWizard, "White Wizard", false, ww2, true);
+
+        var lm5 = this.CreateBattleMage();
+        var lm4 = this.CreateMysticMage(lm5);
+        var lm3 = this.CreateArchMage(lm4);
+        var lm2 = this.CreateWoMage(lm3);
+        this.CreateLemuria(CharacterClassNumber.Lemuria, "Lemuria", false, lm2, true);
+
+        var ik5 = this.CreatePhantomPainKnight();
+        var ik4 = this.CreateMysticKnight(ik5);
+        var ik3 = this.CreateIllusionMaster(ik4);
+        var ik2 = this.CreateMirageKnight(ik3);
+        this.CreateIllusionKnight(CharacterClassNumber.IllusionKnight, "Illusion Knight", false, ik2, true);
+
+        var al5 = this.CreateCreator();
+        var al4 = this.CreateAlchemicForce(al5);
+        var al3 = this.CreateAlchemicMaster(al4);
+        var al2 = this.CreateAlchemicMagician(al3);
+        this.CreateAlchemist(CharacterClassNumber.Alchemist, "Alchemist", false, al2, true);
+
         var templarCommander = this.CreateTemplarCommander();
         var sacredPaladin = this.CreateSacredPaladin(templarCommander);
         var masterPaladin = this.CreateMasterPaladin(sacredPaladin);
         var impactCrusader = this.CreateImpactCrusader(masterPaladin);
         this.CreateCrusader(CharacterClassNumber.Crusader, "Crusader", false, impactCrusader, true);
+
+        
     }
 
     private StatAttributeDefinition CreateStatAttributeDefinition(AttributeDefinition attribute, int value, bool increasableByPlayer)

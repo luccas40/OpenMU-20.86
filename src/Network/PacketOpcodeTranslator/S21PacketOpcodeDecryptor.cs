@@ -28,6 +28,8 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0x5721, 0xF315 }, // Clicked Connect (Selected Character)
         { 0x5715, 0xF303 }, // Select Character Confirmation
         { 0x96FF, 0xD4FF }, // Select Character Confirmation
+        { 0xA000, 0x24FF }, // Inventory Item move
+        { 0xC3FF, 0x26FF }, // Inventory Use  len 6
         // c9ff changed rotation
     };
 

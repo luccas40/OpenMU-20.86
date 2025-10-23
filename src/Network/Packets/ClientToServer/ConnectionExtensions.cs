@@ -637,6 +637,44 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="ItemMoveRequestS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="fromStorage">The from storage.</param>
+    /// <param name="fromSlot">The from slot.</param>
+    /// <param name="itemData">The item data.</param>
+    /// <param name="toStorage">The to storage.</param>
+    /// <param name="toSlot">The to slot.</param>
+    /// <param name="unk">The unk.</param>
+    /// <remarks>
+    /// Is sent by the client when: A player requests to move an item within or between his available item storage, such as inventory, vault, trade or chaos machine.
+    /// Causes reaction on server side: 
+    /// </remarks>
+    public static async ValueTask SendItemMoveRequestS21Async(this IConnection? connection, ItemStorageKind @fromStorage, byte @fromSlot, Memory<byte> @itemData, ItemStorageKind @toStorage, byte @toSlot, byte @unk)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ItemMoveRequestS21Ref.Length;
+            var packet = new ItemMoveRequestS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.FromStorage = @fromStorage;
+            packet.FromSlot = @fromSlot;
+            @itemData.Span.CopyTo(packet.ItemData);
+            packet.ToStorage = @toStorage;
+            packet.ToSlot = @toSlot;
+            packet.Unk = @unk;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="ItemMoveRequestExtended" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>

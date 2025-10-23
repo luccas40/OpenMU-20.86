@@ -188,7 +188,16 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <returns>The created dark lord.</returns>
     protected Character CreateDarkLord(CharacterClassNumber characterClassNumber, byte slot = 3)
     {
-        return this.CreateCharacter(this.AccountName + "Dl", characterClassNumber, this.Level, slot);
+        var c = this.CreateCharacter(this.AccountName + "Dl", characterClassNumber, this.Level, slot);
+        var startSkill = this.GameConfiguration.Skills.FirstOrDefault(s => s.Number == (short)SkillNumber.Force);
+        if (startSkill != null)
+        {
+            var skillEntry = this.Context.CreateNew<SkillEntry>();
+            skillEntry.Skill = startSkill;
+            c.LearnedSkills.Add(skillEntry);
+        }
+
+        return c;
     }
 
     /// <summary>

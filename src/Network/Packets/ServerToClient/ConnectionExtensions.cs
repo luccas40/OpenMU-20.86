@@ -1746,6 +1746,38 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="ItemMovedS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="targetStorageType">The target storage type.</param>
+    /// <param name="targetSlot">The target slot.</param>
+    /// <param name="itemData">The item data.</param>
+    /// <remarks>
+    /// Is sent by the server when: An item in the inventory or vault of the player has been moved.
+    /// Causes reaction on client side: The client updates the position of item in the user interface.
+    /// </remarks>
+    public static async ValueTask SendItemMovedS21Async(this IConnection? connection, byte @targetStorageType, byte @targetSlot, Memory<byte> @itemData)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ItemMovedS21Ref.GetRequiredSize(itemData.Length);
+            var packet = new ItemMovedS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.TargetStorageType = @targetStorageType;
+            packet.TargetSlot = @targetSlot;
+            @itemData.Span.CopyTo(packet.ItemData);
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="ItemMoveRequestFailed" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
