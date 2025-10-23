@@ -467,6 +467,731 @@ public readonly ref struct QuestRewardExtendedRef
 
 
 /// <summary>
+/// Is sent by the server when: When character joins the world or server needs to update CharacterSheet.
+/// Causes reaction on client side: It updates the CharacterStats.
+/// </summary>
+public readonly ref struct UpdateCharacterSheetS21Ref
+{
+    private readonly Span<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateCharacterSheetS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public UpdateCharacterSheetS21Ref(Span<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateCharacterSheetS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private UpdateCharacterSheetS21Ref(Span<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0xEC;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x29;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 251;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCodeRef Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the critical damage increase.
+    /// </summary>
+    public ushort CriticalDamageIncrease
+    {
+        get => ReadUInt16LittleEndian(this._data[4..]);
+        set => WriteUInt16LittleEndian(this._data[4..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the excellent damage increase.
+    /// </summary>
+    public ushort ExcellentDamageIncrease
+    {
+        get => ReadUInt16LittleEndian(this._data[6..]);
+        set => WriteUInt16LittleEndian(this._data[6..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the skill attack damage increase.
+    /// </summary>
+    public ushort SkillAttackDamageIncrease
+    {
+        get => ReadUInt16LittleEndian(this._data[8..]);
+        set => WriteUInt16LittleEndian(this._data[8..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the basic defense.
+    /// </summary>
+    public ushort BasicDefense
+    {
+        get => ReadUInt16LittleEndian(this._data[10..]);
+        set => WriteUInt16LittleEndian(this._data[10..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the strenght.
+    /// </summary>
+    public ushort Strenght
+    {
+        get => ReadUInt16LittleEndian(this._data[12..]);
+        set => WriteUInt16LittleEndian(this._data[12..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the strenght add.
+    /// </summary>
+    public ushort StrenghtAdd
+    {
+        get => ReadUInt16LittleEndian(this._data[14..]);
+        set => WriteUInt16LittleEndian(this._data[14..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the agility.
+    /// </summary>
+    public ushort Agility
+    {
+        get => ReadUInt16LittleEndian(this._data[16..]);
+        set => WriteUInt16LittleEndian(this._data[16..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the agility add.
+    /// </summary>
+    public ushort AgilityAdd
+    {
+        get => ReadUInt16LittleEndian(this._data[18..]);
+        set => WriteUInt16LittleEndian(this._data[18..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the stamina.
+    /// </summary>
+    public ushort Stamina
+    {
+        get => ReadUInt16LittleEndian(this._data[20..]);
+        set => WriteUInt16LittleEndian(this._data[20..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the stamina add.
+    /// </summary>
+    public ushort StaminaAdd
+    {
+        get => ReadUInt16LittleEndian(this._data[22..]);
+        set => WriteUInt16LittleEndian(this._data[22..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the energy.
+    /// </summary>
+    public ushort Energy
+    {
+        get => ReadUInt16LittleEndian(this._data[24..]);
+        set => WriteUInt16LittleEndian(this._data[24..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the energy add.
+    /// </summary>
+    public ushort EnergyAdd
+    {
+        get => ReadUInt16LittleEndian(this._data[26..]);
+        set => WriteUInt16LittleEndian(this._data[26..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the command.
+    /// </summary>
+    public ushort Command
+    {
+        get => ReadUInt16LittleEndian(this._data[28..]);
+        set => WriteUInt16LittleEndian(this._data[28..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the command add.
+    /// </summary>
+    public ushort CommandAdd
+    {
+        get => ReadUInt16LittleEndian(this._data[30..]);
+        set => WriteUInt16LittleEndian(this._data[30..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the s d ratio when attacked.
+    /// </summary>
+    public ushort SDRatioWhenAttacked
+    {
+        get => ReadUInt16LittleEndian(this._data[32..]);
+        set => WriteUInt16LittleEndian(this._data[32..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the s d ignore rate.
+    /// </summary>
+    public ushort SDIgnoreRate
+    {
+        get => ReadUInt16LittleEndian(this._data[34..]);
+        set => WriteUInt16LittleEndian(this._data[34..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the s d ratio when attacking.
+    /// </summary>
+    public ushort SDRatioWhenAttacking
+    {
+        get => ReadUInt16LittleEndian(this._data[36..]);
+        set => WriteUInt16LittleEndian(this._data[36..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the zen rate.
+    /// </summary>
+    public ushort ZenRate
+    {
+        get => ReadUInt16LittleEndian(this._data[38..]);
+        set => WriteUInt16LittleEndian(this._data[38..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the defense ignore rate.
+    /// </summary>
+    public float DefenseIgnoreRate
+    {
+        get => ReadSingleLittleEndian(this._data[40..]);
+        set => WriteSingleLittleEndian(this._data[40..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the h p recovery rate.
+    /// </summary>
+    public float HPRecoveryRate
+    {
+        get => ReadSingleLittleEndian(this._data[44..]);
+        set => WriteSingleLittleEndian(this._data[44..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the m p recovery rate.
+    /// </summary>
+    public float MPRecoveryRate
+    {
+        get => ReadSingleLittleEndian(this._data[48..]);
+        set => WriteSingleLittleEndian(this._data[48..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the stun rate.
+    /// </summary>
+    public float StunRate
+    {
+        get => ReadSingleLittleEndian(this._data[52..]);
+        set => WriteSingleLittleEndian(this._data[52..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the stun resistance rate.
+    /// </summary>
+    public float StunResistanceRate
+    {
+        get => ReadSingleLittleEndian(this._data[56..]);
+        set => WriteSingleLittleEndian(this._data[56..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the triple damage rate.
+    /// </summary>
+    public float TripleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[60..]);
+        set => WriteSingleLittleEndian(this._data[60..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the shield absorb.
+    /// </summary>
+    public float ShieldAbsorb
+    {
+        get => ReadSingleLittleEndian(this._data[64..]);
+        set => WriteSingleLittleEndian(this._data[64..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the mob attack h p recovery.
+    /// </summary>
+    public float MobAttackHPRecovery
+    {
+        get => ReadSingleLittleEndian(this._data[68..]);
+        set => WriteSingleLittleEndian(this._data[68..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the mob attack m p recovery.
+    /// </summary>
+    public float MobAttackMPRecovery
+    {
+        get => ReadSingleLittleEndian(this._data[72..]);
+        set => WriteSingleLittleEndian(this._data[72..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the mob attack s d recovery.
+    /// </summary>
+    public float MobAttackSDRecovery
+    {
+        get => ReadSingleLittleEndian(this._data[76..]);
+        set => WriteSingleLittleEndian(this._data[76..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the s d recovery rate.
+    /// </summary>
+    public float SDRecoveryRate
+    {
+        get => ReadSingleLittleEndian(this._data[80..]);
+        set => WriteSingleLittleEndian(this._data[80..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the restore all m p rate.
+    /// </summary>
+    public float RestoreAllMPRate
+    {
+        get => ReadSingleLittleEndian(this._data[84..]);
+        set => WriteSingleLittleEndian(this._data[84..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the restore all h p rate.
+    /// </summary>
+    public float RestoreAllHPRate
+    {
+        get => ReadSingleLittleEndian(this._data[88..]);
+        set => WriteSingleLittleEndian(this._data[88..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the restore all s d rate.
+    /// </summary>
+    public float RestoreAllSDRate
+    {
+        get => ReadSingleLittleEndian(this._data[92..]);
+        set => WriteSingleLittleEndian(this._data[92..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the a g recovery rate.
+    /// </summary>
+    public float AGRecoveryRate
+    {
+        get => ReadSingleLittleEndian(this._data[96..]);
+        set => WriteSingleLittleEndian(this._data[96..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the damage absorption rate.
+    /// </summary>
+    public float DamageAbsorptionRate
+    {
+        get => ReadSingleLittleEndian(this._data[100..]);
+        set => WriteSingleLittleEndian(this._data[100..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the shield block rate.
+    /// </summary>
+    public float ShieldBlockRate
+    {
+        get => ReadSingleLittleEndian(this._data[104..]);
+        set => WriteSingleLittleEndian(this._data[104..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the weapon block rate.
+    /// </summary>
+    public float WeaponBlockRate
+    {
+        get => ReadSingleLittleEndian(this._data[108..]);
+        set => WriteSingleLittleEndian(this._data[108..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the h p absorption.
+    /// </summary>
+    public float HPAbsorption
+    {
+        get => ReadSingleLittleEndian(this._data[112..]);
+        set => WriteSingleLittleEndian(this._data[112..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the s d absorption.
+    /// </summary>
+    public float SDAbsorption
+    {
+        get => ReadSingleLittleEndian(this._data[116..]);
+        set => WriteSingleLittleEndian(this._data[116..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the return damage rate.
+    /// </summary>
+    public float ReturnDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[120..]);
+        set => WriteSingleLittleEndian(this._data[120..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the damage increase rate.
+    /// </summary>
+    public float DamageIncreaseRate
+    {
+        get => ReadSingleLittleEndian(this._data[124..]);
+        set => WriteSingleLittleEndian(this._data[124..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the m p use reduction rate.
+    /// </summary>
+    public float MPUseReductionRate
+    {
+        get => ReadSingleLittleEndian(this._data[128..]);
+        set => WriteSingleLittleEndian(this._data[128..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the critical damage rate.
+    /// </summary>
+    public float CriticalDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[132..]);
+        set => WriteSingleLittleEndian(this._data[132..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the excellent damage rate.
+    /// </summary>
+    public float ExcellentDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[136..]);
+        set => WriteSingleLittleEndian(this._data[136..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the double damage rate.
+    /// </summary>
+    public float DoubleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[140..]);
+        set => WriteSingleLittleEndian(this._data[140..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the damage reduction rate.
+    /// </summary>
+    public byte DamageReductionRate
+    {
+        get => this._data[148];
+        set => this._data[148] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the damage reduction.
+    /// </summary>
+    public ushort DamageReduction
+    {
+        get => ReadUInt16LittleEndian(this._data[149..]);
+        set => WriteUInt16LittleEndian(this._data[149..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the a g use reduction rage.
+    /// </summary>
+    public byte AGUseReductionRage
+    {
+        get => this._data[151];
+        set => this._data[151] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the damage reflect rate.
+    /// </summary>
+    public byte DamageReflectRate
+    {
+        get => this._data[152];
+        set => this._data[152] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the unk.
+    /// </summary>
+    public uint Unk
+    {
+        get => ReadUInt32LittleEndian(this._data[153..]);
+        set => WriteUInt32LittleEndian(this._data[153..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the nuke attack power increase.
+    /// </summary>
+    public uint NukeAttackPowerIncrease
+    {
+        get => ReadUInt32LittleEndian(this._data[157..]);
+        set => WriteUInt32LittleEndian(this._data[157..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the nuke critical damage rate.
+    /// </summary>
+    public float NukeCriticalDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[161..]);
+        set => WriteSingleLittleEndian(this._data[161..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the nuke excellent damage rate.
+    /// </summary>
+    public float NukeExcellentDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[165..]);
+        set => WriteSingleLittleEndian(this._data[165..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the nuke double damage rate.
+    /// </summary>
+    public float NukeDoubleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[169..]);
+        set => WriteSingleLittleEndian(this._data[169..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the nuke triple damage rate.
+    /// </summary>
+    public float NukeTripleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[173..]);
+        set => WriteSingleLittleEndian(this._data[173..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the unk 2.
+    /// </summary>
+    public uint Unk2
+    {
+        get => ReadUInt32LittleEndian(this._data[177..]);
+        set => WriteUInt32LittleEndian(this._data[177..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the bolt attack power increase.
+    /// </summary>
+    public uint BoltAttackPowerIncrease
+    {
+        get => ReadUInt32LittleEndian(this._data[181..]);
+        set => WriteUInt32LittleEndian(this._data[181..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the bolt critical damage rate.
+    /// </summary>
+    public float BoltCriticalDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[185..]);
+        set => WriteSingleLittleEndian(this._data[185..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the bolt excellent damage rate.
+    /// </summary>
+    public float BoltExcellentDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[189..]);
+        set => WriteSingleLittleEndian(this._data[189..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the bolt double damage rate.
+    /// </summary>
+    public float BoltDoubleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[193..]);
+        set => WriteSingleLittleEndian(this._data[193..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the bolt triple damage rate.
+    /// </summary>
+    public float BoltTripleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[197..]);
+        set => WriteSingleLittleEndian(this._data[197..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the unk 3.
+    /// </summary>
+    public uint Unk3
+    {
+        get => ReadUInt32LittleEndian(this._data[201..]);
+        set => WriteUInt32LittleEndian(this._data[201..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the a o e attack damage increase.
+    /// </summary>
+    public uint AOEAttackDamageIncrease
+    {
+        get => ReadUInt32LittleEndian(this._data[205..]);
+        set => WriteUInt32LittleEndian(this._data[205..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the a o e critical damage rate.
+    /// </summary>
+    public float AOECriticalDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[209..]);
+        set => WriteSingleLittleEndian(this._data[209..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the a o e excellent damage rate.
+    /// </summary>
+    public float AOEExcellentDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[213..]);
+        set => WriteSingleLittleEndian(this._data[213..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the a o e double damage rate.
+    /// </summary>
+    public float AOEDoubleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[217..]);
+        set => WriteSingleLittleEndian(this._data[217..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the a o e triple damage rate.
+    /// </summary>
+    public float AOETripleDamageRate
+    {
+        get => ReadSingleLittleEndian(this._data[221..]);
+        set => WriteSingleLittleEndian(this._data[221..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the extra damage defense.
+    /// </summary>
+    public uint ExtraDamageDefense
+    {
+        get => ReadUInt32LittleEndian(this._data[225..]);
+        set => WriteUInt32LittleEndian(this._data[225..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the unk 4.
+    /// </summary>
+    public uint Unk4
+    {
+        get => ReadUInt32LittleEndian(this._data[229..]);
+        set => WriteUInt32LittleEndian(this._data[229..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the extra damage reduction.
+    /// </summary>
+    public uint ExtraDamageReduction
+    {
+        get => ReadUInt32LittleEndian(this._data[233..]);
+        set => WriteUInt32LittleEndian(this._data[233..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the damage correction.
+    /// </summary>
+    public uint DamageCorrection
+    {
+        get => ReadUInt32LittleEndian(this._data[241..]);
+        set => WriteUInt32LittleEndian(this._data[241..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the unk 5.
+    /// </summary>
+    public float Unk5
+    {
+        get => ReadSingleLittleEndian(this._data[245..]);
+        set => WriteSingleLittleEndian(this._data[245..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the unk 6.
+    /// </summary>
+    public ushort Unk6
+    {
+        get => ReadUInt16LittleEndian(this._data[249..]);
+        set => WriteUInt16LittleEndian(this._data[249..], value);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Span of bytes to a <see cref="UpdateCharacterSheetS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator UpdateCharacterSheetS21Ref(Span<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="UpdateCharacterSheetS21"/> to a Span of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Span<byte>(UpdateCharacterSheetS21Ref packet) => packet._data; 
+}
+
+
+/// <summary>
 /// Is sent by the server when: After a game client has connected to the game.
 /// Causes reaction on client side: It shows the login dialog.
 /// </summary>
@@ -9635,6 +10360,101 @@ public readonly ref struct CurrentHealthAndShieldRef
 
 
 /// <summary>
+/// Is sent by the server when: Periodically, or if the current health or shield changed on the server side, e.g. by hits.
+/// Causes reaction on client side: The health and shield bar is updated on the game client user interface.
+/// </summary>
+public readonly ref struct CurrentHealthAndShieldS21Ref
+{
+    private readonly Span<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CurrentHealthAndShieldS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public CurrentHealthAndShieldS21Ref(Span<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CurrentHealthAndShieldS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private CurrentHealthAndShieldS21Ref(Span<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x26;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0xFF;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 16;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCodeRef Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the health.
+    /// </summary>
+    public uint Health
+    {
+        get => ReadUInt32LittleEndian(this._data[4..]);
+        set => WriteUInt32LittleEndian(this._data[4..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the shield.
+    /// </summary>
+    public uint Shield
+    {
+        get => ReadUInt32LittleEndian(this._data[12..]);
+        set => WriteUInt32LittleEndian(this._data[12..], value);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Span of bytes to a <see cref="CurrentHealthAndShieldS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator CurrentHealthAndShieldS21Ref(Span<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="CurrentHealthAndShieldS21"/> to a Span of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Span<byte>(CurrentHealthAndShieldS21Ref packet) => packet._data; 
+}
+
+
+/// <summary>
 /// Is sent by the server when: When the maximum health changed, e.g. by adding stat points or changed items.
 /// Causes reaction on client side: The health and shield bar is updated on the game client user interface.
 /// </summary>
@@ -9726,6 +10546,101 @@ public readonly ref struct MaximumHealthAndShieldRef
     /// <param name="packet">The packet as struct.</param>
     /// <returns>The packet as byte span.</returns>
     public static implicit operator Span<byte>(MaximumHealthAndShieldRef packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the server when: When the maximum health changed, e.g. by adding stat points or changed items.
+/// Causes reaction on client side: The health and shield bar is updated on the game client user interface.
+/// </summary>
+public readonly ref struct MaximumHealthAndShieldS21Ref
+{
+    private readonly Span<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MaximumHealthAndShieldS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public MaximumHealthAndShieldS21Ref(Span<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MaximumHealthAndShieldS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private MaximumHealthAndShieldS21Ref(Span<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x26;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0xFE;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 16;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCodeRef Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the health.
+    /// </summary>
+    public uint Health
+    {
+        get => ReadUInt32LittleEndian(this._data[4..]);
+        set => WriteUInt32LittleEndian(this._data[4..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the shield.
+    /// </summary>
+    public uint Shield
+    {
+        get => ReadUInt32LittleEndian(this._data[12..]);
+        set => WriteUInt32LittleEndian(this._data[12..], value);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Span of bytes to a <see cref="MaximumHealthAndShieldS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator MaximumHealthAndShieldS21Ref(Span<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="MaximumHealthAndShieldS21"/> to a Span of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Span<byte>(MaximumHealthAndShieldS21Ref packet) => packet._data; 
 }
 
 
@@ -10282,6 +11197,214 @@ public readonly ref struct BaseStatsExtendedRef
     /// <param name="packet">The packet as struct.</param>
     /// <returns>The packet as byte span.</returns>
     public static implicit operator Span<byte>(BaseStatsExtendedRef packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the server when: The current attack speed changed.
+/// Causes reaction on client side: The attack speed value is updated on the game client user interface.
+/// </summary>
+public readonly ref struct UpdateAttackSpeedS21Ref
+{
+    private readonly Span<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateAttackSpeedS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public UpdateAttackSpeedS21Ref(Span<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateAttackSpeedS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private UpdateAttackSpeedS21Ref(Span<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0xEC;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x30;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 12;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCodeRef Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the attack speed.
+    /// </summary>
+    public uint AttackSpeed
+    {
+        get => ReadUInt32LittleEndian(this._data[4..]);
+        set => WriteUInt32LittleEndian(this._data[4..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the magic speed.
+    /// </summary>
+    public uint MagicSpeed
+    {
+        get => ReadUInt32LittleEndian(this._data[8..]);
+        set => WriteUInt32LittleEndian(this._data[8..], value);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Span of bytes to a <see cref="UpdateAttackSpeedS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator UpdateAttackSpeedS21Ref(Span<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="UpdateAttackSpeedS21"/> to a Span of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Span<byte>(UpdateAttackSpeedS21Ref packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the server when: The current attack speed changed.
+/// Causes reaction on client side: The attack speed value is updated on the game client user interface.
+/// </summary>
+public readonly ref struct UpdateWeaponCombatPowerRef
+{
+    private readonly Span<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateWeaponCombatPowerRef"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public UpdateWeaponCombatPowerRef(Span<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateWeaponCombatPowerRef"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private UpdateWeaponCombatPowerRef(Span<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0xEC;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x63;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 12;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCodeRef Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the min attack.
+    /// </summary>
+    public ushort MinAttack
+    {
+        get => ReadUInt16LittleEndian(this._data[4..]);
+        set => WriteUInt16LittleEndian(this._data[4..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the max attack.
+    /// </summary>
+    public ushort MaxAttack
+    {
+        get => ReadUInt16LittleEndian(this._data[6..]);
+        set => WriteUInt16LittleEndian(this._data[6..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the extra damage.
+    /// </summary>
+    public ushort ExtraDamage
+    {
+        get => ReadUInt16LittleEndian(this._data[8..]);
+        set => WriteUInt16LittleEndian(this._data[8..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the combat power.
+    /// </summary>
+    public ushort CombatPower
+    {
+        get => ReadUInt16LittleEndian(this._data[12..]);
+        set => WriteUInt16LittleEndian(this._data[12..], value);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Span of bytes to a <see cref="UpdateWeaponCombatPower"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator UpdateWeaponCombatPowerRef(Span<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="UpdateWeaponCombatPower"/> to a Span of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Span<byte>(UpdateWeaponCombatPowerRef packet) => packet._data; 
 }
 
 

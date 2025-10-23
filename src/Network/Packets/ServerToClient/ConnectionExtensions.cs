@@ -29,6 +29,176 @@ public static class ConnectionExtensions
 {
 
     /// <summary>
+    /// Sends a <see cref="UpdateCharacterSheetS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="criticalDamageIncrease">The critical damage increase.</param>
+    /// <param name="excellentDamageIncrease">The excellent damage increase.</param>
+    /// <param name="skillAttackDamageIncrease">The skill attack damage increase.</param>
+    /// <param name="basicDefense">The basic defense.</param>
+    /// <param name="strenght">The strenght.</param>
+    /// <param name="strenghtAdd">The strenght add.</param>
+    /// <param name="agility">The agility.</param>
+    /// <param name="agilityAdd">The agility add.</param>
+    /// <param name="stamina">The stamina.</param>
+    /// <param name="staminaAdd">The stamina add.</param>
+    /// <param name="energy">The energy.</param>
+    /// <param name="energyAdd">The energy add.</param>
+    /// <param name="command">The command.</param>
+    /// <param name="commandAdd">The command add.</param>
+    /// <param name="sDRatioWhenAttacked">The s d ratio when attacked.</param>
+    /// <param name="sDIgnoreRate">The s d ignore rate.</param>
+    /// <param name="sDRatioWhenAttacking">The s d ratio when attacking.</param>
+    /// <param name="zenRate">The zen rate.</param>
+    /// <param name="defenseIgnoreRate">The defense ignore rate.</param>
+    /// <param name="hPRecoveryRate">The h p recovery rate.</param>
+    /// <param name="mPRecoveryRate">The m p recovery rate.</param>
+    /// <param name="stunRate">The stun rate.</param>
+    /// <param name="stunResistanceRate">The stun resistance rate.</param>
+    /// <param name="tripleDamageRate">The triple damage rate.</param>
+    /// <param name="shieldAbsorb">The shield absorb.</param>
+    /// <param name="mobAttackHPRecovery">The mob attack h p recovery.</param>
+    /// <param name="mobAttackMPRecovery">The mob attack m p recovery.</param>
+    /// <param name="mobAttackSDRecovery">The mob attack s d recovery.</param>
+    /// <param name="sDRecoveryRate">The s d recovery rate.</param>
+    /// <param name="restoreAllMPRate">The restore all m p rate.</param>
+    /// <param name="restoreAllHPRate">The restore all h p rate.</param>
+    /// <param name="restoreAllSDRate">The restore all s d rate.</param>
+    /// <param name="aGRecoveryRate">The a g recovery rate.</param>
+    /// <param name="damageAbsorptionRate">The damage absorption rate.</param>
+    /// <param name="shieldBlockRate">The shield block rate.</param>
+    /// <param name="weaponBlockRate">The weapon block rate.</param>
+    /// <param name="hPAbsorption">The h p absorption.</param>
+    /// <param name="sDAbsorption">The s d absorption.</param>
+    /// <param name="returnDamageRate">The return damage rate.</param>
+    /// <param name="damageIncreaseRate">The damage increase rate.</param>
+    /// <param name="mPUseReductionRate">The m p use reduction rate.</param>
+    /// <param name="criticalDamageRate">The critical damage rate.</param>
+    /// <param name="excellentDamageRate">The excellent damage rate.</param>
+    /// <param name="doubleDamageRate">The double damage rate.</param>
+    /// <param name="damageReductionRate">The damage reduction rate.</param>
+    /// <param name="damageReduction">The damage reduction.</param>
+    /// <param name="aGUseReductionRage">The a g use reduction rage.</param>
+    /// <param name="damageReflectRate">The damage reflect rate.</param>
+    /// <param name="unk">The unk.</param>
+    /// <param name="nukeAttackPowerIncrease">The nuke attack power increase.</param>
+    /// <param name="nukeCriticalDamageRate">The nuke critical damage rate.</param>
+    /// <param name="nukeExcellentDamageRate">The nuke excellent damage rate.</param>
+    /// <param name="nukeDoubleDamageRate">The nuke double damage rate.</param>
+    /// <param name="nukeTripleDamageRate">The nuke triple damage rate.</param>
+    /// <param name="unk2">The unk 2.</param>
+    /// <param name="boltAttackPowerIncrease">The bolt attack power increase.</param>
+    /// <param name="boltCriticalDamageRate">The bolt critical damage rate.</param>
+    /// <param name="boltExcellentDamageRate">The bolt excellent damage rate.</param>
+    /// <param name="boltDoubleDamageRate">The bolt double damage rate.</param>
+    /// <param name="boltTripleDamageRate">The bolt triple damage rate.</param>
+    /// <param name="unk3">The unk 3.</param>
+    /// <param name="aOEAttackDamageIncrease">The a o e attack damage increase.</param>
+    /// <param name="aOECriticalDamageRate">The a o e critical damage rate.</param>
+    /// <param name="aOEExcellentDamageRate">The a o e excellent damage rate.</param>
+    /// <param name="aOEDoubleDamageRate">The a o e double damage rate.</param>
+    /// <param name="aOETripleDamageRate">The a o e triple damage rate.</param>
+    /// <param name="extraDamageDefense">The extra damage defense.</param>
+    /// <param name="unk4">The unk 4.</param>
+    /// <param name="extraDamageReduction">The extra damage reduction.</param>
+    /// <param name="damageCorrection">The damage correction.</param>
+    /// <param name="unk5">The unk 5.</param>
+    /// <param name="unk6">The unk 6.</param>
+    /// <remarks>
+    /// Is sent by the server when: When character joins the world or server needs to update CharacterSheet.
+    /// Causes reaction on client side: It updates the CharacterStats.
+    /// </remarks>
+    public static async ValueTask SendUpdateCharacterSheetS21Async(this IConnection? connection, ushort @criticalDamageIncrease, ushort @excellentDamageIncrease, ushort @skillAttackDamageIncrease, ushort @basicDefense, ushort @strenght, ushort @strenghtAdd, ushort @agility, ushort @agilityAdd, ushort @stamina, ushort @staminaAdd, ushort @energy, ushort @energyAdd, ushort @command, ushort @commandAdd, ushort @sDRatioWhenAttacked, ushort @sDIgnoreRate, ushort @sDRatioWhenAttacking, ushort @zenRate, float @defenseIgnoreRate, float @hPRecoveryRate, float @mPRecoveryRate, float @stunRate, float @stunResistanceRate, float @tripleDamageRate, float @shieldAbsorb, float @mobAttackHPRecovery, float @mobAttackMPRecovery, float @mobAttackSDRecovery, float @sDRecoveryRate, float @restoreAllMPRate, float @restoreAllHPRate, float @restoreAllSDRate, float @aGRecoveryRate, float @damageAbsorptionRate, float @shieldBlockRate, float @weaponBlockRate, float @hPAbsorption, float @sDAbsorption, float @returnDamageRate, float @damageIncreaseRate, float @mPUseReductionRate, float @criticalDamageRate, float @excellentDamageRate, float @doubleDamageRate, byte @damageReductionRate, ushort @damageReduction, byte @aGUseReductionRage, byte @damageReflectRate, uint @unk, uint @nukeAttackPowerIncrease, float @nukeCriticalDamageRate, float @nukeExcellentDamageRate, float @nukeDoubleDamageRate, float @nukeTripleDamageRate, uint @unk2, uint @boltAttackPowerIncrease, float @boltCriticalDamageRate, float @boltExcellentDamageRate, float @boltDoubleDamageRate, float @boltTripleDamageRate, uint @unk3, uint @aOEAttackDamageIncrease, float @aOECriticalDamageRate, float @aOEExcellentDamageRate, float @aOEDoubleDamageRate, float @aOETripleDamageRate, uint @extraDamageDefense, uint @unk4, uint @extraDamageReduction, uint @damageCorrection, float @unk5, ushort @unk6)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = UpdateCharacterSheetS21Ref.Length;
+            var packet = new UpdateCharacterSheetS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.CriticalDamageIncrease = @criticalDamageIncrease;
+            packet.ExcellentDamageIncrease = @excellentDamageIncrease;
+            packet.SkillAttackDamageIncrease = @skillAttackDamageIncrease;
+            packet.BasicDefense = @basicDefense;
+            packet.Strenght = @strenght;
+            packet.StrenghtAdd = @strenghtAdd;
+            packet.Agility = @agility;
+            packet.AgilityAdd = @agilityAdd;
+            packet.Stamina = @stamina;
+            packet.StaminaAdd = @staminaAdd;
+            packet.Energy = @energy;
+            packet.EnergyAdd = @energyAdd;
+            packet.Command = @command;
+            packet.CommandAdd = @commandAdd;
+            packet.SDRatioWhenAttacked = @sDRatioWhenAttacked;
+            packet.SDIgnoreRate = @sDIgnoreRate;
+            packet.SDRatioWhenAttacking = @sDRatioWhenAttacking;
+            packet.ZenRate = @zenRate;
+            packet.DefenseIgnoreRate = @defenseIgnoreRate;
+            packet.HPRecoveryRate = @hPRecoveryRate;
+            packet.MPRecoveryRate = @mPRecoveryRate;
+            packet.StunRate = @stunRate;
+            packet.StunResistanceRate = @stunResistanceRate;
+            packet.TripleDamageRate = @tripleDamageRate;
+            packet.ShieldAbsorb = @shieldAbsorb;
+            packet.MobAttackHPRecovery = @mobAttackHPRecovery;
+            packet.MobAttackMPRecovery = @mobAttackMPRecovery;
+            packet.MobAttackSDRecovery = @mobAttackSDRecovery;
+            packet.SDRecoveryRate = @sDRecoveryRate;
+            packet.RestoreAllMPRate = @restoreAllMPRate;
+            packet.RestoreAllHPRate = @restoreAllHPRate;
+            packet.RestoreAllSDRate = @restoreAllSDRate;
+            packet.AGRecoveryRate = @aGRecoveryRate;
+            packet.DamageAbsorptionRate = @damageAbsorptionRate;
+            packet.ShieldBlockRate = @shieldBlockRate;
+            packet.WeaponBlockRate = @weaponBlockRate;
+            packet.HPAbsorption = @hPAbsorption;
+            packet.SDAbsorption = @sDAbsorption;
+            packet.ReturnDamageRate = @returnDamageRate;
+            packet.DamageIncreaseRate = @damageIncreaseRate;
+            packet.MPUseReductionRate = @mPUseReductionRate;
+            packet.CriticalDamageRate = @criticalDamageRate;
+            packet.ExcellentDamageRate = @excellentDamageRate;
+            packet.DoubleDamageRate = @doubleDamageRate;
+            packet.DamageReductionRate = @damageReductionRate;
+            packet.DamageReduction = @damageReduction;
+            packet.AGUseReductionRage = @aGUseReductionRage;
+            packet.DamageReflectRate = @damageReflectRate;
+            packet.Unk = @unk;
+            packet.NukeAttackPowerIncrease = @nukeAttackPowerIncrease;
+            packet.NukeCriticalDamageRate = @nukeCriticalDamageRate;
+            packet.NukeExcellentDamageRate = @nukeExcellentDamageRate;
+            packet.NukeDoubleDamageRate = @nukeDoubleDamageRate;
+            packet.NukeTripleDamageRate = @nukeTripleDamageRate;
+            packet.Unk2 = @unk2;
+            packet.BoltAttackPowerIncrease = @boltAttackPowerIncrease;
+            packet.BoltCriticalDamageRate = @boltCriticalDamageRate;
+            packet.BoltExcellentDamageRate = @boltExcellentDamageRate;
+            packet.BoltDoubleDamageRate = @boltDoubleDamageRate;
+            packet.BoltTripleDamageRate = @boltTripleDamageRate;
+            packet.Unk3 = @unk3;
+            packet.AOEAttackDamageIncrease = @aOEAttackDamageIncrease;
+            packet.AOECriticalDamageRate = @aOECriticalDamageRate;
+            packet.AOEExcellentDamageRate = @aOEExcellentDamageRate;
+            packet.AOEDoubleDamageRate = @aOEDoubleDamageRate;
+            packet.AOETripleDamageRate = @aOETripleDamageRate;
+            packet.ExtraDamageDefense = @extraDamageDefense;
+            packet.Unk4 = @unk4;
+            packet.ExtraDamageReduction = @extraDamageReduction;
+            packet.DamageCorrection = @damageCorrection;
+            packet.Unk5 = @unk5;
+            packet.Unk6 = @unk6;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="GameServerEnteredS21" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -1836,6 +2006,36 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="CurrentHealthAndShieldS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="health">The health.</param>
+    /// <param name="shield">The shield.</param>
+    /// <remarks>
+    /// Is sent by the server when: Periodically, or if the current health or shield changed on the server side, e.g. by hits.
+    /// Causes reaction on client side: The health and shield bar is updated on the game client user interface.
+    /// </remarks>
+    public static async ValueTask SendCurrentHealthAndShieldS21Async(this IConnection? connection, uint @health, uint @shield)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = CurrentHealthAndShieldS21Ref.Length;
+            var packet = new CurrentHealthAndShieldS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Health = @health;
+            packet.Shield = @shield;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="MaximumHealthAndShield" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -1856,6 +2056,36 @@ public static class ConnectionExtensions
         {
             var length = MaximumHealthAndShieldRef.Length;
             var packet = new MaximumHealthAndShieldRef(connection.Output.GetSpan(length)[..length]);
+            packet.Health = @health;
+            packet.Shield = @shield;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="MaximumHealthAndShieldS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="health">The health.</param>
+    /// <param name="shield">The shield.</param>
+    /// <remarks>
+    /// Is sent by the server when: When the maximum health changed, e.g. by adding stat points or changed items.
+    /// Causes reaction on client side: The health and shield bar is updated on the game client user interface.
+    /// </remarks>
+    public static async ValueTask SendMaximumHealthAndShieldS21Async(this IConnection? connection, uint @health, uint @shield)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MaximumHealthAndShieldS21Ref.Length;
+            var packet = new MaximumHealthAndShieldS21Ref(connection.Output.GetSpan(length)[..length]);
             packet.Health = @health;
             packet.Shield = @shield;
 
@@ -2026,6 +2256,70 @@ public static class ConnectionExtensions
             packet.Vitality = @vitality;
             packet.Energy = @energy;
             packet.Command = @command;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="UpdateAttackSpeedS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="attackSpeed">The attack speed.</param>
+    /// <param name="magicSpeed">The magic speed.</param>
+    /// <remarks>
+    /// Is sent by the server when: The current attack speed changed.
+    /// Causes reaction on client side: The attack speed value is updated on the game client user interface.
+    /// </remarks>
+    public static async ValueTask SendUpdateAttackSpeedS21Async(this IConnection? connection, uint @attackSpeed, uint @magicSpeed)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = UpdateAttackSpeedS21Ref.Length;
+            var packet = new UpdateAttackSpeedS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.AttackSpeed = @attackSpeed;
+            packet.MagicSpeed = @magicSpeed;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="UpdateWeaponCombatPower" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="minAttack">The min attack.</param>
+    /// <param name="maxAttack">The max attack.</param>
+    /// <param name="extraDamage">The extra damage.</param>
+    /// <param name="combatPower">The combat power.</param>
+    /// <remarks>
+    /// Is sent by the server when: The current attack speed changed.
+    /// Causes reaction on client side: The attack speed value is updated on the game client user interface.
+    /// </remarks>
+    public static async ValueTask SendUpdateWeaponCombatPowerAsync(this IConnection? connection, ushort @minAttack, ushort @maxAttack, ushort @extraDamage, ushort @combatPower)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = UpdateWeaponCombatPowerRef.Length;
+            var packet = new UpdateWeaponCombatPowerRef(connection.Output.GetSpan(length)[..length]);
+            packet.MinAttack = @minAttack;
+            packet.MaxAttack = @maxAttack;
+            packet.ExtraDamage = @extraDamage;
+            packet.CombatPower = @combatPower;
 
             return packet.Header.Length;
         }

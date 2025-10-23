@@ -433,6 +433,11 @@ public class Stats
     public static AttributeDefinition WizardryAttackDamageIncrease { get; } = new(new Guid("8F1CD5A5-3792-42FC-89B8-E6D50F997F4B"), "Wizardry Attack Damage Increase Multiplier", "The wizardry damage increase which is multiplied with the min/max wiz base damage and added to it.");
 
     /// <summary>
+    /// Gets the Combat Power attribute definition.
+    /// </summary>
+    public static AttributeDefinition CombatPower { get; } = new(new Guid("68E9D088-C0CE-4675-A76F-C10787B42C52"), "Combat Power", "The Combat Power increase the min/max base damage and added to it.");
+
+    /// <summary>
     /// Gets the raven attack damage increase attribute definition.
     /// </summary>
     public static AttributeDefinition RavenAttackDamageIncrease { get; } = new(new Guid("662467B2-CBCF-4347-9B39-A2BBEE04E6D7"), "Raven Attack Damage Increase Multiplier", "The raven damage increase which is multiplied with the min/max raven base damage and added to it.");

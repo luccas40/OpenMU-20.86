@@ -38,10 +38,16 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xF315, 0x8123 }, // Character Select Confirm
         { 0x12FF, 0x12FF }, // Add Player to Scope
         { 0x13FF, 0x13FF }, // Add Creature to Scope
-        { 0x14FF, 0x14FF }, // Remove Object from Scope
-        { 0xD4FF, 0x5AFF }, // Object in Scope Moved
+        { 0x14FF, 0x14FF }, // Remove Object from Scope        
         { 0x24FF, 0xA7FF }, // Inventory Item Move Result
+        { 0x26FF, 0xCAFF }, // Update Character Health and Shield, current and max
+        { 0x27FF, 0x27FF }, // Update Character Mana and Ability, current and max
         { 0x28FF, 0x28FF }, // Inventory Item Removed
+        { 0xEC29, 0xC710 }, // Update Character Sheet        
+        { 0xEC30, 0xC755 }, // Update Character Attack and Magic Speed
+        { 0xEC63, 0xC726 }, // Update Character Damage and Combat Power / subcode 63 is made of, there wasnt a subcode for s16
+        { 0xD4FF, 0x5AFF }, // Object in Scope Moved
+
     };
 
     /// <summary>
