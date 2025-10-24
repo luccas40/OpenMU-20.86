@@ -71,6 +71,21 @@ public static class ItemExtensions
     }
 
     /// <summary>
+    /// Determines whether the specified item is a mount.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <returns>
+    ///   <c>true</c> if the specified item is a mount; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsMount(this Item item)
+    {
+        return item.Definition is { Group: 13, Number: 2 } or
+                                  { Group: 13, Number: 3 } or
+                                  { Group: 13, Number: 4 } or
+                                  { Group: 13, Number: 37 }; // or is Guardian Mount ItemKindB 79
+    }
+
+    /// <summary>
     /// Gets the dark raven leadership requirement, based on pet level.
     /// TODO: Make somehow configurable?
     /// </summary>

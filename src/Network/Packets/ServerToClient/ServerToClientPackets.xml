@@ -1001,7 +1001,7 @@
 						</Field>
 						<Field>
 							<Index>48</Index>
-							<Type>ShortLittleEndian</Type>
+							<Type>ShortBigEndian</Type>
 							<Name>Mount</Name>
 						</Field>
 						<Field>
@@ -4364,6 +4364,39 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>2A</Code>
+			<Name>ItemDurabilityChangedS21</Name>
+			<Length>8</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The durability of an item in the inventory of the player has been changed.</SentWhen>
+			<CausedReaction>The client updates the item in the inventory user interface.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>Byte</Type>
+					<Name>InventorySlot</Name>
+				</Field>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>Durability</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Boolean</Type>
+					<Name>ByConsumption</Name>
+					<Description>true, if the change resulted from an item consumption; otherwise, false</Description>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>Unk1</Name>
+					<Description>if its equal to 0 it does what s16 does, but if not it does something else</Description>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>2C</Code>
@@ -9253,6 +9286,85 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C2HeaderWithSubCode</HeaderType>
+			<Code>4E</Code>
+			<SubCode>14</SubCode>
+			<Name>ShowVisibleMount</Name>
+			<Length>12</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>Tells the client to show the character mounted.</SentWhen>
+			<CausedReaction>The Character mounts up.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>Count</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>PlayerId</Name>
+				</Field>
+				<Field>
+					<Index>8</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>MountId</Name>
+				</Field>
+				<Field>
+					<Index>10</Index>
+					<Type>Byte</Type>
+					<Name>Data</Name>
+				</Field>
+				<Field>
+					<Index>11</Index>
+					<Type>Byte</Type>
+					<Name>Junk</Name>
+				</Field>
+			</Fields>
+		</Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>59</Code>
+			<SubCode>00</SubCode>
+			<Name>CharacterSpecialization</Name>
+			<Length>34</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The character changes basic attributes and/or character joins the world.</SentWhen>
+			<CausedReaction>The Specialization stats updates in the user interface.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Structure[]</Type>
+					<TypeName>SpecializationData</TypeName>
+					<Name>Specializations</Name>
+				</Field>
+			</Fields>
+			<Structures>
+				<Structure>
+					<Name>SpecializationData</Name>
+					<Description>Contains the data of specialization attribute.</Description>
+					<Length>6</Length>
+					<Fields>
+						<Field>
+							<Index>0</Index>
+							<Type>Byte</Type>
+							<Name>Type</Name>
+						</Field>
+						<Field>
+							<Index>2</Index>
+							<Type>ShortLittleEndian</Type>
+							<Name>Value1</Name>
+						</Field>
+						<Field>
+							<Index>4</Index>
+							<Type>ShortLittleEndian</Type>
+							<Name>Value2</Name>
+						</Field>
+					</Fields>
+				</Structure>
+			</Structures>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>81</Code>
@@ -10622,6 +10734,28 @@
         </Structure>
       </Structures>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>BF</Code>
+			<SubCode>20</SubCode>
+			<Name>InventoryItemUse</Name>
+			<Length>6</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The player activated an item.</SentWhen>
+			<CausedReaction>The server answers with the result of the action.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>Slot</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>UseType</Name>
+				</Field>
+			</Fields>
+		</Packet>
 		<Packet>
 			<HeaderType>C1HeaderWithSubCode</HeaderType>
 			<Code>BF</Code>

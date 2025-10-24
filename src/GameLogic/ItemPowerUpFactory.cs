@@ -40,7 +40,9 @@ public class ItemPowerUpFactory : IItemPowerUpFactory
             yield break;
         }
 
-        if (item.ItemSlot < InventoryConstants.FirstEquippableItemSlotIndex || item.ItemSlot > InventoryConstants.LastEquippableItemSlotIndex)
+        // We will need to change this logic later because new equippable slots are at the end of the array, 239+ like pentagram
+        // for now im including isactive to allow the mounts stats to be included
+        if (!item.IsActive && (item.ItemSlot < InventoryConstants.FirstEquippableItemSlotIndex || item.ItemSlot > InventoryConstants.LastEquippableItemSlotIndex))
         {
             yield break;
         }

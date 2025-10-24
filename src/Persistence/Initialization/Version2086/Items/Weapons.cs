@@ -676,6 +676,12 @@ internal class Weapons : InitializerBase
             item.BasePowerUpAttributes.Add(maxDamagePowerUp);
         }
 
+        if (combatPower > 0)
+        {
+            var combatPowerUp = this.CreateItemBasePowerUpDefinition(Stats.CombatPower, combatPower, AggregateType.AddRaw);
+            item.BasePowerUpAttributes.Add(combatPowerUp);
+        }
+
         var speedPowerUp = this.CreateItemBasePowerUpDefinition(Stats.AttackSpeedByWeapon, attackSpeed, AggregateType.AddRaw);
         item.BasePowerUpAttributes.Add(speedPowerUp);
 

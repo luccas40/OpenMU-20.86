@@ -4658,6 +4658,36 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="InventoryItemUse" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="slot">The slot.</param>
+    /// <param name="useType">The use type.</param>
+    /// <remarks>
+    /// Is sent by the client when: The player tries to use an Inventory item, Ex: Pets (Raven and Horse).
+    /// Causes reaction on server side: The server answers with the result of the action.
+    /// </remarks>
+    public static async ValueTask SendInventoryItemUseAsync(this IConnection? connection, byte @slot, byte @useType)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = InventoryItemUseRef.Length;
+            var packet = new InventoryItemUseRef(connection.Output.GetSpan(length)[..length]);
+            packet.Slot = @slot;
+            packet.UseType = @useType;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="MuHelperStatusChangeRequest" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>

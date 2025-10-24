@@ -2480,6 +2480,40 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="ItemDurabilityChangedS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="inventorySlot">The inventory slot.</param>
+    /// <param name="durability">The durability.</param>
+    /// <param name="byConsumption">true, if the change resulted from an item consumption; otherwise, false</param>
+    /// <param name="unk1">if its equal to 0 it does what s16 does, but if not it does something else</param>
+    /// <remarks>
+    /// Is sent by the server when: The durability of an item in the inventory of the player has been changed.
+    /// Causes reaction on client side: The client updates the item in the inventory user interface.
+    /// </remarks>
+    public static async ValueTask SendItemDurabilityChangedS21Async(this IConnection? connection, byte @inventorySlot, byte @durability, bool @byConsumption, ushort @unk1)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ItemDurabilityChangedS21Ref.Length;
+            var packet = new ItemDurabilityChangedS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.InventorySlot = @inventorySlot;
+            packet.Durability = @durability;
+            packet.ByConsumption = @byConsumption;
+            packet.Unk1 = @unk1;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="FruitConsumptionResponse" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -4976,6 +5010,42 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="ShowVisibleMount" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="count">The count.</param>
+    /// <param name="playerId">The player id.</param>
+    /// <param name="mountId">The mount id.</param>
+    /// <param name="data">The data.</param>
+    /// <param name="junk">The junk.</param>
+    /// <remarks>
+    /// Is sent by the server when: Tells the client to show the character mounted.
+    /// Causes reaction on client side: The Character mounts up.
+    /// </remarks>
+    public static async ValueTask SendShowVisibleMountAsync(this IConnection? connection, byte @count, ushort @playerId, ushort @mountId, byte @data, byte @junk)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ShowVisibleMountRef.Length;
+            var packet = new ShowVisibleMountRef(connection.Output.GetSpan(length)[..length]);
+            packet.Count = @count;
+            packet.PlayerId = @playerId;
+            packet.MountId = @mountId;
+            packet.Data = @data;
+            packet.Junk = @junk;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="VaultMoneyUpdate" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -5871,6 +5941,36 @@ public static class ConnectionExtensions
             var packet = new IllusionTempleSkillEndRef(connection.Output.GetSpan(length)[..length]);
             packet.TempleNumber = @templeNumber;
             packet.State = @state;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="InventoryItemUse" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="slot">The slot.</param>
+    /// <param name="useType">The use type.</param>
+    /// <remarks>
+    /// Is sent by the server when: The player activated an item.
+    /// Causes reaction on client side: The server answers with the result of the action.
+    /// </remarks>
+    public static async ValueTask SendInventoryItemUseAsync(this IConnection? connection, byte @slot, byte @useType)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = InventoryItemUseRef.Length;
+            var packet = new InventoryItemUseRef(connection.Output.GetSpan(length)[..length]);
+            packet.Slot = @slot;
+            packet.UseType = @useType;
 
             return packet.Header.Length;
         }

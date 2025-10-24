@@ -3672,6 +3672,28 @@
       <Fields>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>BF</Code>
+			<SubCode>20</SubCode>
+			<Name>InventoryItemUse</Name>
+			<Length>6</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>The player tries to use an Inventory item, Ex: Pets (Raven and Horse).</SentWhen>
+			<CausedReaction>The server answers with the result of the action.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>Slot</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>UseType</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1HeaderWithSubCode</HeaderType>
       <Code>BF</Code>

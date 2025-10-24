@@ -461,6 +461,7 @@ internal abstract class AccountInitializerBase : InitializerBase
         inventory.Items.Add(this.CreateFullOptionJewellery(62, 8)); // Ring of Ice
         inventory.Items.Add(this.CreateFullOptionJewellery(63, 9)); // Ring of Poison
         inventory.Items.Add(this.CreateFullOptionJewellery(64, 12)); // Pendant of Lightning
+        inventory.Items.Add(this.CreateHorse(52));
         var darkRaven = this.CreatePet(53, 5);
         darkRaven.Level = 1;
         inventory.Items.Add(darkRaven);

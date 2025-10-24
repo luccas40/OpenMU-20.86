@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using MUnique.OpenMU.DataModel;
 using MUnique.OpenMU.GameLogic;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.GameLogic.Views;
@@ -123,8 +124,16 @@ public class NewPlayersInScopePluginS21(RemotePlayer player) : INewPlayersInScop
             muun1.Id = ushort.MaxValue;
             muun2.Id = ushort.MaxValue;
             muun3.Id = ushort.MaxValue;
+            var mount = newPlayer.Inventory!.ActiveItems.FirstOrDefault(i => i.IsMount());
+            if (mount == null)
+            {
+                playerBlock.Mount = 0xFFFF;
+            }
+            else
+            {
+                playerBlock.Mount = (ushort)((mount.Definition!.Group * 512) + mount.Definition.Number);
+            }
 
-            playerBlock.Mount = 12 * 512 + 52;
             playerBlock.Level = (ushort)newPlayer.Level;
 
             playerBlock.Rotation = newPlayer.Rotation.ToPacketByte();

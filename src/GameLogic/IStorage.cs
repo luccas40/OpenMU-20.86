@@ -212,9 +212,22 @@ public interface IInventoryStorage : IStorage
     IEnumerable<Item> EquippedItems { get; }
 
     /// <summary>
+    /// Gets all items which are active, ex: Exp Buffs (Talisma of ascention), Mounts, Raven.
+    /// </summary>
+    IEnumerable<Item> ActiveItems { get; }
+
+    /// <summary>
     /// Gets equipped ammunition item.
     /// </summary>
     Item? EquippedAmmunitionItem { get; }
+
+    /// <summary>
+    /// Tries to activate an item in inventory/>.
+    /// </summary>
+    /// <param name="slot">The inventory slot.</param>
+    /// <param name="active">The Status to set the item.</param>
+    /// <returns>True, if successful.</returns>
+    ValueTask<bool> SetItemActiveAsync(byte slot, bool active);
 }
 
 /// <summary>

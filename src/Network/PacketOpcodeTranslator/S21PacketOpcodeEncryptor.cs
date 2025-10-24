@@ -40,13 +40,20 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0x13FF, 0x13FF }, // Add Creature to Scope
         { 0x14FF, 0x14FF }, // Remove Object from Scope
         { 0x24FF, 0xA7FF }, // Inventory Item Move Result
+        { 0x25FF, 0x25FF }, // Appearance Changed
         { 0x26FF, 0xCAFF }, // Update Character Health and Shield, current and max
         { 0x27FF, 0x27FF }, // Update Character Mana and Ability, current and max
         { 0x28FF, 0x28FF }, // Inventory Item Removed
+        { 0x2AFF, 0x2AFF }, // Item Durability Changed
         { 0xEC29, 0xC710 }, // Update Character Sheet
         { 0xEC30, 0xC755 }, // Update Character Attack and Magic Speed
         { 0xEC63, 0xC726 }, // Update Character Damage and Combat Power / subcode 63 is made of, there wasnt a subcode for s16
         { 0xD4FF, 0x5AFF }, // Object in Scope Moved
+        { 0xA9FF, 0x32FF }, // Pet Info Response
+        { 0xBF20, 0xBF20 }, // Item Use Response
+        { 0x4E14, 0x4E14 }, // Muun Single Mount
+        { 0x5900, 0x5900 }, // Character Specialization
+
 
     };
 

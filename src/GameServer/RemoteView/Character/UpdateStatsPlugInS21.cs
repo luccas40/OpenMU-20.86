@@ -4,22 +4,28 @@
 
 namespace MUnique.OpenMU.GameServer.RemoteView.Character;
 
-using System.Collections.Frozen;
-using System.Runtime.InteropServices;
 using MUnique.OpenMU.AttributeSystem;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.GameLogic.Views.Character;
+using MUnique.OpenMU.Network;
 using MUnique.OpenMU.Network.Packets.ServerToClient;
 using MUnique.OpenMU.Network.PlugIns;
 using MUnique.OpenMU.PlugIns;
+using System.Collections.Frozen;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 /// <summary>
 /// The default implementation of the <see cref="IUpdateStatsPlugIn"/> which is forwarding everything to the game client with specific data packets.
 /// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="UpdateStatsPlugInS21"/> class.
+/// </remarks>
+/// <param name="player">The player.</param>
 [PlugIn(nameof(UpdateStatsPlugInS21), "The default implementation of the IUpdateStatsPlugIn which is forwarding everything to the game client with specific data packets.")]
 [Guid("5626A661-2F03-4159-BB21-959C661EB69F")]
 [MinimumClient(21, 0, ClientLanguage.Korean)]
-public class UpdateStatsPlugInS21 : UpdateStatsBasePlugIn
+public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(player, AttributeChangeActions)
 {
     private static readonly FrozenDictionary<AttributeDefinition, Func<RemotePlayer, ValueTask>> AttributeChangeActions = new Dictionary<AttributeDefinition, Func<RemotePlayer, ValueTask>>
     {
@@ -39,6 +45,10 @@ public class UpdateStatsPlugInS21 : UpdateStatsBasePlugIn
         { Stats.MaximumPhysicalDmg, OnPhysicalDamageChangedAsync },
         { Stats.CombatPower, OnPhysicalDamageChangedAsync },
 
+        { Stats.MinimumSpecialAttackPower, OnSpecializationChanged },
+        { Stats.MaximumSpecialAttackPower, OnSpecializationChanged },
+        { Stats.SpecialDefense, OnSpecializationChanged },
+
         { Stats.CriticalDamageBonus, OnStatsChangedAsync },
         { Stats.ExcellentDamageBonus, OnStatsChangedAsync },
         { Stats.ShieldBypassChance, OnStatsChangedAsync },
@@ -57,13 +67,48 @@ public class UpdateStatsPlugInS21 : UpdateStatsBasePlugIn
         { Stats.AbilityUsageReduction, OnStatsChangedAsync },
     }.ToFrozenDictionary();
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UpdateStatsPlugInS21"/> class.
-    /// </summary>
-    /// <param name="player">The player.</param>
-    public UpdateStatsPlugInS21(RemotePlayer player)
-        : base(player, AttributeChangeActions)
+    private static async ValueTask OnSpecializationChanged(RemotePlayer player)
     {
+        // I'm doing this because I'm not sure but I think we need to send all character specialization every time any of them updates
+        List<(IAttribute, byte)> attributes = [];
+        var minSplAtk = player.Attributes!.FirstOrDefault(a => a.Definition == Stats.MinimumSpecialAttackPower);
+        if (minSplAtk != null && minSplAtk.Value > 0)
+        {
+            attributes.Add((minSplAtk, 0));
+        }
+
+        var maxSplAtk = player.Attributes!.FirstOrDefault(a => a.Definition == Stats.MaximumSpecialAttackPower);
+        if (maxSplAtk != null && maxSplAtk.Value > 0)
+        {
+            attributes.Add((maxSplAtk, 1));
+        }
+
+        var splDefense = player.Attributes!.FirstOrDefault(a => a.Definition == Stats.SpecialDefense);
+        if (splDefense != null && splDefense.Value > 0)
+        {
+            attributes.Add((splDefense, 4));
+        }
+
+        int Write()
+        {
+            var length = CharacterSpecializationRef.Length;
+            var packet = new CharacterSpecializationRef(player.Connection!.Output.GetSpan(length)[..length]);
+            for (int i = 0; i < 5; i++)
+            {
+                if (attributes.Count <= i + 1)
+                {
+                    break;
+                }
+
+                var splBlock = packet[i];
+                splBlock.Type = attributes[i].Item2;
+                splBlock.Value1 = (ushort)attributes[i].Item1.Value;
+            }
+
+            return packet.Header.Length;
+        }
+
+        await player.Connection!.SendAsync(Write).ConfigureAwait(false);
     }
 
     private static async ValueTask OnMaximumHealthOrShieldChangedAsync(RemotePlayer player)
@@ -186,5 +231,26 @@ public class UpdateStatsPlugInS21 : UpdateStatsBasePlugIn
             0,
             0
             ).ConfigureAwait(false);
+
+        int Write()
+        {
+            var length = CharacterSpecializationRef.Length;
+            var packet = new CharacterSpecializationRef(player.Connection!.Output.GetSpan(length)[..length]);
+            
+            var splBlock = packet[0];
+
+            splBlock = packet[1];
+            splBlock.Type = 1;
+            splBlock.Value1 = 3;
+            splBlock.Value2 = 4;
+
+            splBlock = packet[2];
+            splBlock.Type = 4;
+            splBlock.Value1 = 5;
+
+            return packet.Header.Length;
+        }
+
+        await player.Connection!.SendAsync(Write).ConfigureAwait(false);
     }
 }

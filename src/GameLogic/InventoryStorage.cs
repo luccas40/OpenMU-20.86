@@ -72,6 +72,25 @@ public class InventoryStorage : Storage, IInventoryStorage
     }
 
     /// <inheritdoc/>
+    public IEnumerable<Item> ActiveItems
+    {
+        get
+        {
+            foreach (var item in this.Items)
+            {
+                if (!item.IsActive) // if (item.IsWearable() || !item.IsActive)
+                {
+                    continue;
+                }
+
+                yield return item;
+            }
+        }
+    }
+
+    
+
+    /// <inheritdoc/>
     public Item? EquippedAmmunitionItem
     {
         get
@@ -88,6 +107,47 @@ public class InventoryStorage : Storage, IInventoryStorage
 
             return null;
         }
+    }
+
+    /// <inheritdoc/>
+    public async ValueTask<bool> SetItemActiveAsync(byte slot, bool active)
+    {
+        var item = this.GetItem(slot);
+        if (item == null)
+        {
+            return false;
+        }
+
+        if (item.IsMount())
+        {
+            if (active && this.ActiveItems.Any(i => i.IsMount()))
+            {
+                return false; // Only one mount can be active at a time
+            }
+
+            item.IsActive = active;
+            if (!active && this._player.Attributes!.ItemPowerUps.Remove(item, out var itemPowerUps))
+            {
+                foreach (var powerUp in itemPowerUps)
+                {
+                    powerUp.Dispose();
+                }
+            }
+
+            if (active)
+            {
+                var factory = this._gameContext.ItemPowerUpFactory;
+                this._player.Attributes!.ItemPowerUps.Add(item, factory.GetPowerUps(item, this._player.Attributes).ToList());
+            }
+
+            await this._player.InvokeViewPlugInAsync<IShowVisibleMountPlugIn>(p => p.ShowVisibleMountAsync((ushort)(active ? (item.Definition!.Group * 512) + item.Definition.Number : ushort.MaxValue))).ConfigureAwait(false);
+        }
+        else if (item.IsDarkRaven())
+        {
+            // TODO
+        }
+
+        return true;
     }
 
     /// <inheritdoc />
