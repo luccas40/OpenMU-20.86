@@ -4219,7 +4219,7 @@
 					<Name>ExtraDamage</Name>
 				</Field>
 				<Field>
-					<Index>12</Index>
+					<Index>10</Index>
 					<Type>ShortLittleEndian</Type>
 					<Name>CombatPower</Name>
 				</Field>

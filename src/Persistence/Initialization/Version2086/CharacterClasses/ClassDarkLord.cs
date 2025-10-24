@@ -64,33 +64,8 @@ internal partial class CharacterClassInitialization
 
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.TotalLeadership, 1, Stats.BaseLeadership));
 
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.DefenseBase, 1.0f / 7, Stats.TotalAgility));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.DefenseRatePvm, 1.0f / 7, Stats.TotalAgility));
+        // result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.SkillMultiplier, 0.0005f, Stats.TotalEnergy));
 
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 5, Stats.TotalLevel));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 2.5f, Stats.TotalAgility));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 1.0f / 6, Stats.TotalStrength));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 1.0f / 10, Stats.TotalLeadership));
-
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackSpeed, 1.0f / 10, Stats.TotalAgility));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MagicSpeed, 1.0f / 10, Stats.TotalAgility));
-
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 0.15f, Stats.TotalEnergy));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 0.1f, Stats.TotalVitality));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 0.2f, Stats.TotalAgility));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 0.3f, Stats.TotalStrength));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 0.3f, Stats.TotalLeadership));
-
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(energyMinus15, -15, Stats.TotalEnergy, InputOperator.Add));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumMana, 1.5f, energyMinus15));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumMana, 1, Stats.TotalLevel));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumHealth, 1.5f, Stats.TotalLevel));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumHealth, 2, Stats.TotalVitality));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1.0f / 7, Stats.TotalStrength));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1.0f / 5, Stats.TotalStrength));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1.0f / 14, Stats.TotalEnergy));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1.0f / 10, Stats.TotalEnergy));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.SkillMultiplier, 0.0005f, Stats.TotalEnergy));
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.RavenAttackDamageIncrease, 1.0f / 100, Stats.ScepterRise));
 
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumGuildSize, 0.1f, Stats.TotalLeadership));
@@ -135,9 +110,45 @@ internal partial class CharacterClassInitialization
             result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvp, 3, Stats.TotalLevel));
         }
 
-        result.BaseAttributeValues.Add(this.CreateConstValueAttribute(38, Stats.MaximumMana));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumHealth, 1.5f, Stats.TotalLevel));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumHealth, 2f, Stats.TotalVitality));
         result.BaseAttributeValues.Add(this.CreateConstValueAttribute(48.5f, Stats.MaximumHealth));
-        result.BaseAttributeValues.Add(this.CreateConstValueAttribute(2, Stats.SkillMultiplier));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(energyMinus15, -15f, Stats.TotalEnergy, InputOperator.Add));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumMana, 1.5f, energyMinus15));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumMana, 1f, Stats.TotalLevel));
+        result.BaseAttributeValues.Add(this.CreateConstValueAttribute(18, Stats.MaximumMana));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 0.15f, Stats.TotalEnergy));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 1f / 10, Stats.TotalVitality));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 1f / 5, Stats.TotalAgility));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 1f / 3, Stats.TotalStrength));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumAbility, 1f / 3, Stats.TotalLeadership));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1.0f / 7, Stats.TotalStrength));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1.0f / 14, Stats.TotalEnergy));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1.0f / 5, Stats.TotalStrength));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1.0f / 10, Stats.TotalEnergy));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 5f, Stats.TotalLevel));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 2f / 3, Stats.TotalAgility));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 1.0f / 4, Stats.TotalStrength));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackRatePvm, 1.0f / 15, Stats.TotalLeadership));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.AttackSpeed, 1.0f / 10, Stats.TotalAgility));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MagicSpeed, 1.0f / 10, Stats.TotalAgility));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.DefenseBase, 1.0f / 7, Stats.TotalAgility));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.DefenseRatePvm, 1.0f / 7, Stats.TotalAgility));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPower, 1f / 50, Stats.TotalLeadership));
+        result.BaseAttributeValues.Add(this.CreateConstValueAttribute(15f, Stats.CombatPower));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerDamage, 1f, Stats.MaximumPhysBaseDmg));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerDamage, 1f / 100f, Stats.CombatPower, aggregateType: AggregateType.Multiplicate));
+
+
+        // result.BaseAttributeValues.Add(this.CreateConstValueAttribute(2, Stats.SkillMultiplier));
         result.BaseAttributeValues.Add(this.CreateConstValueAttribute(1.0f / 33f, Stats.AbilityRecoveryMultiplier));
         result.BaseAttributeValues.Add(this.CreateConstValueAttribute(1, Stats.PetDurationIncrease));
 

@@ -27,6 +27,7 @@ using MUnique.OpenMU.GameLogic.Views.PlayerShop;
 using MUnique.OpenMU.GameLogic.Views.Quest;
 using MUnique.OpenMU.GameLogic.Views.World;
 using MUnique.OpenMU.Interfaces;
+using MUnique.OpenMU.Network.PlugIns;
 using MUnique.OpenMU.Pathfinding;
 using MUnique.OpenMU.Persistence;
 using MUnique.OpenMU.PlugIns;
@@ -2218,6 +2219,8 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         await this.InvokeViewPlugInAsync<IApplyKeyConfigurationPlugIn>(p => p.ApplyKeyConfigurationAsync()).ConfigureAwait(false);
         await this.InvokeViewPlugInAsync<IQuestStateResponsePlugIn>(p => p.ShowQuestStateAsync(null)).ConfigureAwait(false); // Legacy quest system
         await this.InvokeViewPlugInAsync<ICurrentlyActiveQuestsPlugIn>(p => p.ShowActiveQuestsAsync()).ConfigureAwait(false); // New quest system
+
+        
 
         this.Attributes.AttributeValueChanged += this.OnAttributeValueChanged;
         this.Attributes.GetOrCreateAttribute(Stats.TransformationSkin).ValueChanged += this.OnTransformationSkinChanged;

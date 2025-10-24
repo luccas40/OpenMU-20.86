@@ -35,7 +35,9 @@ public class UpdateStatsPlugInS21 : UpdateStatsBasePlugIn
 
         { Stats.AttackSpeedAny, OnAttackSpeedAnyChangedAsync },
 
-        { Stats.PhysicalBaseDmg, OnPhysicalDamageChangedAsync },
+        { Stats.MinimumPhysicalDmg, OnPhysicalDamageChangedAsync },
+        { Stats.MaximumPhysicalDmg, OnPhysicalDamageChangedAsync },
+        { Stats.CombatPower, OnPhysicalDamageChangedAsync },
 
         { Stats.CriticalDamageBonus, OnStatsChangedAsync },
         { Stats.ExcellentDamageBonus, OnStatsChangedAsync },
@@ -102,9 +104,9 @@ public class UpdateStatsPlugInS21 : UpdateStatsBasePlugIn
     private static async ValueTask OnPhysicalDamageChangedAsync(RemotePlayer player)
     {
         await player.Connection.SendUpdateWeaponCombatPowerAsync(
-            (ushort)Math.Max(player.Attributes![Stats.MinimumPhysBaseDmg], 0f),
-            (ushort)Math.Max(player.Attributes![Stats.MaximumPhysBaseDmg], 0f),
-            0,
+            (ushort)Math.Max(player.Attributes![Stats.MinimumPhysicalDmg], 0f),
+            (ushort)Math.Max(player.Attributes![Stats.MaximumPhysicalDmg], 0f),
+            (ushort)Math.Max(player.Attributes![Stats.CombatPowerDamage], 0f),
             (ushort)Math.Max(player.Attributes![Stats.CombatPower], 0f)).ConfigureAwait(false);
     }
 

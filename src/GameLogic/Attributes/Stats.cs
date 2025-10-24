@@ -246,6 +246,26 @@ public class Stats
     public static AttributeDefinition PhysicalBaseDmg { get; } = new(new Guid("DD1E13E4-BFFD-45B5-9B91-9080710324B2"), "Physical Base Damage (min and max)", string.Empty);
 
     /// <summary>
+    /// Gets the min physical base DMG and adds the Min Physical Weapon Damage attribute definition.
+    /// </summary>
+    public static AttributeDefinition MinimumPhysicalDmg { get; } = new(new Guid("D1E166F2-335C-41C5-A1E8-19F1C429B660"), "Min Physical Base Damage + Min Physical Weapon Damage", string.Empty);
+
+    /// <summary>
+    /// Gets the Maximum physical base DMG and adds the Maximum Physical Weapon Damage attribute definition.
+    /// </summary>
+    public static AttributeDefinition MaximumPhysicalDmg { get; } = new(new Guid("6E996C1E-8E73-49C0-A089-0A607DEF6F5A"), "Maximum Physical Base Damage + Maximum Physical Weapon Damage", string.Empty);
+
+    /// <summary>
+    /// Gets the Minimum physical DMG and adds all the bonus damage attribute definition.
+    /// </summary>
+    public static AttributeDefinition FinalMinimumPhysicalDmg { get; } = new(new Guid("AB9B8B6F-6417-4593-AD05-D5DDDE25BF67"), "Gets the Minimum physical DMG and adds all the bonus damage", string.Empty);
+    
+    /// <summary>
+    /// Gets the Maximum physical DMG and adds all the bonus damage attribute definition.
+    /// </summary>
+    public static AttributeDefinition FinalMaximumPhysicalDmg { get; } = new(new Guid("0231C7C4-C5B0-44D0-9C00-6EC9FD11AC35"), "Gets the Maximum physical DMG and adds all the bonus damage", string.Empty);
+
+    /// <summary>
     /// Gets the minimum wiz base DMG attribute definition.
     /// </summary>
     /// <remarks>The "resting" wizardry minimum base damage.</remarks>
@@ -436,6 +456,12 @@ public class Stats
     /// Gets the Combat Power attribute definition.
     /// </summary>
     public static AttributeDefinition CombatPower { get; } = new(new Guid("68E9D088-C0CE-4675-A76F-C10787B42C52"), "Combat Power", "The Combat Power increase the min/max base damage and added to it.");
+
+    /// <summary>
+    /// Gets the Combat Power attribute and multiply by the damage definition.
+    /// </summary>
+    public static AttributeDefinition CombatPowerDamage { get; } = new(new Guid("C7014E8C-A535-4636-9775-81A648E7BEBB"), "Combat Power Damage", "The Gets the Combat Power attribute and multiply by the damage definition.");
+
 
     /// <summary>
     /// Gets the raven attack damage increase attribute definition.

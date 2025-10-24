@@ -11388,8 +11388,8 @@ public readonly ref struct UpdateWeaponCombatPowerRef
     /// </summary>
     public ushort CombatPower
     {
-        get => ReadUInt16LittleEndian(this._data[12..]);
-        set => WriteUInt16LittleEndian(this._data[12..], value);
+        get => ReadUInt16LittleEndian(this._data[10..]);
+        set => WriteUInt16LittleEndian(this._data[10..], value);
     }
 
     /// <summary>

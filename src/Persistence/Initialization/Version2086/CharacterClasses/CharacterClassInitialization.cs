@@ -177,15 +177,22 @@ internal partial class CharacterClassInitialization : InitializerBase
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.AttackSpeed, 1, Stats.AttackSpeedAny));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MagicSpeed, 1, Stats.AttackSpeedAny));
 
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1, Stats.MinimumPhysBaseDmgByWeapon));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1, Stats.MaximumPhysBaseDmgByWeapon));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1, Stats.BaseMinDamageBonus));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1, Stats.BaseMaxDamageBonus));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.PhysicalBaseDmg, 1, Stats.BaseDamageBonus));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1, Stats.PhysicalBaseDmg));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1, Stats.PhysicalBaseDmg));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysBaseDmg, 1, Stats.PhysicalBaseDmgIncrease, aggregateType: AggregateType.Multiplicate));
-        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysBaseDmg, 1, Stats.PhysicalBaseDmgIncrease, aggregateType: AggregateType.Multiplicate));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysicalDmg, 1, Stats.MinimumPhysBaseDmgByWeapon));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysicalDmg, 1, Stats.MinimumPhysBaseDmg));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysicalDmg, 1, Stats.PhysicalBaseDmg));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysicalDmg, 1, Stats.MaximumPhysBaseDmgByWeapon));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysicalDmg, 1, Stats.MaximumPhysBaseDmg));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysicalDmg, 1, Stats.PhysicalBaseDmg));
+
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMinimumPhysicalDmg, 1, Stats.MinimumPhysicalDmg));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMinimumPhysicalDmg, 1, Stats.CombatPowerDamage));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMinimumPhysicalDmg, 1, Stats.PhysicalBaseDmgIncrease, aggregateType: AggregateType.Multiplicate));
+
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMaximumPhysicalDmg, 1, Stats.MinimumPhysicalDmg));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMaximumPhysicalDmg, 1, Stats.CombatPowerDamage));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMaximumPhysicalDmg, 1, Stats.PhysicalBaseDmgIncrease, aggregateType: AggregateType.Multiplicate));
+
+        
 
         // If two weapons are equipped (DK, MG, Sum, RF) we subtract the half of the sum of the speeds again from the attack speed
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.AreTwoWeaponsEquipped, 1, Stats.EquippedWeaponCount));
