@@ -24448,25 +24448,25 @@ public readonly ref struct SingleGuildInformation075Ref
 /// Is sent by the server when: Tells the client to show the character mounted.
 /// Causes reaction on client side: The Character mounts up.
 /// </summary>
-public readonly ref struct ShowVisibleMountRef
+public readonly ref struct UpdatePlayerMountRef
 {
     private readonly Span<byte> _data;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ShowVisibleMountRef"/> struct.
+    /// Initializes a new instance of the <see cref="UpdatePlayerMountRef"/> struct.
     /// </summary>
     /// <param name="data">The underlying data.</param>
-    public ShowVisibleMountRef(Span<byte> data)
+    public UpdatePlayerMountRef(Span<byte> data)
         : this(data, true)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ShowVisibleMountRef"/> struct.
+    /// Initializes a new instance of the <see cref="UpdatePlayerMountRef"/> struct.
     /// </summary>
     /// <param name="data">The underlying data.</param>
     /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
-    private ShowVisibleMountRef(Span<byte> data, bool initialize)
+    private UpdatePlayerMountRef(Span<byte> data, bool initialize)
     {
         this._data = data;
         if (initialize)
@@ -24551,18 +24551,18 @@ public readonly ref struct ShowVisibleMountRef
     }
 
     /// <summary>
-    /// Performs an implicit conversion from a Span of bytes to a <see cref="ShowVisibleMount"/>.
+    /// Performs an implicit conversion from a Span of bytes to a <see cref="UpdatePlayerMount"/>.
     /// </summary>
     /// <param name="packet">The packet as span.</param>
     /// <returns>The packet as struct.</returns>
-    public static implicit operator ShowVisibleMountRef(Span<byte> packet) => new (packet, false);
+    public static implicit operator UpdatePlayerMountRef(Span<byte> packet) => new (packet, false);
 
     /// <summary>
-    /// Performs an implicit conversion from <see cref="ShowVisibleMount"/> to a Span of bytes.
+    /// Performs an implicit conversion from <see cref="UpdatePlayerMount"/> to a Span of bytes.
     /// </summary>
     /// <param name="packet">The packet as struct.</param>
     /// <returns>The packet as byte span.</returns>
-    public static implicit operator Span<byte>(ShowVisibleMountRef packet) => packet._data; 
+    public static implicit operator Span<byte>(UpdatePlayerMountRef packet) => packet._data; 
 }
 
 

@@ -1,4 +1,8 @@
-﻿namespace MUnique.OpenMU.Network.PacketOpcodeTranslator;
+﻿// <copyright file="S21PacketOpcodeDecryptor.cs" company="MUnique">
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// </copyright>
+
+namespace MUnique.OpenMU.Network.PacketOpcodeTranslator;
 
 using System;
 using System.Buffers;
@@ -29,15 +33,15 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0x5715, 0xF303 }, // Select Character Confirmation
         { 0x96FF, 0xD4FF }, // Select Character Confirmation
         { 0xA000, 0x24FF }, // Inventory Item move
-        { 0xC3FF, 0x26FF }, // Inventory Use
+        { 0xC3FF, 0x26FF }, // Inventory Consume
         { 0x83FF, 0xA9FF }, // Inventory Pet Info Request
         { 0xBF20, 0xBF20 }, // User Tries to Use Pet
         { 0x0EFF, 0x19FF }, // Target Skill Cast (tested with Force Wave Dl)
         { 0x23FF, 0x00FF }, // Public Chat Message
+        { 0xC9FF, 0x18FF }, // Animation Request
+        { 0x4E11, 0x4E11 }, // Muun Mount Request (Dl horse + guardian mounts are now muun somehow)
 
-        // c9ff changed rotation len 5
         // e202 or ff auto attack  len 7
-        // 0e02 or ff skill cast targeted len 7
     };
 
     /// <summary>

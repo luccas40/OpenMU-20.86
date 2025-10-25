@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 /// <summary>
 /// Interface of a view whose implementation informs about a mount change.
 /// </summary>
-public interface IShowVisibleMountPlugIn : IViewPlugIn
+public interface IUpdatePlayerMountPlugIn : IViewPlugIn
 {
     /// <summary>
     /// Will be called when the player mounted up.
     /// </summary>
-    ValueTask ShowVisibleMountAsync(ushort Mount);
+    ValueTask UpdatePlayerMountAsync(Player player, ushort Mount);
 }

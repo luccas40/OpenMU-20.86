@@ -22,7 +22,7 @@ using System.Threading;
 /// Initializes a new instance of the <see cref="UpdateStatsPlugInS21"/> class.
 /// </remarks>
 /// <param name="player">The player.</param>
-[PlugIn(nameof(UpdateStatsPlugInS21), "The default implementation of the IUpdateStatsPlugIn which is forwarding everything to the game client with specific data packets.")]
+[PlugIn(nameof(UpdateStatsPlugInS21), "The S21 implementation of the IUpdateStatsPlugIn which is forwarding everything to the game client with specific data packets.")]
 [Guid("5626A661-2F03-4159-BB21-959C661EB69F")]
 [MinimumClient(21, 0, ClientLanguage.Korean)]
 public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(player, AttributeChangeActions)

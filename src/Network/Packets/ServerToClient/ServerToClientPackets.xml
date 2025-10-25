@@ -9463,7 +9463,7 @@
 			<HeaderType>C2HeaderWithSubCode</HeaderType>
 			<Code>4E</Code>
 			<SubCode>14</SubCode>
-			<Name>ShowVisibleMount</Name>
+			<Name>UpdatePlayerMount</Name>
 			<Length>12</Length>
 			<Direction>ServerToClient</Direction>
 			<SentWhen>Tells the client to show the character mounted.</SentWhen>

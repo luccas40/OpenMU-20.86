@@ -5148,7 +5148,7 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
-    /// Sends a <see cref="ShowVisibleMount" /> to this connection.
+    /// Sends a <see cref="UpdatePlayerMount" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
     /// <param name="count">The count.</param>
@@ -5160,7 +5160,7 @@ public static class ConnectionExtensions
     /// Is sent by the server when: Tells the client to show the character mounted.
     /// Causes reaction on client side: The Character mounts up.
     /// </remarks>
-    public static async ValueTask SendShowVisibleMountAsync(this IConnection? connection, byte @count, ushort @playerId, ushort @mountId, byte @data, byte @junk)
+    public static async ValueTask SendUpdatePlayerMountAsync(this IConnection? connection, byte @count, ushort @playerId, ushort @mountId, byte @data, byte @junk)
     {
         if (connection is null)
         {
@@ -5169,8 +5169,8 @@ public static class ConnectionExtensions
 
         int WritePacket()
         {
-            var length = ShowVisibleMountRef.Length;
-            var packet = new ShowVisibleMountRef(connection.Output.GetSpan(length)[..length]);
+            var length = UpdatePlayerMountRef.Length;
+            var packet = new UpdatePlayerMountRef(connection.Output.GetSpan(length)[..length]);
             packet.Count = @count;
             packet.PlayerId = @playerId;
             packet.MountId = @mountId;

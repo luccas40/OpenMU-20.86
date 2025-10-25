@@ -14,5 +14,5 @@ public interface IItemUsedPlugIn : IViewPlugIn
     /// </summary>
     /// <param name="slot">The slot.</param>
     /// <param name="useType">The Use Type.</param>
-    ValueTask ItemUsedAsync(byte slot, byte useType);
+    ValueTask ItemUsedAsync(byte slot, bool active);
 }

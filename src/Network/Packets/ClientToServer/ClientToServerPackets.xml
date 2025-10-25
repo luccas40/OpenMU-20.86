@@ -26,6 +26,22 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>4E</Code>
+			<SubCode>11</SubCode>
+			<Name>MuunMountRequest</Name>
+			<Length>6</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>This packet is sent by the client When it receives the Mount activation packet.</SentWhen>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>MountId</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C3Header</HeaderType>
       <Code>03</Code>

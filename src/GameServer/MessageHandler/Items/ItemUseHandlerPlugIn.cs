@@ -31,6 +31,6 @@ internal class ItemUseHandlerPlugIn : IPacketHandlerPlugIn
     public async ValueTask HandlePacketAsync(Player player, Memory<byte> packet)
     {
         InventoryItemUse message = packet;
-        await this._action.UseItemAsync(player, message.Slot, message.UseType).ConfigureAwait(false);
+        await this._action.UseItemAsync(player, message.Slot, message.UseType == 0xFE).ConfigureAwait(false);
     }
 }

@@ -8,6 +8,7 @@ using MUnique.OpenMU.DataModel;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.GameLogic.Views.World;
 using MUnique.OpenMU.PlugIns;
+using System.Numerics;
 using static MUnique.OpenMU.DataModel.InventoryConstants;
 
 /// <summary>
@@ -126,6 +127,7 @@ public class InventoryStorage : Storage, IInventoryStorage
             }
 
             item.IsActive = active;
+
             if (!active && this._player.Attributes!.ItemPowerUps.Remove(item, out var itemPowerUps))
             {
                 foreach (var powerUp in itemPowerUps)
@@ -140,14 +142,14 @@ public class InventoryStorage : Storage, IInventoryStorage
                 this._player.Attributes!.ItemPowerUps.Add(item, factory.GetPowerUps(item, this._player.Attributes).ToList());
             }
 
-            await this._player.ForEachWorldObserverAsync<IShowVisibleMountPlugIn>(p => p.ShowVisibleMountAsync((ushort)(active ? (item.Definition!.Group * 512) + item.Definition.Number : ushort.MaxValue)), true).ConfigureAwait(false);
+            return true;
         }
         else if (item.IsDarkRaven())
         {
             // TODO
         }
 
-        return true;
+        return false;
     }
 
     /// <inheritdoc />

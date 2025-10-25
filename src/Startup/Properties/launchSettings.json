@@ -20,7 +20,7 @@
     },
     "Startup in demo mode": {
       "commandName": "Project",
-      "commandLineArgs": "-autostart -resolveIp:local -demo -debug",
+      "commandLineArgs": "-autostart -resolveIp:local -demo -version:season21",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_URLS": "http://+:80"

@@ -4,6 +4,7 @@
 
 namespace MUnique.OpenMU.GameServer.RemoteView.Inventory;
 
+using System.Runtime.InteropServices;
 using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.GameLogic.Views.Inventory;
 using MUnique.OpenMU.Network;
@@ -11,7 +12,6 @@ using MUnique.OpenMU.Network.Packets.ServerToClient;
 using MUnique.OpenMU.Network.PlugIns;
 using MUnique.OpenMU.Persistence.BasicModel;
 using MUnique.OpenMU.PlugIns;
-using System.Runtime.InteropServices;
 
 /// <summary>
 /// The default implementation of the <see cref="IItemUsedPlugIn"/> which is forwarding everything to the game client with specific data packets.
@@ -28,7 +28,7 @@ public class ItemUsedPlugIn(RemotePlayer player) : IItemUsedPlugIn
     private readonly RemotePlayer _player = player;
 
     /// <inheritdoc/>
-    public async ValueTask ItemUsedAsync(byte slot, byte useType)
+    public async ValueTask ItemUsedAsync(byte slot, bool active)
     {
         var connection = this._player.Connection;
         if (connection is null)
@@ -43,7 +43,7 @@ public class ItemUsedPlugIn(RemotePlayer player) : IItemUsedPlugIn
             var packet = new InventoryItemUseRef(span)
             {
                 Slot = slot,
-                UseType = useType,
+                UseType = (byte)(active ? 0xFE : 0xFF),
             };
 
             return size;

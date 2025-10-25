@@ -59,6 +59,34 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="MuunMountRequest" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="mountId">The mount id.</param>
+    /// <remarks>
+    /// Is sent by the client when: This packet is sent by the client When it receives the Mount activation packet.
+    /// Causes reaction on server side: 
+    /// </remarks>
+    public static async ValueTask SendMuunMountRequestAsync(this IConnection? connection, ushort @mountId)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MuunMountRequestRef.Length;
+            var packet = new MuunMountRequestRef(connection.Output.GetSpan(length)[..length]);
+            packet.MountId = @mountId;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="ChecksumResponse" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
