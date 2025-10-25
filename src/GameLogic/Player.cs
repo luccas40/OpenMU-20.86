@@ -2220,8 +2220,6 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         await this.InvokeViewPlugInAsync<IQuestStateResponsePlugIn>(p => p.ShowQuestStateAsync(null)).ConfigureAwait(false); // Legacy quest system
         await this.InvokeViewPlugInAsync<ICurrentlyActiveQuestsPlugIn>(p => p.ShowActiveQuestsAsync()).ConfigureAwait(false); // New quest system
 
-        
-
         this.Attributes.AttributeValueChanged += this.OnAttributeValueChanged;
         this.Attributes.GetOrCreateAttribute(Stats.TransformationSkin).ValueChanged += this.OnTransformationSkinChanged;
 
@@ -2260,6 +2258,14 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         {
             selectedCharacter.IsStoreOpened = false;
         }
+
+        // Send Missing Data
+        await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.CriticalDamageChance, 100)).ConfigureAwait(false);
+        await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.AttackSpeed, 100)).ConfigureAwait(false);
+        await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.MaximumSpecialAttackPower, 100)).ConfigureAwait(false);
+        await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.CombatPowerMultiplier, 100)).ConfigureAwait(false);
+        await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.MaximumMana, 100)).ConfigureAwait(false);
+        await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.MaximumHealth, 100)).ConfigureAwait(false);
     }
 
     private void LogInvalidVaultItems()

@@ -142,11 +142,17 @@ internal partial class CharacterClassInitialization
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.DefenseBase, 1.0f / 7, Stats.TotalAgility));
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.DefenseRatePvm, 1.0f / 7, Stats.TotalAgility));
 
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPower, 1f / 50, Stats.TotalLeadership));
-        result.BaseAttributeValues.Add(this.CreateConstValueAttribute(15f, Stats.CombatPower));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerDamage, 1f, Stats.MaximumPhysBaseDmg));
-        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerDamage, 1f / 100f, Stats.CombatPower, aggregateType: AggregateType.Multiplicate));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerMultiplier, 1f / 50 / 100, Stats.TotalLeadership));
+        result.BaseAttributeValues.Add(this.CreateConstValueAttribute(.15f, Stats.CombatPowerMultiplier));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerDamage, Stats.CombatPowerMultiplier, Stats.MaximumPhysBaseDmg));
 
+        // Character Specialization
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MinimumSpecialAttackPower, 0.00015005f, Stats.TotalStrength));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MinimumSpecialAttackPower, 1f / 7, Stats.TotalStrength, aggregateType: AggregateType.Multiplicate));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumSpecialAttackPower, 0.00015005f, Stats.TotalStrength));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MaximumSpecialAttackPower, 1f / 5, Stats.TotalStrength, aggregateType: AggregateType.Multiplicate));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.SpecialDefense, 0.00015005f, Stats.TotalAgility));
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.SpecialDefense, 1f / 7, Stats.TotalAgility, aggregateType: AggregateType.Multiplicate));
 
         // result.BaseAttributeValues.Add(this.CreateConstValueAttribute(2, Stats.SkillMultiplier));
         result.BaseAttributeValues.Add(this.CreateConstValueAttribute(1.0f / 33f, Stats.AbilityRecoveryMultiplier));

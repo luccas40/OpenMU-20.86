@@ -39,11 +39,11 @@ public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(p
         { Stats.MaximumMana, OnMaximumManaOrAbilityChangedAsync },
         { Stats.MaximumAbility, OnMaximumManaOrAbilityChangedAsync },
 
-        { Stats.AttackSpeedAny, OnAttackSpeedAnyChangedAsync },
+        { Stats.AttackSpeed, OnAttackSpeedAnyChangedAsync },
 
         { Stats.MinimumPhysicalDmg, OnPhysicalDamageChangedAsync },
         { Stats.MaximumPhysicalDmg, OnPhysicalDamageChangedAsync },
-        { Stats.CombatPower, OnPhysicalDamageChangedAsync },
+        { Stats.CombatPowerMultiplier, OnPhysicalDamageChangedAsync },
 
         { Stats.MinimumSpecialAttackPower, OnSpecializationChanged },
         { Stats.MaximumSpecialAttackPower, OnSpecializationChanged },
@@ -70,23 +70,19 @@ public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(p
     private static async ValueTask OnSpecializationChanged(RemotePlayer player)
     {
         // I'm doing this because I'm not sure but I think we need to send all character specialization every time any of them updates
-        List<(IAttribute, byte)> attributes = [];
-        var minSplAtk = player.Attributes!.FirstOrDefault(a => a.Definition == Stats.MinimumSpecialAttackPower);
-        if (minSplAtk != null && minSplAtk.Value > 0)
-        {
-            attributes.Add((minSplAtk, 0));
-        }
+        List<(byte, ushort, ushort)> attributes = [];
 
+        var minSplAtk = player.Attributes!.FirstOrDefault(a => a.Definition == Stats.MinimumSpecialAttackPower);
         var maxSplAtk = player.Attributes!.FirstOrDefault(a => a.Definition == Stats.MaximumSpecialAttackPower);
-        if (maxSplAtk != null && maxSplAtk.Value > 0)
+        if (minSplAtk != null && maxSplAtk != null && maxSplAtk.Value > 0)
         {
-            attributes.Add((maxSplAtk, 1));
+            attributes.Add((1, (ushort)minSplAtk.Value, (ushort)maxSplAtk.Value));
         }
 
         var splDefense = player.Attributes!.FirstOrDefault(a => a.Definition == Stats.SpecialDefense);
         if (splDefense != null && splDefense.Value > 0)
         {
-            attributes.Add((splDefense, 4));
+            attributes.Add((4, (ushort)splDefense.Value, 0));
         }
 
         int Write()
@@ -95,14 +91,15 @@ public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(p
             var packet = new CharacterSpecializationRef(player.Connection!.Output.GetSpan(length)[..length]);
             for (int i = 0; i < 5; i++)
             {
-                if (attributes.Count <= i + 1)
+                if (attributes.Count <= i)
                 {
                     break;
                 }
 
                 var splBlock = packet[i];
-                splBlock.Type = attributes[i].Item2;
-                splBlock.Value1 = (ushort)attributes[i].Item1.Value;
+                splBlock.Type = attributes[i].Item1;
+                splBlock.Value1 = attributes[i].Item2;
+                splBlock.Value2 = attributes[i].Item3;
             }
 
             return packet.Header.Length;
@@ -152,7 +149,7 @@ public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(p
             (ushort)Math.Max(player.Attributes![Stats.MinimumPhysicalDmg], 0f),
             (ushort)Math.Max(player.Attributes![Stats.MaximumPhysicalDmg], 0f),
             (ushort)Math.Max(player.Attributes![Stats.CombatPowerDamage], 0f),
-            (ushort)Math.Max(player.Attributes![Stats.CombatPower], 0f)).ConfigureAwait(false);
+            (ushort)Math.Max(player.Attributes![Stats.CombatPowerMultiplier] * 100, 0f)).ConfigureAwait(false);
     }
 
     private static async ValueTask OnStatsChangedAsync(RemotePlayer player)
@@ -229,28 +226,6 @@ public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(p
             0,
             0,
             0,
-            0
-            ).ConfigureAwait(false);
-
-        int Write()
-        {
-            var length = CharacterSpecializationRef.Length;
-            var packet = new CharacterSpecializationRef(player.Connection!.Output.GetSpan(length)[..length]);
-            
-            var splBlock = packet[0];
-
-            splBlock = packet[1];
-            splBlock.Type = 1;
-            splBlock.Value1 = 3;
-            splBlock.Value2 = 4;
-
-            splBlock = packet[2];
-            splBlock.Type = 4;
-            splBlock.Value1 = 5;
-
-            return packet.Header.Length;
-        }
-
-        await player.Connection!.SendAsync(Write).ConfigureAwait(false);
+            0).ConfigureAwait(false);
     }
 }

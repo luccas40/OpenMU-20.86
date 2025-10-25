@@ -455,7 +455,7 @@ public class Stats
     /// <summary>
     /// Gets the Combat Power attribute definition.
     /// </summary>
-    public static AttributeDefinition CombatPower { get; } = new(new Guid("68E9D088-C0CE-4675-A76F-C10787B42C52"), "Combat Power", "The Combat Power increase the min/max base damage and added to it.");
+    public static AttributeDefinition CombatPowerMultiplier { get; } = new(new Guid("68E9D088-C0CE-4675-A76F-C10787B42C52"), "Combat Power", "The Combat Power increase the min/max base damage and added to it.");
 
     /// <summary>
     /// Gets the Combat Power attribute and multiply by the damage definition.
@@ -1363,9 +1363,10 @@ public class Stats
     /// </summary>
     public static AttributeDefinition PointsPerReset { get; } = new(new Guid("a34f4f57-b364-4cdb-9989-64cedd2cd831"), "Points Per Reset", "The number of points the player will receive for reset, overwrites the default 'PointsPerReset' value of the reset configuration.");
 
-    public static AttributeDefinition MinimumSpecialAttackPower { get; } = new(new Guid("0434DBE2-D280-43AE-AF89-358D099D646F"), "Minimum Special Attack Power", "Part of Character Specialization that increases Attack Power (add)"); 
-    public static AttributeDefinition MaximumSpecialAttackPower { get; } = new(new Guid("DD453783-CB50-46B2-86D6-AD0DFD96151A"), "Maximum Special Attack Power", "Part of Character Specialization that increases Attack Power (add)"); 
-    public static AttributeDefinition SpecialDefense { get; } = new(new Guid("52BAD2B2-0F74-46D4-A544-B3569B4B550F"), "Special Defense", "Part of Character Specialization that increases Defense (add)"); 
+    public static AttributeDefinition MinimumSpecialAttackPower { get; } = new(new Guid("0434DBE2-D280-43AE-AF89-358D099D646F"), "Minimum Special Attack Power", "Part of Character Specialization that increases Attack Power (add) based on amount of basic attributes"); 
+    public static AttributeDefinition MaximumSpecialAttackPower { get; } = new(new Guid("114D9B49-4C2F-47DF-9833-33D5672DD74C"), "Maximum Special Attack Power", "Part of Character Specialization that increases Attack Power (add) based on amount of basic attributes"); 
+    
+    public static AttributeDefinition SpecialDefense { get; } = new(new Guid("52BAD2B2-0F74-46D4-A544-B3569B4B550F"), "Special Defense", "Part of Character Specialization that increases Defense (add) based on amount of basic attributes"); 
 
     /// <summary>
     /// Gets the dictionary which relates the jewelry element resistance attribute to the correspondent DMG bonus attribute.

@@ -140,7 +140,7 @@ public class InventoryStorage : Storage, IInventoryStorage
                 this._player.Attributes!.ItemPowerUps.Add(item, factory.GetPowerUps(item, this._player.Attributes).ToList());
             }
 
-            await this._player.InvokeViewPlugInAsync<IShowVisibleMountPlugIn>(p => p.ShowVisibleMountAsync((ushort)(active ? (item.Definition!.Group * 512) + item.Definition.Number : ushort.MaxValue))).ConfigureAwait(false);
+            await this._player.ForEachWorldObserverAsync<IShowVisibleMountPlugIn>(p => p.ShowVisibleMountAsync((ushort)(active ? (item.Definition!.Group * 512) + item.Definition.Number : ushort.MaxValue)), true).ConfigureAwait(false);
         }
         else if (item.IsDarkRaven())
         {

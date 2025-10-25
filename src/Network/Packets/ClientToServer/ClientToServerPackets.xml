@@ -2336,6 +2336,37 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>19</Code>
+			<Name>TargetedSkillS21</Name>
+			<Length>7</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>A player performs a skill with a target, e.g. attacking or buffing.</SentWhen>
+			<CausedReaction>Damage is calculated and the target is hit, if the attack was successful. A response is sent back with the caused damage, and all surrounding players get an animation message.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>Byte</Type>
+					<Name>TargetH</Name>
+				</Field>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>MagicH</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>TargetL</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>Byte</Type>
+					<Name>MagicL</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>19</Code>

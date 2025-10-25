@@ -511,6 +511,38 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="SkillAnimationS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="playerId">The player id.</param>
+    /// <param name="skillId">The skill id.</param>
+    /// <param name="targetId">The target id.</param>
+    /// <remarks>
+    /// Is sent by the server when: An object performs a skill which is directly targeted to another object.
+    /// Causes reaction on client side: The animation is shown on the user interface.
+    /// </remarks>
+    public static async ValueTask SendSkillAnimationS21Async(this IConnection? connection, ushort @playerId, ushort @skillId, ushort @targetId)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = SkillAnimationS21Ref.Length;
+            var packet = new SkillAnimationS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.PlayerId = @playerId;
+            packet.SkillId = @skillId;
+            packet.TargetId = @targetId;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="AreaSkillAnimation075" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -1320,6 +1352,42 @@ public static class ConnectionExtensions
             packet.ShieldStatus = @shieldStatus;
             packet.HealthDamage = @healthDamage;
             packet.ShieldDamage = @shieldDamage;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="ObjectHitS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="objectId">The object id.</param>
+    /// <param name="healthDamage">The health damage.</param>
+    /// <param name="type">The type.</param>
+    /// <param name="shieldDamage">The shield damage.</param>
+    /// <param name="attribute">The attribute.</param>
+    /// <remarks>
+    /// Is sent by the server when: An object got hit in two cases: 1. When the own player is hit; 2. When the own player attacked some other object which got hit.
+    /// Causes reaction on client side: The damage is shown at the object which received the hit.
+    /// </remarks>
+    public static async ValueTask SendObjectHitS21Async(this IConnection? connection, ushort @objectId, uint @healthDamage, ushort @type, ushort @shieldDamage, byte @attribute)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ObjectHitS21Ref.Length;
+            var packet = new ObjectHitS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.ObjectId = @objectId;
+            packet.HealthDamage = @healthDamage;
+            packet.Type = @type;
+            packet.ShieldDamage = @shieldDamage;
+            packet.Attribute = @attribute;
 
             return packet.Header.Length;
         }

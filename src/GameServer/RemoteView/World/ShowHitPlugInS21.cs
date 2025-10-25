@@ -1,4 +1,4 @@
-﻿// <copyright file="ShowHitPlugIn.cs" company="MUnique">
+﻿// <copyright file="ShowHitPlugInS21.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -15,22 +15,20 @@ using MUnique.OpenMU.PlugIns;
 /// <summary>
 /// The default implementation of the <see cref="IShowHitPlugIn"/> which is forwarding everything to the game client with specific data packets.
 /// </summary>
-[PlugIn("ShowHitPlugIn", "The default implementation of the IShowHitPlugIn which is forwarding everything to the game client with specific data packets.")]
-[Guid("bb59de05-d3a1-4b52-a1c6-975decf0f1a3")]
-public class ShowHitPlugIn : IShowHitPlugIn
+[PlugIn("ShowHitPlugInS21", "The S21 implementation of the IShowHitPlugIn which is forwarding everything to the game client with specific data packets.")]
+[Guid("4F5CF6A0-45EF-4B13-80DD-A9E7F89538ED")]
+[MinimumClient(21, 0, ClientLanguage.Korean)]
+public class ShowHitPlugInS21 : IShowHitPlugIn
 {
     private readonly RemotePlayer _player;
 
-    private readonly byte _operation;
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="ShowHitPlugIn"/> class.
+    /// Initializes a new instance of the <see cref="ShowHitPlugInS21"/> class.
     /// </summary>
     /// <param name="player">The player.</param>
-    public ShowHitPlugIn(RemotePlayer player)
+    public ShowHitPlugInS21(RemotePlayer player)
     {
         this._player = player;
-        this._operation = this.DetermineOperation();
     }
 
     /// <remarks>
@@ -56,48 +54,17 @@ public class ShowHitPlugIn : IShowHitPlugIn
         {
             var healthDamage = (ushort)System.Math.Min(0xFFFF, remainingHealthDamage);
             var shieldDamage = (ushort)System.Math.Min(0xFFFF, remainingShieldDamage);
-
-            await connection.SendObjectHitAsync(
-                this._operation,
+            await connection.SendObjectHitS21Async(
                 targetId,
                 healthDamage,
-                this.GetDamageKind(hitInfo.Attributes),
-                hitInfo.Attributes.HasFlag(DamageAttributes.Double),
-                hitInfo.Attributes.HasFlag(DamageAttributes.Triple),
-                shieldDamage).ConfigureAwait(false);
+                (ushort)this.GetDamageKind(hitInfo.Attributes),
+                shieldDamage, 0).ConfigureAwait(false);
 
             remainingShieldDamage -= shieldDamage;
             remainingHealthDamage -= healthDamage;
         }
         while (remainingHealthDamage > 0 || remainingShieldDamage > 0);
-    }
-
-    private byte DetermineOperation()
-    {
-        if (this._player.ClientVersion.Season < 1)
-        {
-            return 0x15;
-        }
-
-        switch (this._player.ClientVersion.Language)
-        {
-            case ClientLanguage.English:
-                return 0x11;
-            case ClientLanguage.Japanese:
-                return 0xD6;
-            case ClientLanguage.Vietnamese:
-                return 0xDC;
-            case ClientLanguage.Filipino:
-            case ClientLanguage.Korean:
-                return 0xD3;
-            case ClientLanguage.Chinese:
-                return 0xD0;
-            case ClientLanguage.Thai:
-                return 0xD2;
-            default:
-                return (byte)MUnique.OpenMU.GameServer.PacketType.Hit;
-        }
-    }
+    } 
 
     private DamageKind GetDamageKind(DamageAttributes attributes)
     {

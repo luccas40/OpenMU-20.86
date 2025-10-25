@@ -2116,6 +2116,32 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>19</Code>
+			<Name>SkillAnimationS21</Name>
+			<Length>9</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>An object performs a skill which is directly targeted to another object.</SentWhen>
+			<CausedReaction>The animation is shown on the user interface.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>PlayerId</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>SkillId</Name>
+				</Field>				
+				<Field>
+					<Index>7</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>TargetId</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>1E</Code>
@@ -3087,62 +3113,98 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>11</Code>
+			<Name>ObjectHitExtended</Name>
+			<Length>16</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>An object got hit in two cases: 1. When the own player is hit; 2. When the own player attacked some other object which got hit.</SentWhen>
+			<CausedReaction>The damage is shown at the object which received the hit.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<LeftShifted>0</LeftShifted>
+					<Type>Enum</Type>
+					<TypeName>DamageKind</TypeName>
+					<Name>Kind</Name>
+					<Length>4</Length>
+				</Field>
+				<Field>
+					<Index>3</Index>
+					<LeftShifted>6</LeftShifted>
+					<Type>Boolean</Type>
+					<Name>IsDoubleDamage</Name>
+				</Field>
+				<Field>
+					<Index>3</Index>
+					<LeftShifted>7</LeftShifted>
+					<Type>Boolean</Type>
+					<Name>IsTripleDamage</Name>
+				</Field>
+				<Field>
+					<Index>4</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>ObjectId</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>Byte</Type>
+					<Name>HealthStatus</Name>
+					<Description>Gets or sets the status of the remaining health in fractions of 1/250.</Description>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>Byte</Type>
+					<Name>ShieldStatus</Name>
+					<Description>Gets or sets the status of the remaining shield in fractions of 1/250.</Description>
+				</Field>
+				<Field>
+					<Index>8</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>HealthDamage</Name>
+				</Field>
+
+				<Field>
+					<Index>12</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>ShieldDamage</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>11</Code>
-      <Name>ObjectHitExtended</Name>
-      <Length>16</Length>
+      <Name>ObjectHitS21</Name>
+      <Length>20</Length>
       <Direction>ServerToClient</Direction>
       <SentWhen>An object got hit in two cases: 1. When the own player is hit; 2. When the own player attacked some other object which got hit.</SentWhen>
       <CausedReaction>The damage is shown at the object which received the hit.</CausedReaction>
       <Fields>
         <Field>
           <Index>3</Index>
-          <LeftShifted>0</LeftShifted>
-          <Type>Enum</Type>
-          <TypeName>DamageKind</TypeName>
-          <Name>Kind</Name>
-          <Length>4</Length>
-        </Field>
-        <Field>
-          <Index>3</Index>
-          <LeftShifted>6</LeftShifted>
-          <Type>Boolean</Type>
-          <Name>IsDoubleDamage</Name>
-        </Field>
-        <Field>
-          <Index>3</Index>
-          <LeftShifted>7</LeftShifted>
-          <Type>Boolean</Type>
-          <Name>IsTripleDamage</Name>
-        </Field>
-        <Field>
-          <Index>4</Index>
-          <Type>ShortLittleEndian</Type>
+          <Type>ShortBigEndian</Type>
           <Name>ObjectId</Name>
         </Field>
-        <Field>
-          <Index>6</Index>
-          <Type>Byte</Type>
-          <Name>HealthStatus</Name>
-          <Description>Gets or sets the status of the remaining health in fractions of 1/250.</Description>
-        </Field>
-        <Field>
-          <Index>7</Index>
-          <Type>Byte</Type>
-          <Name>ShieldStatus</Name>
-          <Description>Gets or sets the status of the remaining shield in fractions of 1/250.</Description>
-        </Field>
-        <Field>
-          <Index>8</Index>
-          <Type>IntegerLittleEndian</Type>
-          <Name>HealthDamage</Name>
-        </Field>
-
+				<Field>
+					<Index>8</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>HealthDamage</Name>
+				</Field>
         <Field>
           <Index>12</Index>
-          <Type>IntegerLittleEndian</Type>
+          <Type>ShortLittleEndian</Type>
+          <Name>Type</Name>
+        </Field>
+        <Field>
+          <Index>14</Index>
+          <Type>ShortLittleEndian</Type>
           <Name>ShieldDamage</Name>
+        </Field>
+        <Field>
+          <Index>16</Index>
+          <Type>Byte</Type>
+          <Name>Attribute</Name>
         </Field>
       </Fields>
     </Packet>

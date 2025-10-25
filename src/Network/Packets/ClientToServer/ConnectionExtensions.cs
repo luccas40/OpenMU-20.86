@@ -3039,6 +3039,40 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="TargetedSkillS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="targetH">The target h.</param>
+    /// <param name="magicH">The magic h.</param>
+    /// <param name="targetL">The target l.</param>
+    /// <param name="magicL">The magic l.</param>
+    /// <remarks>
+    /// Is sent by the client when: A player performs a skill with a target, e.g. attacking or buffing.
+    /// Causes reaction on server side: Damage is calculated and the target is hit, if the attack was successful. A response is sent back with the caused damage, and all surrounding players get an animation message.
+    /// </remarks>
+    public static async ValueTask SendTargetedSkillS21Async(this IConnection? connection, byte @targetH, byte @magicH, byte @targetL, byte @magicL)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = TargetedSkillS21Ref.Length;
+            var packet = new TargetedSkillS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.TargetH = @targetH;
+            packet.MagicH = @magicH;
+            packet.TargetL = @targetL;
+            packet.MagicL = @magicL;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="TargetedSkill075" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>

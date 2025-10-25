@@ -82,9 +82,6 @@ public class UpdateCharacterStatsPlugInS21(RemotePlayer player) : IUpdateCharact
         }
 
         await connection.SendAsync(Write).ConfigureAwait(false);
-        await this._player.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.CriticalDamageChance, 100)).ConfigureAwait(false);
-        await this._player.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.AttackSpeed, 100)).ConfigureAwait(false);
-        await this._player.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.CombatPower, 100)).ConfigureAwait(false);
 
         if (this._player.SelectedCharacter!.CharacterClass!.IsMasterClass)
         {

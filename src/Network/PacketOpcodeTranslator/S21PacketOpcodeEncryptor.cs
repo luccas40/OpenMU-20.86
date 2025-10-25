@@ -53,6 +53,8 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xBF20, 0xBF20 }, // Item Use Response
         { 0x4E14, 0x4E14 }, // Muun Single Mount
         { 0x5900, 0x5900 }, // Character Specialization
+        { 0x19FF, 0x19FF }, // Skill Animation
+        { 0x11FF, 0x52FF }, // Object Hit
 
 
     };

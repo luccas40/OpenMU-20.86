@@ -678,7 +678,7 @@ internal class Weapons : InitializerBase
 
         if (combatPower > 0)
         {
-            var combatPowerUp = this.CreateItemBasePowerUpDefinition(Stats.CombatPower, combatPower, AggregateType.AddRaw);
+            var combatPowerUp = this.CreateItemBasePowerUpDefinition(Stats.CombatPowerMultiplier, combatPower, AggregateType.AddRaw);
             item.BasePowerUpAttributes.Add(combatPowerUp);
         }
 
