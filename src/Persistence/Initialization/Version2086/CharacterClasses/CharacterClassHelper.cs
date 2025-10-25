@@ -39,13 +39,22 @@ public static class CharacterClassHelper
         {
             if (classes[i] == 0) continue;
             int classId = i * 16;
-            if (classes[i] == 5) classId += 15;
-            else if (classes[i] == 4) classId += 14;
-            else if (classes[i] == 3) classId += 12;
-            else if (classes[i] == 2) classId += 8;
 
-            yield return characterClasses.First(c => c.Number == classId);
+            // 1 = minimo dk = 1 2 3 4 5
+            // 2 = minimo bk = 2 3 4 5
+            // 3 = minimo bm = 3 4 5
 
+            if (classes[i] <= 5) yield return characterClasses.First(c => c.Number == classId + 15); // fifth class
+            if (classes[i] <= 4) yield return characterClasses.First(c => c.Number == classId + 14); // fourth class
+            if (classes[i] <= 3) yield return characterClasses.First(c => c.Number == classId + 12); // third class
+            if (classes[i] <= 2)
+            {
+                // Some characters doesnt have second class
+                var result = characterClasses.FirstOrDefault(c => c.Number == classId + 8); // second class
+                if (result != null) yield return result;
+            }
+
+            if (classes[i] <= 1) yield return characterClasses.First(c => c.Number == classId); // first class
         }
     }
 
