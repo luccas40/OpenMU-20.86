@@ -3062,6 +3062,53 @@
         </Enum>
       </Enums>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>00</Code>
+			<Name>ChatMessageS21</Name>
+			<Length>73</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>A player sends a chat message.</SentWhen>
+			<CausedReaction>The message is shown in the chat box and above the character of the sender.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>2</Index>
+					<Type>Enum</Type>
+					<TypeName>ChatMessageType</TypeName>
+					<Name>Type</Name>
+				</Field>
+				<Field>
+					<Index>3</Index>
+					<Type>String</Type>
+					<Name>Sender</Name>
+					<Length>10</Length>
+				</Field>
+				<Field>
+					<Index>13</Index>
+					<Type>String</Type>
+					<Name>Message</Name>
+					<Length>60</Length>
+				</Field>
+			</Fields>
+			<Enums>
+				<Enum>
+					<Name>ChatMessageType</Name>
+					<Description>Defines the type of a chat message.</Description>
+					<Values>
+						<EnumValue>
+							<Name>Normal</Name>
+							<Description>The message is a normal chat message, e.g. public, within a party or guild.</Description>
+							<Value>0</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>Whisper</Name>
+							<Description>The message is sent privately to the receiving player.</Description>
+							<Value>2</Value>
+						</EnumValue>
+					</Values>
+				</Enum>
+			</Enums>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>11</Code>
@@ -8592,6 +8639,70 @@
         </Enum>
       </Enums>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>0D</Code>
+			<Name>ServerMessageS21</Name>
+			<Direction>ServerToClient</Direction>
+			<SentWhen></SentWhen>
+			<CausedReaction></CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>Enum</Type>
+					<TypeName>MessageType</TypeName>
+					<Name>Type</Name>
+				</Field>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>MessageLen</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>Delay</Name>
+				</Field>
+				<Field>
+					<Index>8</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>Color</Name>
+				</Field>
+				<Field>
+					<Index>12</Index>
+					<Type>Byte</Type>
+					<Name>Speed</Name>
+				</Field>
+				<Field>
+					<Index>13</Index>
+					<Type>String</Type>
+					<Name>Message</Name>
+				</Field>
+			</Fields>
+			<Enums>
+				<Enum>
+					<Name>MessageType</Name>
+					<Description>Defines a type of a server message.</Description>
+					<Values>
+						<EnumValue>
+							<Name>GoldenCenter</Name>
+							<Description>The message is shown as centered golden message in the client.</Description>
+							<Value>0</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>BlueNormal</Name>
+							<Description>The message is shown as a blue system message.</Description>
+							<Value>1</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>GuildNotice</Name>
+							<Description>The message is a guild notice, centered in green.</Description>
+							<Value>2</Value>
+						</EnumValue>
+					</Values>
+				</Enum>
+			</Enums>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>50</Code>

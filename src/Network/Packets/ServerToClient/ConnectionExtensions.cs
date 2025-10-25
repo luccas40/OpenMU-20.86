@@ -1278,6 +1278,38 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="ChatMessageS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="type">The type.</param>
+    /// <param name="sender">The sender.</param>
+    /// <param name="message">The message.</param>
+    /// <remarks>
+    /// Is sent by the server when: A player sends a chat message.
+    /// Causes reaction on client side: The message is shown in the chat box and above the character of the sender.
+    /// </remarks>
+    public static async ValueTask SendChatMessageS21Async(this IConnection? connection, ChatMessageS21.ChatMessageType @type, string @sender, string @message)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ChatMessageS21Ref.Length;
+            var packet = new ChatMessageS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Type = @type;
+            packet.Sender = @sender;
+            packet.Message = @message;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="ObjectHit" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -4655,6 +4687,44 @@ public static class ConnectionExtensions
             var length = ServerMessageRef.GetRequiredSize(message);
             var packet = new ServerMessageRef(connection.Output.GetSpan(length)[..length]);
             packet.Type = @type;
+            packet.Message = @message;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="ServerMessageS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="type">The type.</param>
+    /// <param name="messageLen">The message len.</param>
+    /// <param name="delay">The delay.</param>
+    /// <param name="color">The color.</param>
+    /// <param name="speed">The speed.</param>
+    /// <param name="message">The message.</param>
+    /// <remarks>
+    /// Is sent by the server when: 
+    /// Causes reaction on client side: 
+    /// </remarks>
+    public static async ValueTask SendServerMessageS21Async(this IConnection? connection, ServerMessageS21.MessageType @type, byte @messageLen, ushort @delay, uint @color, byte @speed, string @message)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ServerMessageS21Ref.GetRequiredSize(message);
+            var packet = new ServerMessageS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Type = @type;
+            packet.MessageLen = @messageLen;
+            packet.Delay = @delay;
+            packet.Color = @color;
+            packet.Speed = @speed;
             packet.Message = @message;
 
             return packet.Header.Length;

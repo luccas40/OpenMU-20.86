@@ -33,6 +33,7 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0x83FF, 0xA9FF }, // Inventory Pet Info Request
         { 0xBF20, 0xBF20 }, // User Tries to Use Pet
         { 0x0EFF, 0x19FF }, // Target Skill Cast (tested with Force Wave Dl)
+        { 0x23FF, 0x00FF }, // Public Chat Message
 
         // c9ff changed rotation len 5
         // e202 or ff auto attack  len 7

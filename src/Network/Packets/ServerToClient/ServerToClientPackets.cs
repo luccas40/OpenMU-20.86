@@ -7914,6 +7914,119 @@ public readonly struct ChatMessage
 
 
 /// <summary>
+/// Is sent by the server when: A player sends a chat message.
+/// Causes reaction on client side: The message is shown in the chat box and above the character of the sender.
+/// </summary>
+public readonly struct ChatMessageS21
+{
+    /// <summary>
+    /// Defines the type of a chat message.
+    /// </summary>
+    public enum ChatMessageType
+    {
+        /// <summary>
+        /// The message is a normal chat message, e.g. public, within a party or guild.
+        /// </summary>
+            Normal = 0,
+
+        /// <summary>
+        /// The message is sent privately to the receiving player.
+        /// </summary>
+            Whisper = 2,
+    }
+
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChatMessageS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public ChatMessageS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChatMessageS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private ChatMessageS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x00;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 73;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the type.
+    /// </summary>
+    public ChatMessageS21.ChatMessageType Type
+    {
+        get => (ChatMessageType)this._data.Span[2];
+        set => this._data.Span[2] = (byte)value;
+    }
+
+    /// <summary>
+    /// Gets or sets the sender.
+    /// </summary>
+    public string Sender
+    {
+        get => this._data.Span.ExtractString(3, 10, System.Text.Encoding.UTF8);
+        set => this._data.Slice(3, 10).Span.WriteString(value, System.Text.Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Gets or sets the message.
+    /// </summary>
+    public string Message
+    {
+        get => this._data.Span.ExtractString(13, 60, System.Text.Encoding.UTF8);
+        set => this._data.Slice(13, 60).Span.WriteString(value, System.Text.Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="ChatMessageS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator ChatMessageS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="ChatMessageS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(ChatMessageS21 packet) => packet._data; 
+}
+
+
+/// <summary>
 /// Is sent by the server when: An object got hit in two cases: 1. When the own player is hit; 2. When the own player attacked some other object which got hit.
 /// Causes reaction on client side: The damage is shown at the object which received the hit.
 /// </summary>
@@ -23122,6 +23235,158 @@ public readonly struct ServerMessage
     /// </summary>
     /// <param name="contentLength">The content length in bytes of the variable 'Message' field from which the size will be calculated.</param>
     public static int GetRequiredSize(int contentLength) => contentLength + 1 + 4;
+}
+
+
+/// <summary>
+/// Is sent by the server when: 
+/// Causes reaction on client side: 
+/// </summary>
+public readonly struct ServerMessageS21
+{
+    /// <summary>
+    /// Defines a type of a server message.
+    /// </summary>
+    public enum MessageType
+    {
+        /// <summary>
+        /// The message is shown as centered golden message in the client.
+        /// </summary>
+            GoldenCenter = 0,
+
+        /// <summary>
+        /// The message is shown as a blue system message.
+        /// </summary>
+            BlueNormal = 1,
+
+        /// <summary>
+        /// The message is a guild notice, centered in green.
+        /// </summary>
+            GuildNotice = 2,
+    }
+
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServerMessageS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public ServerMessageS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServerMessageS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private ServerMessageS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)data.Length;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x0D;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the type.
+    /// </summary>
+    public ServerMessageS21.MessageType Type
+    {
+        get => (MessageType)this._data.Span[3];
+        set => this._data.Span[3] = (byte)value;
+    }
+
+    /// <summary>
+    /// Gets or sets the message len.
+    /// </summary>
+    public byte MessageLen
+    {
+        get => this._data.Span[4];
+        set => this._data.Span[4] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the delay.
+    /// </summary>
+    public ushort Delay
+    {
+        get => ReadUInt16LittleEndian(this._data.Span[6..]);
+        set => WriteUInt16LittleEndian(this._data.Span[6..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the color.
+    /// </summary>
+    public uint Color
+    {
+        get => ReadUInt32LittleEndian(this._data.Span[8..]);
+        set => WriteUInt32LittleEndian(this._data.Span[8..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the speed.
+    /// </summary>
+    public byte Speed
+    {
+        get => this._data.Span[12];
+        set => this._data.Span[12] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the message.
+    /// </summary>
+    public string Message
+    {
+        get => this._data.Span.ExtractString(13, this._data.Length - 13, System.Text.Encoding.UTF8);
+        set => this._data.Slice(13).Span.WriteString(value, System.Text.Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="ServerMessageS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator ServerMessageS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="ServerMessageS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(ServerMessageS21 packet) => packet._data; 
+
+    /// <summary>
+    /// Calculates the size of the packet for the specified field content.
+    /// </summary>
+    /// <param name="content">The content of the variable 'Message' field from which the size will be calculated.</param>
+    public static int GetRequiredSize(string content) => System.Text.Encoding.UTF8.GetByteCount(content) + 1 + 13;
+
+    /// <summary>
+    /// Calculates the size of the packet for the specified field content.
+    /// </summary>
+    /// <param name="contentLength">The content length in bytes of the variable 'Message' field from which the size will be calculated.</param>
+    public static int GetRequiredSize(int contentLength) => contentLength + 1 + 13;
 }
 
 
