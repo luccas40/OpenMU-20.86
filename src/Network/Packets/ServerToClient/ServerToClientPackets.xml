@@ -6626,6 +6626,68 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>F3</Code>
+			<SubCode>04</SubCode>
+			<Name>RespawnAfterDeathS21</Name>
+			<Length>32</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The character respawned after death.</SentWhen>
+			<CausedReaction>The character respawns with the specified attributes at the specified map.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>PositionX</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>PositionY</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>MapNumber</Name>
+				</Field>
+				<Field>
+					<Index>8</Index>
+					<Type>Byte</Type>
+					<Name>Direction</Name>
+				</Field>
+				<Field>
+					<Index>10</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>CurrentHealth</Name>
+				</Field>
+				<Field>
+					<Index>12</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>CurrentMana</Name>
+				</Field>
+				<Field>
+					<Index>14</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>CurrentShield</Name>
+				</Field>
+				<Field>
+					<Index>16</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>CurrentAbility</Name>
+				</Field>
+				<Field>
+					<Index>18</Index>
+					<Type>LongBigEndian</Type>
+					<Name>Experience</Name>
+				</Field>
+				<Field>
+					<Index>28</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>Money</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1HeaderWithSubCode</HeaderType>
       <Code>F3</Code>
