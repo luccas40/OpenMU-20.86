@@ -1716,6 +1716,72 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="MapChangedS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="number">The number.</param>
+    /// <param name="mapNumber">The map number.</param>
+    /// <param name="positionX">The position x.</param>
+    /// <param name="positionY">The position y.</param>
+    /// <param name="rotation">The rotation.</param>
+    /// <remarks>
+    /// Is sent by the server when: The map was changed on the server side.
+    /// Causes reaction on client side: The game client changes to the specified map and coordinates.
+    /// </remarks>
+    public static async ValueTask SendMapChangedS21Async(this IConnection? connection, ushort @number, ushort @mapNumber, byte @positionX, byte @positionY, byte @rotation)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MapChangedS21Ref.Length;
+            var packet = new MapChangedS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Number = @number;
+            packet.MapNumber = @mapNumber;
+            packet.PositionX = @positionX;
+            packet.PositionY = @positionY;
+            packet.Rotation = @rotation;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="WarpResult" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="junk">The junk.</param>
+    /// <param name="junk2">The junk 2.</param>
+    /// <remarks>
+    /// Is sent by the server when: The result of warp request.
+    /// Causes reaction on client side: Not sure yet.
+    /// </remarks>
+    public static async ValueTask SendWarpResultAsync(this IConnection? connection, byte @junk, byte @junk2)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = WarpResultRef.Length;
+            var packet = new WarpResultRef(connection.Output.GetSpan(length)[..length]);
+            packet.Junk = @junk;
+            packet.Junk2 = @junk2;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="MapChanged075" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>

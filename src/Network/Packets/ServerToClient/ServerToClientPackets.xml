@@ -3593,6 +3593,64 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>1C</Code>
+			<Name>MapChangedS21</Name>
+			<Length>11</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The map was changed on the server side.</SentWhen>
+			<CausedReaction>The game client changes to the specified map and coordinates.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>Number</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>MapNumber</Name>
+				</Field>
+				<Field>
+					<Index>8</Index>
+					<Type>Byte</Type>
+					<Name>PositionX</Name>
+				</Field>
+				<Field>
+					<Index>9</Index>
+					<Type>Byte</Type>
+					<Name>PositionY</Name>
+				</Field>
+				<Field>
+					<Index>10</Index>
+					<Type>Byte</Type>
+					<Name>Rotation</Name>
+				</Field>
+			</Fields>
+		</Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>8E</Code>
+			<SubCode>03</SubCode>
+			<Name>WarpResult</Name>
+			<Length>6</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The result of warp request.</SentWhen>
+			<CausedReaction>Not sure yet.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>Junk</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>Junk2</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C3Header</HeaderType>
       <Code>1C</Code>

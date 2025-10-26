@@ -9386,6 +9386,216 @@ public readonly struct MapChanged
 /// Is sent by the server when: The map was changed on the server side.
 /// Causes reaction on client side: The game client changes to the specified map and coordinates.
 /// </summary>
+public readonly struct MapChangedS21
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MapChangedS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public MapChangedS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MapChangedS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private MapChangedS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x1C;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 11;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the number.
+    /// </summary>
+    public ushort Number
+    {
+        get => ReadUInt16LittleEndian(this._data.Span[4..]);
+        set => WriteUInt16LittleEndian(this._data.Span[4..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the map number.
+    /// </summary>
+    public ushort MapNumber
+    {
+        get => ReadUInt16LittleEndian(this._data.Span[6..]);
+        set => WriteUInt16LittleEndian(this._data.Span[6..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the position x.
+    /// </summary>
+    public byte PositionX
+    {
+        get => this._data.Span[8];
+        set => this._data.Span[8] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the position y.
+    /// </summary>
+    public byte PositionY
+    {
+        get => this._data.Span[9];
+        set => this._data.Span[9] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the rotation.
+    /// </summary>
+    public byte Rotation
+    {
+        get => this._data.Span[10];
+        set => this._data.Span[10] = value;
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="MapChangedS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator MapChangedS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="MapChangedS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(MapChangedS21 packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the server when: The result of warp request.
+/// Causes reaction on client side: Not sure yet.
+/// </summary>
+public readonly struct WarpResult
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WarpResult"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public WarpResult(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WarpResult"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private WarpResult(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x8E;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x03;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 6;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCode Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the junk.
+    /// </summary>
+    public byte Junk
+    {
+        get => this._data.Span[4];
+        set => this._data.Span[4] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the junk 2.
+    /// </summary>
+    public byte Junk2
+    {
+        get => this._data.Span[5];
+        set => this._data.Span[5] = value;
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="WarpResult"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator WarpResult(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="WarpResult"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(WarpResult packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the server when: The map was changed on the server side.
+/// Causes reaction on client side: The game client changes to the specified map and coordinates.
+/// </summary>
 public readonly struct MapChanged075
 {
     private readonly Memory<byte> _data;

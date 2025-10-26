@@ -61,10 +61,11 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0x18FF, 0x82FF }, // Animation Result
         { 0x17FF, 0x17FF }, // Object got Killed
         { 0xF304, 0x8107 }, // Respawn
-        { 0x9CFF, 0x9CFF }, // Exp Gained
+        { 0x9CFF, 0x9CFF }, // Exp Gained { 0x16FF, 0x16FF }
         { 0xF305, 0x8103 }, // Normal Level Up
         { 0xF306, 0x8110 }, // Add Stat Result
-        // { 0x16FF, 0x16FF }, // Exp Gained
+        { 0x1CFF, 0x1CFF }, // Teleport Result / Contains Warp between maps
+        // { 0x8E03, 0x8E03 }, // Warp result (testing)
     };
 
     /// <summary>

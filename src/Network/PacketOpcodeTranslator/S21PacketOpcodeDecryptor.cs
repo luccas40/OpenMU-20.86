@@ -44,6 +44,9 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0x4300, 0x0E00 }, // Ping
         { 0x4D01, 0xF102 }, // LogOut By Exiting / Character Selection / Server Selection
         { 0x5712, 0xF306 }, // Add Stat Result
+        { 0x5716, 0xF312 }, // Client Ready After Map Change
+        { 0x8E02, 0x8E02 }, // Warp List Request Teleport
+        {0x1CFF, 0x1CFF }, // Entered a gate
     };
     /*
 
