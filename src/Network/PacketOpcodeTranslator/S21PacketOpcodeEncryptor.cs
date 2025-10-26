@@ -57,7 +57,8 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0x11FF, 0x52FF }, // Object Hit
         { 0x0DFF, 0x0DFF }, // Server Message
         { 0x00FF, 0x00FF }, // Public Chat Message
-        { 0x18FF, 0x82FF }, // Public Chat Message
+        { 0x18FF, 0x82FF }, // Animation Result
+        { 0x17FF, 0x17FF }, // Object got Killed
     };
 
     /// <summary>

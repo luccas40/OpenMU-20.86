@@ -40,6 +40,7 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0x23FF, 0x00FF }, // Public Chat Message
         { 0xC9FF, 0x18FF }, // Animation Request
         { 0x4E11, 0x4E11 }, // Muun Mount Request (Dl horse + guardian mounts are now muun somehow)
+        { 0xE2FF, 0x11FF }, // Auto Attack Request
 
         // e202 or ff auto attack  len 7
     };
