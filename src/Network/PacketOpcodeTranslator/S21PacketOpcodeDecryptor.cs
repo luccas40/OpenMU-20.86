@@ -43,7 +43,7 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0xE2FF, 0x11FF }, // Auto Attack Request
         { 0x4300, 0x0E00 }, // Ping
         { 0x4D01, 0xF102 }, // LogOut By Exiting / Character Selection / Server Selection
-        { 0x5712, 0xF306 }, // LogOut By Exiting / Character Selection / Server Selection
+        { 0x5712, 0xF306 }, // Add Stat Result
     };
     /*
 

@@ -4,8 +4,9 @@
 
 namespace MUnique.OpenMU.GameLogic;
 
-using System.Runtime.CompilerServices;
 using MUnique.OpenMU.Pathfinding;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// The terrain of a map.
@@ -100,14 +101,30 @@ public class GameMapTerrain
     /// <param name="data">The data.</param>
     private void ReadTerrainData(ReadOnlySpan<byte> data)
     {
-        for (int i = 0; i < data.Length; i++)
+        if (data.Length == 0x20000)
         {
-            byte x = (byte)(i & 0xFF);
-            byte y = (byte)((i >> 8) & 0xFF);
-            byte value = data[i];
-            this.WalkMap[x, y] = value == 0 || value == 1;
-            this.SafezoneMap[x, y] = value == 1;
-            this.UpdateAiGridValue(x, y);
+            ushort[] udata = MemoryMarshal.Cast<byte, ushort>(data[4..].ToArray()).ToArray();
+            for (int i = 0; i < udata.Length; i++)
+            {
+                byte x = (byte)(i & 0xFF);
+                byte y = (byte)((i >> 8) & 0xFF);
+                ushort value = udata[i];
+                this.WalkMap[x, y] = value == 0 || value == 1;
+                this.SafezoneMap[x, y] = value == 1;
+                this.UpdateAiGridValue(x, y);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                byte x = (byte)(i & 0xFF);
+                byte y = (byte)((i >> 8) & 0xFF);
+                byte value = data[i];
+                this.WalkMap[x, y] = value == 0 || value == 1;
+                this.SafezoneMap[x, y] = value == 1;
+                this.UpdateAiGridValue(x, y);
+            }
         }
     }
 }

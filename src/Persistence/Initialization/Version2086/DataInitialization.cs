@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.Network.PlugIns;
 using MUnique.OpenMU.Persistence.Initialization.Version2086.TestAccounts;
-using MUnique.OpenMU.Persistence.Initialization.VersionSeasonSix;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
@@ -33,6 +32,7 @@ public class DataInitialization(IPersistenceContextProvider persistenceContextPr
     /// <inheritdoc />
     public override string Key => Id;
 
+    /// <inheritdoc/>
     public override string Caption => "1.20.86 - Season 21";
 
     /// <inheritdoc/>
