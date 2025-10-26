@@ -41,10 +41,28 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0xC9FF, 0x18FF }, // Animation Request
         { 0x4E11, 0x4E11 }, // Muun Mount Request (Dl horse + guardian mounts are now muun somehow)
         { 0xE2FF, 0x11FF }, // Auto Attack Request
-
-        // e202 or ff auto attack  len 7
+        { 0x4300, 0x0E00 }, // Ping
+        { 0x4D01, 0xF102 }, // LogOut By Exiting / Character Selection / Server Selection
     };
+    /*
 
+     *  Packet not Translated C-S>: E7 - 02 len 4
+     *  Packet not Translated C-S>: C7 - 01 len 14
+Packet not Translated C-S>: ED - 00 len 8
+Packet not Translated C-S>: 22 - 31 len 4
+    Packet not Translated C-S>: 22 - 31 len 4
+    Packet not Translated C-S>: E7 - 02 len 4
+Packet not Translated C-S>: E7 - 02 len 4
+Packet not Translated C-S>: 57 - 60 len 4
+Packet not Translated C-S>: 22 - 27 len 5
+Packet not Translated C-S>: 90 - 3D len 5
+    after trying to go back to character selection
+    Packet not Translated C-S>: 57 - 30 len 41
+Packet not Translated C-S>: 59 - 04 len 28
+Packet not Translated C-S>: E7 - 02 len 4
+Packet not Translated C-S>: 4D - 01 len 5
+Packet not Translated C-S>: 43 - 00 len 12
+     * */
     /// <summary>
     /// Initializes a new instance of the <see cref="S21PacketOpcodeDecryptor"/> class.
     /// </summary>

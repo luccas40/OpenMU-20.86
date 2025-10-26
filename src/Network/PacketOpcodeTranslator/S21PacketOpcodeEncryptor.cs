@@ -29,6 +29,7 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         // Original, Transformed
         { 0xF100, 0x3700 }, // Show Login Box
         { 0xF101, 0x37FE }, // Login Response
+        { 0xF102, 0x3702 }, // LogOut
         { 0xF300, 0x8130 }, // Character List Response
         { 0xF301, 0x8153 }, // Show Character Create
         { 0xF302, 0x8105 }, // Delete Character Response
@@ -100,6 +101,8 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         if (translated != 0)
         {
             result.SetPacketCode(translated);
+            if (result[0] == 0xC3) result[0] = 0xC1;
+            if (result[0] == 0xC4) result[0] = 0xC2;
             this._target.Advance(result.Length);
         }
         else
