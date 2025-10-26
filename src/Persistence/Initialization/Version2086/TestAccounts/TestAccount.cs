@@ -34,7 +34,7 @@ internal class TestAccount : AccountInitializerBase
         character.Attributes.First(a => a.Definition == Stats.BaseAgility).Value = 1010;
         character.Attributes.First(a => a.Definition == Stats.BaseEnergy).Value = 401;
         character.Attributes.First(a => a.Definition == Stats.BaseLeadership).Value = 1101;
-        character.LevelUpPoints = 0; // for the added strength and agility
+        character.LevelUpPoints = 1500; // for the added strength and agility
 
         //character.Inventory!.Items.Add(this.CreateWeapon(InventoryConstants.LeftHandSlot, 2, 12, 13, 4, true, true, Stats.ExcellentDamageChance)); // Exc Great Lord Scepter+13+16+L+ExcDmg
         //character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.HelmSlot, 26, 7, Stats.MaximumHealth, 13, 4, true)); // Exc Ada Helm+13+16+L

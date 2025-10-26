@@ -8850,6 +8850,103 @@ public readonly ref struct ExperienceGainedRef
 /// Is sent by the server when: A player gained experience.
 /// Causes reaction on client side: The experience is added to the experience counter and bar.
 /// </summary>
+public readonly ref struct ExperienceGainedS21Ref
+{
+    private readonly Span<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExperienceGainedS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public ExperienceGainedS21Ref(Span<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExperienceGainedS21Ref"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private ExperienceGainedS21Ref(Span<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC3;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x9c;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 15;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C3HeaderRef Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the killed object id.
+    /// </summary>
+    public ushort KilledObjectId
+    {
+        get => ReadUInt16BigEndian(this._data[3..]);
+        set => WriteUInt16BigEndian(this._data[3..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the experience.
+    /// </summary>
+    public ulong Experience
+    {
+        get => ReadUInt64BigEndian(this._data[5..]);
+        set => WriteUInt64BigEndian(this._data[5..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the damage of last hit.
+    /// </summary>
+    public ushort DamageOfLastHit
+    {
+        get => ReadUInt16BigEndian(this._data[13..]);
+        set => WriteUInt16BigEndian(this._data[13..], value);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Span of bytes to a <see cref="ExperienceGainedS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator ExperienceGainedS21Ref(Span<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="ExperienceGainedS21"/> to a Span of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Span<byte>(ExperienceGainedS21Ref packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the server when: A player gained experience.
+/// Causes reaction on client side: The experience is added to the experience counter and bar.
+/// </summary>
 public readonly ref struct ExperienceGainedExtendedRef
 {
     private readonly Span<byte> _data;

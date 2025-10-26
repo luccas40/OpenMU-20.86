@@ -61,6 +61,10 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0x18FF, 0x82FF }, // Animation Result
         { 0x17FF, 0x17FF }, // Object got Killed
         { 0xF304, 0x8107 }, // Respawn
+        { 0x9CFF, 0x9CFF }, // Exp Gained
+        { 0xF305, 0x8103 }, // Normal Level Up
+        { 0xF306, 0x8110 }, // Add Stat Result
+        // { 0x16FF, 0x16FF }, // Exp Gained
     };
 
     /// <summary>

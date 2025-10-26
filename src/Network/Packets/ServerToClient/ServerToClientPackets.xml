@@ -3453,6 +3453,32 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C3Header</HeaderType>
+			<Code>9c</Code>
+			<Name>ExperienceGainedS21</Name>
+			<Length>15</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>A player gained experience.</SentWhen>
+			<CausedReaction>The experience is added to the experience counter and bar.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>KilledObjectId</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Name>Experience</Name>
+					<Type>LongBigEndian</Type>
+				</Field>
+				<Field>
+					<Index>13</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>DamageOfLastHit</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C3Header</HeaderType>
       <Code>16</Code>

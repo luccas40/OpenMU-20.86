@@ -1612,6 +1612,38 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="ExperienceGainedS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="killedObjectId">The killed object id.</param>
+    /// <param name="experience">The experience.</param>
+    /// <param name="damageOfLastHit">The damage of last hit.</param>
+    /// <remarks>
+    /// Is sent by the server when: A player gained experience.
+    /// Causes reaction on client side: The experience is added to the experience counter and bar.
+    /// </remarks>
+    public static async ValueTask SendExperienceGainedS21Async(this IConnection? connection, ushort @killedObjectId, ulong @experience, ushort @damageOfLastHit)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ExperienceGainedS21Ref.Length;
+            var packet = new ExperienceGainedS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.KilledObjectId = @killedObjectId;
+            packet.Experience = @experience;
+            packet.DamageOfLastHit = @damageOfLastHit;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="ExperienceGainedExtended" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>

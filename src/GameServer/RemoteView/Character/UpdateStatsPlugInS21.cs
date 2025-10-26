@@ -49,6 +49,11 @@ public class UpdateStatsPlugInS21(RemotePlayer player) : UpdateStatsBasePlugIn(p
         { Stats.MaximumSpecialAttackPower, OnSpecializationChanged },
         { Stats.SpecialDefense, OnSpecializationChanged },
 
+        { Stats.BaseStrength, OnStatsChangedAsync },
+        { Stats.BaseAgility, OnStatsChangedAsync },
+        { Stats.BaseEnergy, OnStatsChangedAsync },
+        { Stats.BaseVitality, OnStatsChangedAsync },
+        { Stats.BaseLeadership, OnStatsChangedAsync },
         { Stats.CriticalDamageBonus, OnStatsChangedAsync },
         { Stats.ExcellentDamageBonus, OnStatsChangedAsync },
         { Stats.ShieldBypassChance, OnStatsChangedAsync },
