@@ -5,7 +5,7 @@
 namespace MUnique.OpenMU.Persistence.Initialization.Version2086;
 
 using MUnique.OpenMU.DataModel.Configuration;
-using MUnique.OpenMU.Persistence.Initialization.VersionSeasonSix.Maps;
+using MUnique.OpenMU.Persistence.Initialization.Version2086.Maps;
 
 /// <summary>
 /// Initializes the <see cref="GameMapDefinition"/>s.
@@ -27,15 +27,15 @@ public class GameMapsInitializer : GameMapsInitializerBase
     {
         get
         {
-            yield return typeof(Version2086.Maps.Lorencia);
+            yield return typeof(Lorencia);
             yield return typeof(Dungeon);
             yield return typeof(Devias);
             yield return typeof(Noria);
             yield return typeof(LostTower);
-            yield return typeof(Version075.Maps.Exile);
-            yield return typeof(Version075.Maps.Arena);
+            // yield return typeof(Exile);
+            yield return typeof(Arena);
             yield return typeof(Atlans);
-            yield return typeof(Version095d.Maps.Tarkan);
+            yield return typeof(Tarkan);
             yield return typeof(Icarus);
             yield return typeof(Elvenland);
             yield return typeof(Karutan1);
@@ -85,10 +85,10 @@ public class GameMapsInitializer : GameMapsInitializerBase
             yield return typeof(IllusionTemple4);
             yield return typeof(IllusionTemple5);
             yield return typeof(IllusionTemple6);
-            yield return typeof(Version095d.Maps.DevilSquare1);
-            yield return typeof(Version095d.Maps.DevilSquare2);
-            yield return typeof(Version095d.Maps.DevilSquare3);
-            yield return typeof(Version095d.Maps.DevilSquare4);
+            yield return typeof(DevilSquare1);
+            yield return typeof(DevilSquare2);
+            yield return typeof(DevilSquare3);
+            yield return typeof(DevilSquare4);
             yield return typeof(DevilSquare5);
             yield return typeof(DevilSquare6);
             yield return typeof(DevilSquare7);
@@ -100,6 +100,63 @@ public class GameMapsInitializer : GameMapsInitializerBase
             yield return typeof(FortressOfImperialGuardian2);
             yield return typeof(FortressOfImperialGuardian3);
             yield return typeof(FortressOfImperialGuardian4);
+            yield return typeof(DoubleGoer1);
+            yield return typeof(DoubleGoer2);
+            yield return typeof(DoubleGoer3);
+            yield return typeof(DoubleGoer4);
+            yield return typeof(DoubleGoer5);
+            yield return typeof(DoubleGoer6);
+            yield return typeof(DoubleGoer7);
+            yield return typeof(DoubleGoer8);
+            yield return typeof(DoubleGoer9);
+            yield return typeof(Acheron1);
+            yield return typeof(Acheron2);
+            yield return typeof(Debenter1);
+            yield return typeof(Debenter2);
+            yield return typeof(ChaosCastle8);
+            yield return typeof(IllusionTemple7);
+            yield return typeof(IllusionTemple8);
+            yield return typeof(UrkMontain1);
+            yield return typeof(UrkMontain2);
+            yield return typeof(TormentedSquare1);
+            yield return typeof(TormentedSquare2);
+            yield return typeof(TormentedSquare3);
+            yield return typeof(TormentedSquare4);
+            yield return typeof(TormentedSquare5);
+            yield return typeof(Nars);
+            yield return typeof(Ferea);
+            yield return typeof(NixieLake);
+            yield return typeof(QuestZoneEntrance);
+            yield return typeof(Labyrinth);
+            yield return typeof(DeepDungeon1);
+            yield return typeof(DeepDungeon2);
+            yield return typeof(DeepDungeon3);
+            yield return typeof(DeepDungeon4);
+            yield return typeof(DeepDungeon5);
+            yield return typeof(Place4thQuest);
+            yield return typeof(SwampOfDarkness);
+            yield return typeof(KuberaMine);
+            yield return typeof(KuberaMine2);
+            yield return typeof(KuberaMine3);
+            yield return typeof(KuberaMine4);
+            yield return typeof(KuberaMine5);
+            yield return typeof(AbyssOfAtlans);
+            yield return typeof(AbyssOfAtlans2);
+            yield return typeof(AbyssOfAtlans3);
+            yield return typeof(ScorchedCanyon);
+            yield return typeof(RedSmokeIcarus);
+            yield return typeof(ArenilTemple);
+            yield return typeof(AshyAida);
+            yield return typeof(OldKethotum);
+            yield return typeof(BlazeKethotum);
+            yield return typeof(KanturuUndergrounds);
+            yield return typeof(VolcanoIgnis);
+            yield return typeof(BossBattle);
+            yield return typeof(BloodyTarkan);
+            yield return typeof(TormentaIsland);
+            yield return typeof(TwistedKarutan);
+            yield return typeof(KardamahalUnderGroundTemple);
+            yield return typeof(SwampOfDoom);
         }
     }
 }
