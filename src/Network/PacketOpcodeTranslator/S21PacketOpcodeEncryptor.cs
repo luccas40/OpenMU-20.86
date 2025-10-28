@@ -37,6 +37,7 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xF310, 0x8101 }, // CharacterInventory
         { 0xF311, 0x8113 }, // Character Skill List Update
         { 0xF315, 0x8123 }, // Character Select Confirm
+        { 0xF350, 0x8114 }, // Master Infos
         { 0x12FF, 0x12FF }, // Add Player to Scope
         { 0x13FF, 0x13FF }, // Add Creature to Scope
         { 0x14FF, 0x14FF }, // Remove Object from Scope
@@ -65,6 +66,7 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xF305, 0x8103 }, // Normal Level Up
         { 0xF306, 0x8110 }, // Add Stat Result
         { 0x1CFF, 0x1CFF }, // Teleport Result / Contains Warp between maps
+
         // { 0x8E03, 0x8E03 }, // Warp result (testing)
     };
 

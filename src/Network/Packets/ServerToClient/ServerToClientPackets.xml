@@ -8389,7 +8389,7 @@
       <Length>7</Length>
       <Direction>ServerToClient</Direction>
       <SentWhen>E.g. when event items are dropped to the floor.</SentWhen>
-      <CausedReaction>The client plays a fanfare sound at the specified coordinates.</CausedReaction>
+      <CausedReaction>The client plays a fanfare sound at the specifie  d coordinates.</CausedReaction>
       <Fields>
         <Field>
           <Index>4</Index>

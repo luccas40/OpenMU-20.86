@@ -55,7 +55,7 @@ public class UpdateCharacterStatsPlugInS21(RemotePlayer player) : IUpdateCharact
                 CurrentExperience = (ulong)this._player.SelectedCharacter.Experience,
                 ExperienceForNextLevel = (ulong)this._player.GameServerContext.ExperienceTable[(int)this._player.Attributes![Stats.Level] + 1],
                 LevelUpPoints = (ushort)Math.Max(0, this._player.SelectedCharacter.LevelUpPoints),
-                Strength = (ushort)this._player.Attributes[Stats.BaseStrength],
+                Strength = (ushort)this._player.Attributes![Stats.BaseStrength],
                 Agility = (ushort)this._player.Attributes[Stats.BaseAgility],
                 Vitality = (ushort)this._player.Attributes[Stats.BaseVitality],
                 Energy = (ushort)this._player.Attributes[Stats.BaseEnergy],

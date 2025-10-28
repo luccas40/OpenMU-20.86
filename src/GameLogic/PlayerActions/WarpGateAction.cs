@@ -44,7 +44,7 @@ public class WarpGateAction
         }
 
         var requirement = player.SelectedCharacter?.GetEffectiveMoveLevelRequirement(enterGate.LevelRequirement);
-        if (requirement > player.Attributes![Stats.Level])
+        if (requirement > player.Attributes![Stats.TotalLevel])
         {
             await player.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync("Your level is too low to enter this map.", Interfaces.MessageType.BlueNormal)).ConfigureAwait(false);
             return false;

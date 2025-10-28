@@ -59,13 +59,11 @@ public class ShowCharacterListPluginS21(RemotePlayer player) : IShowCharacterLis
             var span = connection.Output.GetSpan(size)[..size];
             var packet = new CharacterListS21Ref(span)
             {
-                // SpecialCharacter = unlockFlags,
-                SpecialCharacter = 0xFF,
+                SpecialCharacter = 5, // unlock all but tbh only 4 classes is locked
                 CharacterCount = (byte)account.Characters.Count,
                 CharacterSlotCount = (byte)account.Characters.Count,
                 DailyCharCreation = 10,
                 IsVaultExtended = account.IsVaultExtended,
-                BtDummy = 0x6f,
             };
 
             var j = 0;
@@ -74,7 +72,12 @@ public class ShowCharacterListPluginS21(RemotePlayer player) : IShowCharacterLis
                 var characterData = packet[j];
                 characterData.SlotIndex = character.CharacterSlot;
                 characterData.Name = character.Name;
-                characterData.Level = (ushort)(character.Attributes.FirstOrDefault(s => s.Definition == Stats.Level)?.Value ?? 1);
+
+                // Hack to show the correct Level since we only calculate Total Level when selecting the character
+                var level = (ushort)(character.Attributes.FirstOrDefault(s => s.Definition == Stats.Level)?.Value ?? 1);
+                level += (ushort)(character.Attributes.FirstOrDefault(s => s.Definition == Stats.MasterLevel)?.Value ?? 0);
+                level += (ushort)(character.Attributes.FirstOrDefault(s => s.Definition == Stats.MajesticLevel)?.Value ?? 0);
+                characterData.Level = level;
                 characterData.Status = character.CharacterStatus.Convert();
                 characterData.GuildPosition = guildPositions[j].Convert();
 

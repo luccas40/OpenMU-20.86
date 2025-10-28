@@ -44,9 +44,19 @@ public class GameConfigurationInitializer : GameConfigurationInitializerBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Initialize()
     {
         base.Initialize();
+
+        this.GameConfiguration.MaximumMasterLevel = 400;
+        this.GameConfiguration.MaximumMajesticLevel = 900;
+        this.GameConfiguration.MinimumMonsterLevelForMajesticExperience = 1; // testing purpose
+
+        /// <remarks>
+        /// Change the formula to match the original
+        /// </remarks>
+        this.GameConfiguration.MasterExperienceFormula = "(505 * level * level * level) + (35278500 * level) + (228045 * level * level)";
 
         this.GameConfiguration.ItemOptions.Add(this.CreateOptionDefinition(Stats.BaseDamageBonus, ItemOptionDefinitionNumbers.PhysicalAndWizardryAttack));
         this.GameConfiguration.ItemOptions.Add(this.CreateOptionDefinition(Stats.CurseBaseDmg, ItemOptionDefinitionNumbers.CurseAttack));

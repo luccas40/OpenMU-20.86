@@ -15,22 +15,22 @@ internal partial class CharacterClassInitialization
 {
     private CharacterClass CreateForceEmpire()
     {
-        return this.CreateDarkLord(CharacterClassNumber.ForceEmpire, "Force Empire", true, null, false);
+        return this.CreateDarkLord(CharacterClassNumber.ForceEmpire, "Force Empire", true, true, null, false);
     }
 
     private CharacterClass CreateEmpireLord(CharacterClass forceEmpire)
     {
-        return this.CreateDarkLord(CharacterClassNumber.EmpireLord, "Empire Lord", true, forceEmpire, false);
+        return this.CreateDarkLord(CharacterClassNumber.EmpireLord, "Empire Lord", true, true, forceEmpire, false);
     }
 
     private CharacterClass CreateLordEmperor(CharacterClass empireLord)
     {
-        var result = this.CreateDarkLord(CharacterClassNumber.LordEmperor, "Lord Emperor", true, empireLord, false);
+        var result = this.CreateDarkLord(CharacterClassNumber.LordEmperor, "Lord Emperor", true, false, empireLord, false);
         result.StatAttributes.Add(this.CreateStatAttributeDefinition(Stats.MasterLevel, 0, false));
         return result;
     }
 
-    private CharacterClass CreateDarkLord(CharacterClassNumber number, string name, bool isMaster, CharacterClass? nextGenerationClass, bool canGetCreated)
+    private CharacterClass CreateDarkLord(CharacterClassNumber number, string name, bool isMaster, bool isMajestic, CharacterClass? nextGenerationClass, bool canGetCreated)
     {
         var energyMinus15 = this.Context.CreateNew<AttributeDefinition>(Guid.NewGuid(), "TotalEnergy minus 15", "TotalEnergy minus 15");
         this.GameConfiguration.Attributes.Add(energyMinus15);
@@ -45,8 +45,10 @@ internal partial class CharacterClassInitialization
         result.Name = name;
         result.LevelRequirementByCreation = 250;
         result.IsMasterClass = isMaster;
+        result.IsMajesticClass = isMajestic;
         result.NextGenerationClass = nextGenerationClass;
-        result.LevelWarpRequirementReductionPercent = (int)Math.Ceiling(100.0 / 3);
+
+        // result.LevelWarpRequirementReductionPercent = (int)Math.Ceiling(100.0 / 3);
         result.StatAttributes.Add(this.CreateStatAttributeDefinition(Stats.Level, 1, false));
         result.StatAttributes.Add(this.CreateStatAttributeDefinition(Stats.PointsPerLevelUp, 7, false));
         result.StatAttributes.Add(this.CreateStatAttributeDefinition(Stats.BaseStrength, 26, true));
@@ -164,7 +166,7 @@ internal partial class CharacterClassInitialization
         result.BaseAttributeValues.Add(this.CreateConstValueAttribute(1000, Stats.RavenAttackRate));
         result.BaseAttributeValues.Add(this.CreateConstValueAttribute(0.3f, Stats.RavenCriticalDamageChance));
 
-        this.AddCommonBaseAttributeValues(result.BaseAttributeValues, isMaster);
+        this.AddCommonBaseAttributeValues(result.BaseAttributeValues, isMaster, isMajestic);
 
         return result;
     }

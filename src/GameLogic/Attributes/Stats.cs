@@ -107,6 +107,11 @@ public class Stats
     public static AttributeDefinition MasterPointsPerLevelUp { get; } = new(new Guid("E0C7D483-E7B2-4898-89C3-4C72E64A4418"), "Master points per master Level up", "Defines the master level up points per achieved master level.");
 
     /// <summary>
+    /// Gets the <see cref="Character.MajesticLevelUpPoints"/> per level up.
+    /// </summary>
+    public static AttributeDefinition MajesticPointsPerLevelUp { get; } = new(new Guid("FBD78981-8302-43B2-B6B2-94FBF1CCAB11"), "Majestic points per Majestic Level up", "Defines the Majestic level up points per achieved Majestic level.");
+
+    /// <summary>
     /// Gets the experience rate attribute definition.
     /// </summary>
     public static AttributeDefinition ExperienceRate { get; } = new(new Guid("1AD454D4-BEF9-416E-BC49-82A5B0277FC7"), "Experience Rate", "Defines the experience rate multiplier of a character. By default it's 1.0 and may be modified by seals or other stuff.");
@@ -120,12 +125,22 @@ public class Stats
     /// <summary>
     /// Gets the master level definition.
     /// </summary>
-    public static AttributeDefinition MasterLevel { get; } = new(new Guid("70CD8C10-391A-4C51-9AA4-A854600E3A9F"), "Master Level", "The level of the character.");
+    public static AttributeDefinition MasterLevel { get; } = new(new Guid("70CD8C10-391A-4C51-9AA4-A854600E3A9F"), "Master Level", "The level 400+ of the character.");
 
     /// <summary>
     /// Gets the master experience rate definition.
     /// </summary>
     public static AttributeDefinition MasterExperienceRate { get; } = new(new Guid("E367A231-C8A4-4F92-B553-C665F98DB1FC"), "Master Experience Rate", string.Empty);
+
+    /// <summary>
+    /// Gets the Majestic level definition.
+    /// </summary>
+    public static AttributeDefinition MajesticLevel { get; } = new(new Guid("E1F93915-D496-4BAC-81DA-6423C11E0A88"), "Majestic Level", "The level 800+ of the character.");
+
+    /// <summary>
+    /// Gets the Majestic experience rate definition.
+    /// </summary>
+    public static AttributeDefinition MajesticExperienceRate { get; } = new(new Guid("DF6D2533-7682-4BAE-A766-372100226E90"), "Majestic Experience Rate", string.Empty);
 
     /// <summary>
     /// Gets the level plus master level attribute definition.

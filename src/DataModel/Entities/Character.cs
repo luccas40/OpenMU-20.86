@@ -139,6 +139,11 @@ public class Character
     public long MasterExperience { get; set; }
 
     /// <summary>
+    /// Gets or sets the majestic experience.
+    /// </summary>
+    public long MajesticExperience { get; set; }
+
+    /// <summary>
     /// Gets or sets the remaining level up points which can be spent on increasable stat attributes.
     /// </summary>
     public int LevelUpPoints { get; set; }
@@ -147,6 +152,11 @@ public class Character
     /// Gets or sets the master level up points which can be spent on master skills.
     /// </summary>
     public int MasterLevelUpPoints { get; set; }
+
+    /// <summary>
+    /// Gets or sets the master level up points which can be spent on master skills.
+    /// </summary>
+    public int MajesticLevelUpPoints { get; set; }
 
     /// <summary>
     /// Gets or sets the current game map.

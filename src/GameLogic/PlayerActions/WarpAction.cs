@@ -36,7 +36,7 @@ public class WarpAction
         errorMessage = null;
 
         var requirement = player.SelectedCharacter?.GetEffectiveMoveLevelRequirement(warpInfo.LevelRequirement);
-        if (requirement > player.Attributes?[Stats.Level])
+        if (requirement > player.Attributes?[Stats.TotalLevel])
         {
             errorMessage = $"You need to be level {requirement} in order to warp";
             return false;

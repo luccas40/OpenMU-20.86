@@ -69,7 +69,7 @@ internal partial class CharacterClassInitialization : InitializerBase
         var forceEmpire = this.CreateForceEmpire();
         var empireLord = this.CreateEmpireLord(forceEmpire);
         var lordEmperor = this.CreateLordEmperor(empireLord);
-        this.CreateDarkLord(CharacterClassNumber.DarkLord, "Dark Lord", false, lordEmperor, true);
+        this.CreateDarkLord(CharacterClassNumber.DarkLord, "Dark Lord", false, false, lordEmperor, true);
 
         var bloodyFighter = this.CreateBloodyFighter();
         var fistBlazer = this.CreateFistBlazer(bloodyFighter);
@@ -162,6 +162,7 @@ internal partial class CharacterClassInitialization : InitializerBase
     {
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.TotalLevel, 1, Stats.Level));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.TotalLevel, 1, Stats.MasterLevel));
+        attributeRelationships.Add(this.CreateAttributeRelationship(Stats.TotalLevel, 1, Stats.MajesticLevel));
 
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.TotalStrength, 1, Stats.BaseStrength));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.TotalAgility, 1, Stats.BaseAgility));
@@ -191,8 +192,6 @@ internal partial class CharacterClassInitialization : InitializerBase
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMaximumPhysicalDmg, 1, Stats.MinimumPhysicalDmg));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMaximumPhysicalDmg, 1, Stats.CombatPowerDamage));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.FinalMaximumPhysicalDmg, 1, Stats.PhysicalBaseDmgIncrease, aggregateType: AggregateType.Multiplicate));
-
-        
 
         // If two weapons are equipped (DK, MG, Sum, RF) we subtract the half of the sum of the speeds again from the attack speed
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.AreTwoWeaponsEquipped, 1, Stats.EquippedWeaponCount));
@@ -225,7 +224,7 @@ internal partial class CharacterClassInitialization : InitializerBase
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.CanFly, 1, Stats.IsDinorantEquipped));
     }
 
-    private void AddCommonBaseAttributeValues(ICollection<ConstValueAttribute> baseAttributeValues, bool isMaster)
+    private void AddCommonBaseAttributeValues(ICollection<ConstValueAttribute> baseAttributeValues, bool isMaster, bool isMajestic = false)
     {
         baseAttributeValues.Add(this.CreateConstValueAttribute(1.0f / 27.5f, Stats.ManaRecoveryMultiplier));
         baseAttributeValues.Add(this.CreateConstValueAttribute(1, Stats.DamageReceiveDecrement));
@@ -243,6 +242,12 @@ internal partial class CharacterClassInitialization : InitializerBase
         {
             baseAttributeValues.Add(this.CreateConstValueAttribute(1, Stats.MasterPointsPerLevelUp));
             baseAttributeValues.Add(this.CreateConstValueAttribute(1, Stats.MasterExperienceRate));
+        }
+
+        if (isMajestic)
+        {
+            baseAttributeValues.Add(this.CreateConstValueAttribute(1, Stats.MajesticPointsPerLevelUp));
+            baseAttributeValues.Add(this.CreateConstValueAttribute(100, Stats.MajesticExperienceRate));
         }
 
         if (!this.UseClassicPvp)

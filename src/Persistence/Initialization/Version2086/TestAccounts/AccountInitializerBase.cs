@@ -5,6 +5,7 @@
 namespace MUnique.OpenMU.Persistence.Initialization.Version2086.TestAccounts;
 
 using System;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MUnique.OpenMU.AttributeSystem;
 using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.DataModel.Configuration.Items;
@@ -41,10 +42,12 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <param name="gameConfiguration">The game configuration.</param>
     /// <param name="accountName">Name of the account.</param>
     /// <param name="level">The level.</param>
-    protected AccountInitializerBase(IContext context, GameConfiguration gameConfiguration, string accountName, int level)
+    protected AccountInitializerBase(IContext context, GameConfiguration gameConfiguration, string accountName, int level, int masterLevel, int majesticLevel)
         : base(context, gameConfiguration)
     {
         this.Level = level;
+        this.MasterLevel = masterLevel;
+        this.MajesticLevel = majesticLevel;
         this.AccountName = accountName;
         this.ItemHelper = new ItemHelper(this.Context, this.GameConfiguration);
     }
@@ -56,6 +59,10 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// The level.
     /// </value>
     protected int Level { get; }
+
+    protected int MasterLevel { get; }
+
+    protected int MajesticLevel { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to add all available skills automatically.
@@ -158,7 +165,7 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <returns>The created knight.</returns>
     protected Character CreateKnight(CharacterClassNumber characterClassNumber, byte slot = 0)
     {
-        return this.CreateCharacter(this.AccountName + "Dk", characterClassNumber, this.Level, slot);
+        return this.CreateCharacter(this.AccountName + "Dk", characterClassNumber, this.Level, this.MasterLevel, this.MajesticLevel, slot);
     }
 
     /// <summary>
@@ -168,7 +175,7 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <returns>The created wizard.</returns>
     protected Character CreateWizard(CharacterClassNumber characterClassNumber, byte slot = 1)
     {
-        return this.CreateCharacter(this.AccountName + "Dw", characterClassNumber, this.Level, slot);
+        return this.CreateCharacter(this.AccountName + "Dw", characterClassNumber, this.Level, this.MasterLevel, this.MajesticLevel, slot);
     }
 
     /// <summary>
@@ -178,7 +185,7 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <returns>The created elf.</returns>
     protected Character CreateElf(CharacterClassNumber characterClassNumber, byte slot = 2)
     {
-        return this.CreateCharacter(this.AccountName + "Elf", characterClassNumber, this.Level, slot);
+        return this.CreateCharacter(this.AccountName + "Elf", characterClassNumber, this.Level, this.MasterLevel, this.MajesticLevel, slot);
     }
 
     /// <summary>
@@ -188,7 +195,7 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <returns>The created dark lord.</returns>
     protected Character CreateDarkLord(CharacterClassNumber characterClassNumber, byte slot = 3)
     {
-        var c = this.CreateCharacter(this.AccountName + "Dl", characterClassNumber, this.Level, slot);
+        var c = this.CreateCharacter(this.AccountName + "Dl", characterClassNumber, this.Level, this.MasterLevel, this.MajesticLevel, slot);
         var startSkill = this.GameConfiguration.Skills.FirstOrDefault(s => s.Number == (short)SkillNumber.Force);
         if (startSkill != null)
         {
@@ -207,7 +214,7 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <returns>The created magic gladiator.</returns>
     protected Character CreateMagicGladiator(CharacterClassNumber characterClassNumber, byte slot = 4)
     {
-        return this.CreateCharacter(this.AccountName + "Mg", characterClassNumber, this.Level, slot);
+        return this.CreateCharacter(this.AccountName + "Mg", characterClassNumber, this.Level, this.MasterLevel, this.MajesticLevel, slot);
     }
 
     /// <summary>
@@ -218,7 +225,7 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <param name="level">The level.</param>
     /// <param name="slot">The slot.</param>
     /// <returns>The created character.</returns>
-    protected virtual Character CreateCharacter(string name, CharacterClassNumber characterClass, int level, byte slot)
+    protected virtual Character CreateCharacter(string name, CharacterClassNumber characterClass, int level, int masterLevel, int majesticLevel, byte slot)
     {
         var character = this.Context.CreateNew<Character>();
         character.CharacterClass = this.GameConfiguration.CharacterClasses.First(c => c.Number == (byte)characterClass);
@@ -247,9 +254,36 @@ internal abstract class AccountInitializerBase : InitializerBase
         }
 
         character.Attributes.First(a => a.Definition == Stats.Level).Value = level;
-        character.Experience = GameConfigurationInitializerBase.CalculateNeededExperience(level);
+        if (masterLevel > 0)
+        {
+            if (character.Attributes.FirstOrDefault(a => a.Definition == Stats.MasterLevel) is StatAttribute master)
+            {
+                master.Value = masterLevel;
+            }
+            else
+            {
+                character.Attributes.Add(this.Context.CreateNew<StatAttribute>(Stats.MasterLevel.GetPersistent(this.GameConfiguration), masterLevel));
+            }
+            character.Experience = GameConfigurationInitializerBase.CalculateNeededExperience(level);
+            if (majesticLevel > 0)
+            {
+                if (character.Attributes.FirstOrDefault(a => a.Definition == Stats.MajesticLevel) is StatAttribute masjetic)
+                {
+                    masjetic.Value = majesticLevel;
+                }
+                else
+                {
+                    character.Attributes.Add(this.Context.CreateNew<StatAttribute>(Stats.MajesticLevel.GetPersistent(this.GameConfiguration), majesticLevel));
+                }
+            }
+        }
+        else
+        {
+            character.Experience = GameConfigurationInitializerBase.CalculateNeededExperience(level);
+        }
+
         character.LevelUpPoints = (int)((character.Attributes.First(a => a.Definition == Stats.Level).Value - 1)
-                                        * character.CharacterClass.StatAttributes.First(a => a.Attribute == Stats.PointsPerLevelUp).BaseValue);
+                                            * character.CharacterClass.StatAttributes.First(a => a.Attribute == Stats.PointsPerLevelUp).BaseValue);
         character.Inventory = this.Context.CreateNew<ItemStorage>();
         character.Inventory.Money = 10000000;
 

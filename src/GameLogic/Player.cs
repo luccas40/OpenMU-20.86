@@ -1076,9 +1076,26 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
             return 0;
         }
 
+        var addMajesticExperience = characterClass.IsMajesticClass
+                            && (short)this.Attributes![Stats.MasterLevel] == this.GameContext.Configuration.MaximumMasterLevel
+                            && (short)this.Attributes![Stats.Level] == this.GameContext.Configuration.MaximumLevel;
+
         var addMasterExperience = characterClass.IsMasterClass
                             && (short)this.Attributes![Stats.Level] == this.GameContext.Configuration.MaximumLevel;
-        var expRateAttribute = addMasterExperience ? Stats.MasterExperienceRate : Stats.ExperienceRate;
+        AttributeDefinition expRateAttribute;
+
+        if (addMajesticExperience)
+        {
+            expRateAttribute = Stats.MajesticExperienceRate;
+        }
+        else if (addMasterExperience)
+        {
+            expRateAttribute = Stats.MasterExperienceRate;
+        }
+        else
+        {
+            expRateAttribute = Stats.ExperienceRate;
+        }
 
         var experience = killedObject.CalculateBaseExperience(this.Attributes![Stats.TotalLevel]);
         experience *= this.GameContext.ExperienceRate;
@@ -1086,7 +1103,11 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         experience *= this.CurrentMap?.Definition.ExpMultiplier ?? 1;
         experience = Rand.NextInt((int)(experience * 0.8), (int)(experience * 1.2));
 
-        if (addMasterExperience)
+        if (addMajesticExperience)
+        {
+            await this.AddMajesticExperienceAsync((int)experience, killedObject).ConfigureAwait(false);
+        }
+        else if (addMasterExperience)
         {
             await this.AddMasterExperienceAsync((int)experience, killedObject).ConfigureAwait(false);
         }
@@ -1098,6 +1119,53 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         await this.AddPetExperienceAsync(experience).ConfigureAwait(false);
 
         return (int)experience;
+    }
+
+    /// <summary>
+    /// Adds the majestic experience to the current character.
+    /// </summary>
+    /// <param name="experience">The experience which should be added.</param>
+    /// <param name="killedObject">The killed object which caused the experience gain.</param>
+    public async ValueTask AddMajesticExperienceAsync(int experience, IAttackable? killedObject)
+    {
+        if (this.Attributes![Stats.MajesticLevel] >= this.GameContext.Configuration.MaximumMajesticLevel)
+        {
+            await this.InvokeViewPlugInAsync<IAddExperiencePlugIn>(p => p.AddExperienceAsync(0, killedObject, ExperienceType.MaxMasterLevelReached)).ConfigureAwait(false);
+            return;
+        }
+
+        if (killedObject is not null && killedObject.Attributes[Stats.Level] < this.GameContext.Configuration.MinimumMonsterLevelForMajesticExperience)
+        {
+            await this.InvokeViewPlugInAsync<IAddExperiencePlugIn>(p => p.AddExperienceAsync(0, killedObject, ExperienceType.MonsterLevelTooLowForMasterExperience)).ConfigureAwait(false);
+            return;
+        }
+
+        long exp = experience;
+
+        // Add the Exp
+        bool lvlup = false;
+        var expTable = this.GameContext.MajesticExperienceTable;
+        if (expTable[(int)this.Attributes[Stats.MajesticLevel] + 1] - this.SelectedCharacter!.MasterExperience < exp)
+        {
+            exp = expTable[(int)this.Attributes[Stats.MajesticLevel] + 1] - this.SelectedCharacter.MajesticExperience;
+            lvlup = true;
+        }
+
+        this.SelectedCharacter.MajesticExperience += exp;
+
+        // Tell it to the Player
+        await this.InvokeViewPlugInAsync<IAddExperiencePlugIn>(p => p.AddExperienceAsync((int)exp, killedObject, ExperienceType.Master)).ConfigureAwait(false);
+
+        // Check the lvl up
+        if (lvlup)
+        {
+            this.Attributes[Stats.MajesticLevel]++;
+            this.SelectedCharacter.MajesticLevelUpPoints += (int)this.Attributes[Stats.MajesticPointsPerLevelUp];
+            this.SetReclaimableAttributesToMaximum();
+            this.Logger.LogDebug("Character {0} leveled up to majestic level {1}", this.SelectedCharacter.Name, this.Attributes[Stats.MajesticLevel]);
+            await this.InvokeViewPlugInAsync<IUpdateLevelPlugIn>(p => p.UpdateMasterLevelAsync()).ConfigureAwait(false);
+            await this.ForEachWorldObserverAsync<IShowEffectPlugIn>(p => p.ShowEffectAsync(this, IShowEffectPlugIn.EffectType.LevelUp), true).ConfigureAwait(false);
+        }
     }
 
     /// <summary>

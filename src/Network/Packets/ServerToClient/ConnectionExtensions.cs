@@ -4548,7 +4548,7 @@ public static class ConnectionExtensions
     /// <param name="effectType">The effect type.</param>
     /// <remarks>
     /// Is sent by the server when: E.g. when event items are dropped to the floor.
-    /// Causes reaction on client side: The client plays a fanfare sound at the specified coordinates.
+    /// Causes reaction on client side: The client plays a fanfare sound at the specifie  d coordinates.
     /// </remarks>
     public static async ValueTask SendPlayFanfareSoundAsync(this IConnection? connection, byte @x, byte @y, byte @effectType = 2)
     {

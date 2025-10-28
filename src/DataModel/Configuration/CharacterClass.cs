@@ -61,6 +61,11 @@ public partial class CharacterClass
     public bool IsMasterClass { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether this class is a master class and therefore can receive master experience for the master tree.
+    /// </summary>
+    public bool IsMajesticClass { get; set; }
+
+    /// <summary>
     /// Gets or sets the percent by which the moving level requirement for warping to other maps is reduced.
     /// </summary>
     public int LevelWarpRequirementReductionPercent { get; set; }

@@ -29,6 +29,11 @@ public partial class GameConfiguration
     public short MaximumMasterLevel { get; set; }
 
     /// <summary>
+    /// Gets or sets the maximum reachable Majestic level.
+    /// </summary>
+    public short MaximumMajesticLevel { get; set; }
+
+    /// <summary>
     /// Gets or sets the experience rate of the game.
     /// </summary>
     public float ExperienceRate { get; set; }
@@ -38,6 +43,12 @@ public partial class GameConfiguration
     /// in order to gain master experience for master character classes.
     /// </summary>
     public byte MinimumMonsterLevelForMasterExperience { get; set; }
+
+    /// <summary>
+    /// Gets or sets the minimum monster level which are required to be killed
+    /// in order to gain majestic experience for majestic character classes.
+    /// </summary>
+    public byte MinimumMonsterLevelForMajesticExperience { get; set; }
 
     /// <summary>
     /// Gets or sets the information range. This defines how far players can see other game objects.
@@ -71,6 +82,11 @@ public partial class GameConfiguration
     /// Gets or sets the experience formula per master level. The variable name for the level is "level".
     /// </summary>
     public string? MasterExperienceFormula { get; set; }
+
+    /// <summary>
+    /// Gets or sets the experience formula per majestic level. The variable name for the level is "level".
+    /// </summary>
+    public string? MajesticExperienceFormula { get; set; }
 
     /// <summary>
     /// Gets or sets the interval for attribute recoveries. See also MUnique.OpenMU.GameLogic.Attributes.Stats.Regeneration.

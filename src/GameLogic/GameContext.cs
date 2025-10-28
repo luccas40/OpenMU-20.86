@@ -86,6 +86,7 @@ public class GameContext : AsyncDisposable, IGameContext
             this.DuelRoomManager = new DuelRoomManager(this.Configuration.DuelConfiguration!);
             this.ExperienceTable = CreateExpTable(this.Configuration.ExperienceFormula ?? DefaultExperienceFormula, this.Configuration.MaximumLevel);
             this.MasterExperienceTable = CreateExpTable(this.Configuration.MasterExperienceFormula ?? DefaultMasterExperienceFormula, this.Configuration.MaximumMasterLevel);
+            this.MajesticExperienceTable = CreateExpTable(this.Configuration.MajesticExperienceFormula ?? DefaultMasterExperienceFormula, this.Configuration.MaximumMajesticLevel);
         }
         catch (Exception ex)
         {
@@ -122,6 +123,9 @@ public class GameContext : AsyncDisposable, IGameContext
 
     /// <inheritdoc/>
     public long[] MasterExperienceTable { get; private set; }
+
+    /// <inheritdoc/>
+    public long[] MajesticExperienceTable { get; private set; }
 
     /// <inheritdoc/>
     public IConfigurationChangeMediator ConfigurationChangeMediator { get; }

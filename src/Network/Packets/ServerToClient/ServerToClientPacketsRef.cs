@@ -21641,7 +21641,7 @@ public readonly ref struct ShowChristmasFireworksRef
 
 /// <summary>
 /// Is sent by the server when: E.g. when event items are dropped to the floor.
-/// Causes reaction on client side: The client plays a fanfare sound at the specified coordinates.
+/// Causes reaction on client side: The client plays a fanfare sound at the specifie  d coordinates.
 /// </summary>
 public readonly ref struct PlayFanfareSoundRef
 {

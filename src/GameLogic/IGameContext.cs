@@ -63,6 +63,11 @@ public interface IGameContext
     long[] MasterExperienceTable { get; }
 
     /// <summary>
+    /// Gets the Majestic experience table. Index is the player level, value the needed experience to reach that level.
+    /// </summary>
+    long[] MajesticExperienceTable { get; }
+
+    /// <summary>
     /// Gets the configuration change mediator.
     /// </summary>
     IConfigurationChangeMediator ConfigurationChangeMediator { get; }

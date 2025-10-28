@@ -21,7 +21,7 @@ internal class TestAccount : AccountInitializerBase
     /// <param name="context">The context.</param>
     /// <param name="gameConfiguration">The game configuration.</param>
     public TestAccount(IContext context, GameConfiguration gameConfiguration, string name)
-        : base(context, gameConfiguration, name, 400)
+        : base(context, gameConfiguration, name, 400, 400, 800)
     {
     }
 
