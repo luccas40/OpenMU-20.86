@@ -13,5 +13,6 @@ public interface IItemAppearPlugIn : IViewPlugIn
     /// Notifies the client that a new item appears in the inventory.
     /// </summary>
     /// <param name="newItem">The new item.</param>
-    ValueTask ItemAppearAsync(Item newItem);
+    /// <param name="dropId">The object on the ground Id.</param>
+    ValueTask ItemAppearAsync(Item newItem, ushort dropId = 0xFFFF);
 }

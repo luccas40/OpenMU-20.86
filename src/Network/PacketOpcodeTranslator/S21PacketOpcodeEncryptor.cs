@@ -66,6 +66,10 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xF305, 0x8103 }, // Normal Level Up
         { 0xF306, 0x8110 }, // Add Stat Result
         { 0x1CFF, 0x1CFF }, // Teleport Result / Contains Warp between maps
+        { 0x20FF, 0x20FF }, // Item Dropped
+        { 0x22FF, 0xC2FF }, // Item PickUp Answer
+        { 0x21FF, 0x21FF }, // Ground Item Remove
+        { 0x23FF, 0x83FF }, // Drop Bag Item Response
 
         // { 0x8E03, 0x8E03 }, // Warp result (testing)
     };

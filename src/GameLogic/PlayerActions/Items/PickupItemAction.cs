@@ -44,8 +44,11 @@ public class PickupItemAction
                     }
                     else
                     {
-                        await player.InvokeViewPlugInAsync<IItemAppearPlugIn>(p => p.ItemAppearAsync(droppedItem.Item)).ConfigureAwait(false);
+                        await player.InvokeViewPlugInAsync<IItemAppearPlugIn>(p => p.ItemAppearAsync(droppedItem.Item, dropId)).ConfigureAwait(false);
                     }
+
+                    // I'm disposing here instead of inside droppedItem.TryPickUpAsync because I need it to dispose after InvokeViewPlugInAsync<IItemAppearPlugIn>
+                    await droppedItem.DisposeAsync().ConfigureAwait(false);
                 }
                 else
                 {

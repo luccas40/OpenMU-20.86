@@ -46,10 +46,12 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0x5712, 0xF306 }, // Add Stat Result
         { 0x5716, 0xF312 }, // Client Ready After Map Change
         { 0x8E02, 0x8E02 }, // Warp List Request Teleport
-        {0x1CFF, 0x1CFF }, // Entered a gate
+        { 0x1CFF, 0x1CFF }, // Entered a gate
+        { 0x40FF, 0x22FF }, // Pickup Item Request
+        { 0xE5FF, 0x23FF }, // Item Drop Request
     };
     /*
-
+    E5 - 54 len 6 // item drop from bag
      *  Packet not Translated C-S>: E7 - 02 len 4
      *  Packet not Translated C-S>: C7 - 01 len 14
 Packet not Translated C-S>: ED - 00 len 8

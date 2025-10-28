@@ -38,10 +38,6 @@ public class ItemSerializerS21 : IItemSerializer
         HasHarmony = 0x20,
         HasGuardian = 0x40,
         HasSockets = 0x80,
-
-
-
-
     }
 
     /// <inheritdoc/>

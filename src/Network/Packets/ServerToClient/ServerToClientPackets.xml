@@ -3975,6 +3975,32 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>22</Code>
+			<Name>ItemPickUpResponse</Name>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>A new item was added to the inventory.</SentWhen>
+			<CausedReaction>The client adds the item to the inventory user interface.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>Byte</Type>
+					<Name>InventorySlot</Name>
+				</Field>
+				<Field>
+					<Index>4</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>DropId</Name>
+					<UseCustomIndexer>true</UseCustomIndexer>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>Binary</Type>
+					<Name>ItemData</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>23</Code>

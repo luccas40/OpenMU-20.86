@@ -1996,6 +1996,38 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="ItemPickUpResponse" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="inventorySlot">The inventory slot.</param>
+    /// <param name="dropId">The drop id.</param>
+    /// <param name="itemData">The item data.</param>
+    /// <remarks>
+    /// Is sent by the server when: A new item was added to the inventory.
+    /// Causes reaction on client side: The client adds the item to the inventory user interface.
+    /// </remarks>
+    public static async ValueTask SendItemPickUpResponseAsync(this IConnection? connection, byte @inventorySlot, ushort @dropId, Memory<byte> @itemData)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = ItemPickUpResponseRef.GetRequiredSize(itemData.Length);
+            var packet = new ItemPickUpResponseRef(connection.Output.GetSpan(length)[..length]);
+            packet.InventorySlot = @inventorySlot;
+            packet.DropId = @dropId;
+            @itemData.Span.CopyTo(packet.ItemData);
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="ItemDropResponse" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
