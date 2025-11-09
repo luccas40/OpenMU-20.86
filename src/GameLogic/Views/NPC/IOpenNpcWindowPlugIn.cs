@@ -13,5 +13,5 @@ public interface IOpenNpcWindowPlugIn : IViewPlugIn
     /// Opens the Monster window.
     /// </summary>
     /// <param name="window">The window.</param>
-    ValueTask OpenNpcWindowAsync(NpcWindow window);
+    ValueTask OpenNpcWindowAsync(NpcWindow window, int tabCount = 0);
 }

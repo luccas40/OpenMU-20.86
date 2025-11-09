@@ -45,6 +45,7 @@ public static class AttackableExtensions
         }
 
         Player? attackerPlayer = attacker is AttackerSurrogate surrogate ? surrogate.Owner : (attacker is Player player ? player : null);
+
         bool isPvp = attackerPlayer is not null && defender is Player;
         bool isClassicPvp = isPvp && defender.Attributes[Stats.MaximumShield] == 0;
         bool isClassicPvpDuel = isClassicPvp && attackerPlayer!.DuelRoom?.Opponent == defender;
@@ -713,7 +714,6 @@ public static class AttackableExtensions
         maximumBaseDamage = 0;
         var attackerStats = attacker.Attributes;
         GetSkillDmg(attacker, skill, out var skillMinimumDamage, out var skillMaximumDamage, out damageType, out var isSummonerSkill);
-
         switch (damageType)
         {
             // Common damage types
@@ -726,8 +726,8 @@ public static class AttackableExtensions
                 maximumBaseDamage = (int)((attackerStats[Stats.MaximumCurseBaseDmg] + skillMaximumDamage) * attackerStats[Stats.CurseAttackDamageIncrease]);
                 break;
             case DamageType.Physical:
-                minimumBaseDamage = (int)attackerStats[Stats.MinimumPhysBaseDmg] + skillMinimumDamage;
-                maximumBaseDamage = (int)attackerStats[Stats.MaximumPhysBaseDmg] + skillMaximumDamage;
+                minimumBaseDamage = (int)attackerStats[Stats.FinalMinimumPhysicalDmg] + skillMinimumDamage;
+                maximumBaseDamage = (int)attackerStats[Stats.FinalMaximumPhysicalDmg] + skillMaximumDamage;
                 break;
             case DamageType.Fenrir:
                 minimumBaseDamage = (int)attackerStats[Stats.FenrirBaseDmg] + skillMinimumDamage;

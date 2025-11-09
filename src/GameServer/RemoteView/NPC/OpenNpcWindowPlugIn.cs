@@ -27,7 +27,7 @@ public class OpenNpcWindowPlugIn : IOpenNpcWindowPlugIn
     public OpenNpcWindowPlugIn(RemotePlayer player) => this._player = player;
 
     /// <inheritdoc/>
-    public async ValueTask OpenNpcWindowAsync(NpcWindow window)
+    public async ValueTask OpenNpcWindowAsync(NpcWindow window, int tabCount = 0)
     {
         if (window == NpcWindow.NpcDialog)
         {

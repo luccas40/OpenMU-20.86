@@ -181,6 +181,7 @@ internal partial class CharacterClassInitialization : InitializerBase
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysicalDmg, 1, Stats.MinimumPhysBaseDmgByWeapon));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysicalDmg, 1, Stats.MinimumPhysBaseDmg));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MinimumPhysicalDmg, 1, Stats.PhysicalBaseDmg));
+
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysicalDmg, 1, Stats.MaximumPhysBaseDmgByWeapon));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysicalDmg, 1, Stats.MaximumPhysBaseDmg));
         attributeRelationships.Add(this.CreateAttributeRelationship(Stats.MaximumPhysicalDmg, 1, Stats.PhysicalBaseDmg));

@@ -20,7 +20,9 @@ internal partial class CharacterClassInitialization
 
     private CharacterClass CreateEmpireLord(CharacterClass forceEmpire)
     {
-        return this.CreateDarkLord(CharacterClassNumber.EmpireLord, "Empire Lord", true, true, forceEmpire, false);
+        var result = this.CreateDarkLord(CharacterClassNumber.EmpireLord, "Empire Lord", true, true, forceEmpire, false);
+        result.StatAttributes.Add(this.CreateStatAttributeDefinition(Stats.MajesticLevel, 0, false));
+        return result;
     }
 
     private CharacterClass CreateLordEmperor(CharacterClass empireLord)
@@ -147,6 +149,11 @@ internal partial class CharacterClassInitialization
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerMultiplier, 1f / 50 / 100, Stats.TotalLeadership));
         result.BaseAttributeValues.Add(this.CreateConstValueAttribute(.15f, Stats.CombatPowerMultiplier));
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.CombatPowerDamage, Stats.CombatPowerMultiplier, Stats.MaximumPhysBaseDmg));
+
+        result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.SkillMultiplier, 0.0005f, Stats.TotalEnergy));
+        result.BaseAttributeValues.Add(this.CreateConstValueAttribute(2, Stats.SkillMultiplier));
+
+
 
         // Character Specialization
         result.AttributeCombinations.Add(this.CreateAttributeRelationship(Stats.MinimumSpecialAttackPower, 0.00015005f, Stats.TotalStrength));

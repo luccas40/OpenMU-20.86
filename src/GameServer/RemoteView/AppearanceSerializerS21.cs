@@ -225,10 +225,17 @@ public class AppearanceSerializerS21 : IAppearanceSerializer
             return;
         }
 
-        var values = this.GetWingsBytes(wing.Definition.Group, wing.Definition.Number);
-        preview[5] |= values.b5;
-        preview[9] |= values.b9;
-        preview[16] |= values.b16;
+        var wingNumber = this.GetWingNum(wing.Definition.Group, wing.Definition.Number);
+
+        // var wingNumber = 99;
+        int bits_bVar1 = (wingNumber >> 6) & 0x03;  // top 2 bits
+        int bits_bVar2 = (wingNumber >> 3) & 0x07;  // middle 3 bits
+        int bits_bVar3 = wingNumber & 0x07;         // bottom 3 bits
+
+        preview[5] |= (byte)(bits_bVar1 << 2);
+        preview[9] |= (byte)bits_bVar2;
+        preview[16] |= (byte)(bits_bVar3 << 2);
+        preview[18] |= wing.Level;
     }
 
     private void AddPet(Span<byte> preview, ItemAppearance? pet)
@@ -320,199 +327,100 @@ public class AppearanceSerializerS21 : IAppearanceSerializer
 
     public int GetItemID(int x, int y) => (x * 512) + y;
 
-    private (byte b5, byte b9, byte b16) GetWingsBytes(int cat, int subId) => (cat, subId) switch
+    private byte GetWingNum(int category, int index) => (category, index) switch
     {
-        //Wings of Elf
-        //Wings of Heaven
-        //Wings of Satan
-        (12, 0) or (12, 1) or (12, 2) => (0, 0, Convert.ToByte(4 * (GetItemID(cat, subId) - GetItemID(12, 0) + 1))),
-        //Wings of Spirits
-        //[Bound] Wings of Spirit
-        (12, 3) or (12, 424) => (0, 0, 16),
-        //Wings of Soul
-        //[Bound] Wings of Soul
-        (12, 4) or (12, 422) => (0, 0, 20),
-        //Wings of Dragon
-        //[Bound] Wings of Dragon
-        (12, 5) or (12, 423) => (0, 0, 24),
-        //Darkness Wings
-        //[Bound] Darkness Wings
-        (12, 6) or (12, 425) => (0, 0, 28),
-        //Wings of Storm
-        //[Bound] Wings of Storm
-        (12, 36) or (12, 431) => (0, 1, 0),
-        //Wings of Eternal
-        //[Bound] Wings of Eternal
-        (12, 37) or (12, 430) => (0, 1, 4),
-        //Wings of Illusion
-        //[Bound] Wings of Illusion
-        (12, 38) or (12, 432) => (0, 1, 8),
-        //Wings of Ruin
-        //[Bound] Wings of Ruin
-        (12, 39) or (12, 433) => (0, 1, 12),
-        //Cape of Emperor
-        //[Bound] Cape of Emperor
-        (12, 40) or (12, 434) => (0, 1, 16),
-        //Wings of Curse
-        //[Bound] Wings of Curse
-        (12, 41) or (12, 435) => (0, 1, 20),
-        //Wings of Despair
-        //[Bound] Wings of Despair
-        (12, 42) or (12, 427) => (0, 1, 24),
-        //Cape of Fighter
-        //[Bound] Cape of Fighter
-        (12, 49) or (12, 428) => (0, 2, 0),
-        //Reigning Cloak
-        //[Bound] Cape of Overrule
-        (12, 50) or (12, 436) => (0, 2, 4),
-        //Little Monarch's Cloak
-        //Small Cursed Wings
-        //Small Elven Wings
-        //Small Wings of Heaven
-        //Small Wings of Satan
-        //Small Warrior's Cloak
-        (12, 130) or (12, 131) or (12, 132) or (12, 133) or (12, 134) or (12, 135) => (0, 2, Convert.ToByte(4 * (GetItemID(cat, subId) - GetItemID(12, 130) + 2))),
-        //Cloak of Death
-        //Wings of Chaos
-        //Wings of Magic
-        //Wings of Life
-        //Wings of Angel and Devil
-        (12, 262) or (12, 263) or (12, 264) or (12, 265) or (12, 267) => (0, 3, Convert.ToByte(4 * (GetItemID(cat, subId) - GetItemID(12, 262)))),
-        //Cape of the Lord
-        //[Bound] Cape of Lord
-        (13, 30) or (12, 426) => (0, 3, 24),
-        //Cloak of Limit
-        //[Bound] Cloak of Limit
-        (12, 269) or (12, 429) => (0, 3, 28),
-        //Cloak of Transcendence
-        //[Bound] Cloak of Transcendence
-        (12, 270) or (12, 437) => (0, 4, 0),//0,4,8 if level 15
-        //Small Cloak of Limit
-        (12, 278) => (0, 4, 4),
-        //Wings of Conqueror
-        //Wings of Conqueror
-        (12, 268) or (12, 266) => (0, 4, 12),
-        //[Bound] Cloak of Death
-        //[PC] Cloak of Death
-        (12, 279) or (12, 284) => (0, 4, 16),
-        //[Bound] Wings of Chaos
-        //[PC] Wings of Chaos
-        (12, 280) or (12, 285) => (0, 4, 20),
-        //[Bound] Wings of Magic
-        //[PC] Wings of Magic
-        (12, 281) or (12, 286) => (0, 4, 24),
-        //[Bound] Wings of Life
-        //[PC] Wings of Life
-        (12, 282) or (12, 287) => (0, 4, 28),
-        //Angel Wings
-        (12, 414) => (0, 5, 0),
-        //Devil Wings
-        (12, 415) => (0, 5, 4),
-        //Genius Wings
-        (12, 416) => (0, 5, 8),
-        //Destruction Wings
-        (12, 417) => (0, 5, 12),
-        //Control Wings
-        (12, 418) => (0, 5, 16),
-        //Eternal Wings
-        (12, 419) => (0, 5, 20),
-        //Judgement Cloak
-        (12, 420) => (0, 5, 24),
-        //Eternity Cloak
-        (12, 421) => (0, 5, 28),
-        //[Bound] Angel Wings
-        (12, 438) => (0, 6, 0),
-        //[Bound] Devil Wings
-        (12, 439) => (0, 6, 4),
-        //[Bound] Genius Wings
-        (12, 440) => (0, 6, 8),
-        //[Bound] Destruction Wings
-        (12, 441) => (0, 6, 12),
-        //[Bound] Control Wings
-        (12, 442) => (0, 6, 16),
-        //[Bound] Eternal Wings
-        (12, 443) => (0, 6, 20),
-        //[Bound] Judgment Cloak
-        (12, 444) => (0, 6, 24),
-        //[Bound] Eternity Cloak
-        (12, 445) => (0, 6, 28),
-        //Wings of Disillusionment
-        //[Bound] Wings of Disillusionment
-        (12, 467) or (12, 468) => (0, 7, 0),
-        //Wings of Fate 57 - 58
-        (12, 469) => (0, 7, 4),
-        //Wings of Power 59
-        (12, 480) => (0, 7, 12),
-        //Wings of Silence 60
-        //[Bound] Wings of Silence
-        (12, 472) or (12, 473) => (0, 7, 16),
-        //Wings of Condemnation 61 62
-        (12, 474) => (0, 7, 20),
-        //Wings of Hit 63
-        (12, 489) => (0, 7, 28),
-        //Blood Wings 64 65
-        (12, 490) => (4, 0, 0),
-        //Small White Cloak 66 8318
-        (12, 154) => (4, 0, 8),
-        //Pure White Clock 67 8319
-        (12, 155) => (4, 0, 12),
-        //[Bound] Cloak of Innocence 68 8320
-        (12, 156) or (12, 157) => (4, 0, 16),
-        //Cloak of Brilliance 69 8322
-        //[Bound] Cloak of Brilliance 69 8322 checkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-        (12, 158) or (12, 159) => (4, 0, 20),
-        //Cloak of Brilliance 70 71 8324
-        (12, 160) => (4, 0, 24),
-        //Wings of Eternity 72 8191
-        (12, 27) => (4, 1, 0),
-        //Storm's Wings 73 74 8316
-        (12, 152) => (4, 1, 4),
-        //Small Iron Cloak 75 8336
-        (12, 172) => (4, 1, 12),
-        //Iron Cloack 76 8337
-        (12, 173) => (4, 1, 16),
-        //Black Cloak 77 8338
-        //[Bound] Black Cloak 77 8338
-        (12, 174) or (12, 175) => (4, 1, 20),
-        //Cloak of Death 78 8340
-        //[Bound] Cloak of Death 78 8340
-        (12, 176) or (12, 177) => (4, 1, 24),
-        //Cloak of Hatred 79 80 8342
-        (12, 178) => (4, 1, 28),
-        //Wings of Virtue 81 8344
-        (12, 180) => (4, 2, 4),
-        //Wings of Destruction 82 8345
-        (12, 181) => (4, 2, 8),
-        //Wings of Fantasy 83 8346
-        (12, 182) => (4, 2, 12),
-        //Wings of Punishment 84 8347 /////////////////////
-        (12, 183) => (4, 2, 16),
-        //Cloak of Youngdo 86 8349
-        (12, 184) => (4, 2, 20),
-        //Wings of Barrier 87 8350
-        (12, 185) => (4, 2, 24),
-        //Cloak of Oath 88 8351
-        (12, 186) => (4, 2, 28),
-        //Cloak of Discipline 89 8352
-        (12, 187) => (4, 3, 0),
-        //Wings of Inevitability 90 8353
-        (12, 188) => (4, 3, 4),
-        //Wings of Jaan 91 8354
-        (12, 189) => (4, 3, 8),
-        //Crimson Wings
-        (12, 190) => (4, 3, 12),
-        //Cloak of Movie
-        (12, 191) => (4, 3, 16),
-        //Wings of Eternity
-        (12, 192) => (4, 3, 20),
-        //Cloak of Unsullied
-        (12, 193) => (4, 3, 24),
-        //Wings of Guardian 95 8358
-        //Wings of Guardian 95 8358
-        (12, 194) or (12, 195) => (4, 3, 28),
-        //Wings of Purity 96 97 8360
-        (12, 196) => (4, 4, 0),
-        //Wings of Wisdom 98 8362
-        (12, 198) => (4, 3, 8),
+        (12, 0) => 1, // Wings of Elf
+        (12, 1) => 2, // Wings of Heaven
+        (12, 2) => 3, // Wings of Satan
+        (12, 3) or (12, 424) => 4, // Wings of Spirits and Bound
+        (12, 4) or (12, 422) => 5, // Wings of Soul and Bound
+        (12, 5) or (12, 423) => 6, // Wings of Dragon and Bound
+        (12, 6) or (12, 425) => 7, // Darkness Wings and Bound
+        (12, 36) or (12, 431) => 8, // Wings of Storm and Bound
+        (12, 37) or (12, 430) => 9, // Wings of Eternal and Bound
+        (12, 38) or (12, 432) => 10, // Wings of Illusion and Bound
+        (12, 39) or (12, 433) => 11, // Wings of Ruin and Bound
+        (12, 40) or (12, 434) => 12, // Cape of Emperor and Bound
+        (12, 41) or (12, 435) => 13, // Wings of Curse and Bound
+        (12, 42) or (12, 427) => 14, // Wings of Despair and Bound
+        (12, 43) or (12, 435) => 15, // Wings of Dimension and Bound
+        (12, 49) or (12, 428) => 16, // Cape of Fighter and Bound
+        (12, 50) or (12, 436) => 17, // Cape of Overrule and Bound
+        (12, 130) => 18, // Small Cape of Lord
+        (12, 131) => 19, // Small Wing of Curse
+        (12, 132) => 20, // Small Wings of Elf
+        (12, 133) => 21, // Small Wings of Heaven
+        (12, 134) => 22, // Small Wings of Satan
+        (12, 135) => 23, // Little Warrior's Cloak
+        (12, 262) => 24, // Cloak of Death
+        (12, 263) => 25, // Wings of Chaos
+        (12, 264) => 26, // Wings of Magic
+        (12, 265) => 27, // Wings of Life
+
+        // ?? => 28, shows Wings of Conqueror as well
+        (12, 267) => 29, // Wings of Angel and Devil
+        (13, 30) or (12, 426) => 30, // Cape of the Lord and Bound
+        (12, 269) or (12, 429) => 31, // Cloak of Limit and Bound
+        (12, 270) or (12, 437) => 32, // Cloak of Transcendence and Bound or 34 if level 15
+        (12, 278) => 33, // Small Cloak of Limit
+        (12, 266) or (12, 268) => 35, // Wings of Conqueror (I) and Wings of Conqueror (II)
+        (12, 279) or (12, 284) => 36, // Cloak of Death Bound and PC
+        (12, 280) or (12, 285) => 37, // Wings of Chaos Bound and PC
+        (12, 281) or (12, 286) => 38, // Wings of Magic Bound and PC
+        (12, 282) or (12, 287) => 39, // Wings of Life Bound and PC
+        (12, 414) => 40, // Angel Wings
+        (12, 415) => 41, // Devil Wings
+        (12, 416) => 42, // Genius Wings
+        (12, 417) => 43, // Destruction Wings
+        (12, 418) => 44, // Control Wings
+        (12, 419) => 45, // Eternal Wings
+        (12, 420) => 46, // Judgement Cloak
+        (12, 421) => 47, // Eternity Cloak
+        (12, 438) => 48, // Angel Wings Bound
+        (12, 439) => 49, // Devil Wings Bound
+        (12, 440) => 50, // Genius Wings Bound
+        (12, 441) => 51, // Destruction Wings Bound
+        (12, 442) => 52, // Control Wings Bound
+        (12, 443) => 53, // Eternal Wings Bound
+        (12, 444) => 54, // Judgment Wings Bound
+        (12, 445) => 55, // Eternity Wings Bound
+        (12, 467) or (12, 268) => 56, // Wings of Disillusion and Bound
+        (12, 469) => 57, // Wings of Fate and 58
+        (12, 480) => 59, // Wings of Power
+        (12, 472) or (12, 473) => 60, // Wings of Silence and Bound
+        (12, 474) => 61, // Wings of Condemnation and 62
+        (12, 489) or (12, 496) => 63, // Wings of Hit and Bound
+        (12, 490) => 64, // Blood Wings and 65
+        (12, 154) => 66, // Small White Cloak
+        (12, 155) => 67, // Pure White
+        (12, 156) or (12, 157) => 68, // Cloak of Innocence and Bound
+        (12, 158) or (12, 159) => 69, // Cloak of Splendor and Bound
+        (12, 160) => 70, // Cloak of Radiance and 71
+        (12, 27) => 72, // Wings of Eternity
+        (12, 152) => 73, // Storm's Wings and 74
+        (12, 172) => 75, // Small Steel Cloak
+        (12, 173) => 76, // Steel Cloak
+        (12, 174) or (12, 175) => 77, // Pitch Black Cloak and Bound
+        (12, 176) or (12, 177) => 78, // Cloak of Sacrifice and Bound
+        (12, 178) => 79, // Cloak of Hatred and 80
+        (12, 180) => 81, // Wings of Virtue
+        (12, 181) => 82, // Wings of Destruction
+        (12, 182) => 83, // Wings of Fantasy
+        (12, 183) => 84, // Wings of Punishment
+        (12, 184) => 85, // Wings of Youngdo
+        (12, 185) => 86, // Wings of Barrier
+        (12, 186) => 87, // Cloak of Oath
+        (12, 187) => 88, // Cloak of Discipline
+        (12, 188) => 89, // Wings of Inevitability
+        (12, 189) => 90, // Wings of Jaan
+        (12, 190) => 91, // Crimson Wings
+        (12, 191) => 92, // Cloak of Movie
+        (12, 192) => 93, // Wings of Eternity
+        (12, 193) => 94, // Cloak of Unsullied
+        (12, 194) or (12, 195) => 95, // Wings of Guardian and Bound
+        (12, 196) => 96, // Wings of Purity and 97
+        (12, 198) => 98, // Wings of Wisdom
+        //?? => 99, // Wings of Wisdom
+        _ => 0,
     };
 }

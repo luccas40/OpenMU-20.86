@@ -217,6 +217,392 @@ using static System.Buffers.Binary.BinaryPrimitives;    /// <summary>
     }
 
     /// <summary>
+    /// Defines the values which are used for the character classes on client side.
+    /// </summary>
+    public enum CharacterClassNumberS21
+    {
+        /// <summary>
+        /// Value for the dark wizard character class. Bits: 0b0000_0000_0000
+        /// </summary>
+            DarkWizard = 0,
+
+        /// <summary>
+        /// Value for the soul master character class. Bits: 0b0000_0000_1000
+        /// </summary>
+            SoulMaster = 8,
+
+        /// <summary>
+        /// Value for the grand master character class. Bits: 0b0000_0000_1100
+        /// </summary>
+            GrandMaster = 12,
+
+        /// <summary>
+        /// Value for the soul wizard advanced class. Bits: 0b0000_0000_1110
+        /// </summary>
+            SoulWizard = 14,
+
+        /// <summary>
+        /// Value for the darkness wizard advanced class. Bits: 0b0000_0000_1111
+        /// </summary>
+            DarknessWizard = 15,
+
+        /// <summary>
+        /// Value for the dark knight character class. Bits: 0b0000_0001_0000
+        /// </summary>
+            DarkKnight = 16,
+
+        /// <summary>
+        /// Value for the blade knight character class. Bits: 0b0000_0001_1000
+        /// </summary>
+            BladeKnight = 24,
+
+        /// <summary>
+        /// Value for the blade master advanced class. Bits: 0b0000_0001_1100
+        /// </summary>
+            BladeMaster = 28,
+
+        /// <summary>
+        /// Value for the dragon knight advanced class. Bits: 0b0000_0001_1110
+        /// </summary>
+            DragonKnight = 30,
+
+        /// <summary>
+        /// Value for the ignition knight ultimate class. Bits: 0b0000_0001_1111
+        /// </summary>
+            IgnitionKnight = 31,
+
+        /// <summary>
+        /// Value for the fairy elf character class. Bits: 0b0000_0010_0000
+        /// </summary>
+            FairyElf = 32,
+
+        /// <summary>
+        /// Value for the muse elf character class. Bits: 0b0000_0010_1000
+        /// </summary>
+            MuseElf = 40,
+
+        /// <summary>
+        /// Value for the high elf advanced class. Bits: 0b0000_0010_1100
+        /// </summary>
+            HighElf = 44,
+
+        /// <summary>
+        /// Value for the noble elf advanced class. Bits: 0b0000_0010_1110
+        /// </summary>
+            NobleElf = 46,
+
+        /// <summary>
+        /// Value for the royal elf ultimate class. Bits: 0b0000_0010_1111
+        /// </summary>
+            RoyalElf = 47,
+
+        /// <summary>
+        /// Value for the magic gladiator character class. Bits: 0b0000_0011_0000
+        /// </summary>
+            MagicGladiator = 48,
+
+        /// <summary>
+        /// Value for the duel master advanced class. Bits: 0b0000_0011_1100
+        /// </summary>
+            DuelMaster = 60,
+
+        /// <summary>
+        /// Value for the magic knight advanced class. Bits: 0b0000_0011_1110
+        /// </summary>
+            MagicKnight = 62,
+
+        /// <summary>
+        /// Value for the duple knight ultimate class. Bits: 0b0000_0011_1111
+        /// </summary>
+            DupleKnight = 63,
+
+        /// <summary>
+        /// Value for the dark lord character class. Bits: 0b0000_0100_0000
+        /// </summary>
+            DarkLord = 64,
+
+        /// <summary>
+        /// Value for the lord emperor advanced class. Bits: 0b0000_0100_1100
+        /// </summary>
+            LordEmperor = 76,
+
+        /// <summary>
+        /// Value for the empire lord advanced class. Bits: 0b0000_0100_1110
+        /// </summary>
+            EmpireLord = 78,
+
+        /// <summary>
+        /// Value for the force empire ultimate class. Bits: 0b0000_0100_1111
+        /// </summary>
+            ForceEmpire = 79,
+
+        /// <summary>
+        /// Value for the summoner character class. Bits: 0b0000_0101_0000
+        /// </summary>
+            Summoner = 80,
+
+        /// <summary>
+        /// Value for the bloody summoner advanced class. Bits: 0b0000_0101_1000
+        /// </summary>
+            BloodySummoner = 88,
+
+        /// <summary>
+        /// Value for the dimension master advanced class. Bits: 0b0000_0101_1100
+        /// </summary>
+            DimensionMaster = 92,
+
+        /// <summary>
+        /// Value for the dimension summoner elite class. Bits: 0b0000_0101_1110
+        /// </summary>
+            DimensionSummoner = 94,
+
+        /// <summary>
+        /// Value for the endless summoner ultimate class. Bits: 0b0000_0101_1111
+        /// </summary>
+            EndlessSummoner = 95,
+
+        /// <summary>
+        /// Value for the rage fighter character class. Bits: 0b0000_0110_0000
+        /// </summary>
+            RageFighter = 96,
+
+        /// <summary>
+        /// Value for the fist master advanced class. Bits: 0b0000_0110_1100
+        /// </summary>
+            FistMaster = 108,
+
+        /// <summary>
+        /// Value for the fist blazer elite class. Bits: 0b0000_0110_1110
+        /// </summary>
+            FistBlazer = 110,
+
+        /// <summary>
+        /// Value for the bloody fighter ultimate class. Bits: 0b0000_0110_1111
+        /// </summary>
+            BloodyFighter = 111,
+
+        /// <summary>
+        /// Value for the grow lancer character class. Bits: 0b0000_0111_0000
+        /// </summary>
+            GrowLancer = 112,
+
+        /// <summary>
+        /// Value for the mirage lancer advanced class. Bits: 0b0000_0111_1100
+        /// </summary>
+            MirageLancer = 124,
+
+        /// <summary>
+        /// Value for the shining lancer elite class. Bits: 0b0000_0111_1110
+        /// </summary>
+            ShiningLancer = 126,
+
+        /// <summary>
+        /// Value for the arcane lancer ultimate class. Bits: 0b0000_0111_1111
+        /// </summary>
+            ArcaneLancer = 127,
+
+        /// <summary>
+        /// Value for the rune wizard character class. Bits: 0b0000_1000_0000
+        /// </summary>
+            RuneWizard = 128,
+
+        /// <summary>
+        /// Value for the rune spell master advanced class. Bits: 0b0000_1000_1000
+        /// </summary>
+            RuneSpellMaster = 136,
+
+        /// <summary>
+        /// Value for the grand rune master advanced class. Bits: 0b0000_1000_1100
+        /// </summary>
+            GrandRuneMaster = 140,
+
+        /// <summary>
+        /// Value for the majestic rune wizard elite class. Bits: 0b0000_1000_1110
+        /// </summary>
+            MajesticRuneWizard = 142,
+
+        /// <summary>
+        /// Value for the infinity rune wizard ultimate class. Bits: 0b0000_1000_1111
+        /// </summary>
+            InfinityRuneWizard = 143,
+
+        /// <summary>
+        /// Value for the slayer character class. Bits: 0b0000_1001_0000
+        /// </summary>
+            Slayer = 144,
+
+        /// <summary>
+        /// Value for the royal slayer advanced class. Bits: 0b0000_1001_1000
+        /// </summary>
+            RoyalSlayer = 152,
+
+        /// <summary>
+        /// Value for the master slayer advanced class. Bits: 0b0000_1001_1100
+        /// </summary>
+            MasterSlayer = 156,
+
+        /// <summary>
+        /// Value for the slaughterer elite class. Bits: 0b0000_1001_1110
+        /// </summary>
+            Slaughterer = 158,
+
+        /// <summary>
+        /// Value for the rogue slayer ultimate class. Bits: 0b0000_1001_1111
+        /// </summary>
+            RogueSlayer = 159,
+
+        /// <summary>
+        /// Value for the gun crusher character class. Bits: 0b0000_1010_0000
+        /// </summary>
+            GunCrusher = 160,
+
+        /// <summary>
+        /// Value for the gun breaker advanced class. Bits: 0b0000_1010_1000
+        /// </summary>
+            GunBreaker = 168,
+
+        /// <summary>
+        /// Value for the master gun breaker advanced class. Bits: 0b0000_1010_1100
+        /// </summary>
+            MasterGunBreaker = 172,
+
+        /// <summary>
+        /// Value for the heist gun crusher elite class. Bits: 0b0000_1010_1110
+        /// </summary>
+            HeistGunCrusher = 174,
+
+        /// <summary>
+        /// Value for the magnus gun crusher ultimate class. Bits: 0b0000_1010_1111
+        /// </summary>
+            MagnusGunCrusher = 175,
+
+        /// <summary>
+        /// Value for the white wizard character class. Bits: 0b0000_1011_0000
+        /// </summary>
+            WhiteWizard = 176,
+
+        /// <summary>
+        /// Value for the light master advanced class. Bits: 0b0000_1011_1000
+        /// </summary>
+            LightMaster = 184,
+
+        /// <summary>
+        /// Value for the shine wizard advanced class. Bits: 0b0000_1011_1100
+        /// </summary>
+            ShineWizard = 188,
+
+        /// <summary>
+        /// Value for the luminous wizard elite class. Bits: 0b0000_1011_1110
+        /// </summary>
+            LuminousWizard = 190,
+
+        /// <summary>
+        /// Value for the glory wizard ultimate class. Bits: 0b0000_1011_1111
+        /// </summary>
+            GloryWizard = 191,
+
+        /// <summary>
+        /// Value for the lemuria character class. Bits: 0b0000_1100_0000
+        /// </summary>
+            Lemuria = 192,
+
+        /// <summary>
+        /// Value for the wo mage advanced class. Bits: 0b0000_1100_1000
+        /// </summary>
+            WoMage = 200,
+
+        /// <summary>
+        /// Value for the arch mage advanced class. Bits: 0b0000_1100_1100
+        /// </summary>
+            ArchMage = 204,
+
+        /// <summary>
+        /// Value for the mystic mage elite class. Bits: 0b0000_1100_1110
+        /// </summary>
+            MysticMage = 206,
+
+        /// <summary>
+        /// Value for the battle mage ultimate class. Bits: 0b0000_1100_1111
+        /// </summary>
+            BattleMage = 207,
+
+        /// <summary>
+        /// Value for the illusion knight character class. Bits: 0b0000_1101_0000
+        /// </summary>
+            IllusionKnight = 208,
+
+        /// <summary>
+        /// Value for the mirage knight advanced class. Bits: 0b0000_1101_1000
+        /// </summary>
+            MirageKnight = 216,
+
+        /// <summary>
+        /// Value for the illusion master advanced class. Bits: 0b0000_1101_1100
+        /// </summary>
+            IllusionMaster = 220,
+
+        /// <summary>
+        /// Value for the mystic knight elite class. Bits: 0b0000_1101_1110
+        /// </summary>
+            MysticKnight = 222,
+
+        /// <summary>
+        /// Value for the phantom pain knight ultimate class. Bits: 0b0000_1101_1111
+        /// </summary>
+            PhantomPainKnight = 223,
+
+        /// <summary>
+        /// Value for the alchemist character class. Bits: 0b0000_1110_0000
+        /// </summary>
+            Alchemist = 224,
+
+        /// <summary>
+        /// Value for the alchemic magician advanced class. Bits: 0b0000_1110_1000
+        /// </summary>
+            AlchemicMagician = 232,
+
+        /// <summary>
+        /// Value for the alchemic master advanced class. Bits: 0b0000_1110_1100
+        /// </summary>
+            AlchemicMaster = 236,
+
+        /// <summary>
+        /// Value for the alchemic force elite class. Bits: 0b0000_1110_1110
+        /// </summary>
+            AlchemicForce = 238,
+
+        /// <summary>
+        /// Value for the creator ultimate class. Bits: 0b0000_1110_1111
+        /// </summary>
+            Creator = 239,
+
+        /// <summary>
+        /// Value for the crusader character class. Bits: 0b0000_1111_0000
+        /// </summary>
+            Crusader = 240,
+
+        /// <summary>
+        /// Value for the impact crusader advanced class. Bits: 0b0000_1111_1000
+        /// </summary>
+            ImpactCrusader = 248,
+
+        /// <summary>
+        /// Value for the master paladin advanced class. Bits: 0b0000_1111_1100
+        /// </summary>
+            MasterPaladin = 252,
+
+        /// <summary>
+        /// Value for the sacred paladin elite class. Bits: 0b0000_1111_1110
+        /// </summary>
+            SacredPaladin = 254,
+
+        /// <summary>
+        /// Value for the templar commander ultimate class. Bits: 0b0000_1111_1111
+        /// </summary>
+            TemplarCommander = 255,
+    }
+
+    /// <summary>
     /// Defines the type of a character stat attribute.
     /// </summary>
     public enum CharacterStatAttribute

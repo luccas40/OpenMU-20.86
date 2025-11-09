@@ -112,7 +112,7 @@ public readonly struct Ping
 
 /// <summary>
 /// Is sent by the client when: This packet is sent by the client When it receives the Mount activation packet.
-/// Causes reaction on server side: 
+/// Causes reaction on server side: Client activated any kind of mount, ex: DarkHorse, Muun mounts and Guardian Mounts.
 /// </summary>
 public readonly struct MuunMountRequest
 {
@@ -10047,6 +10047,156 @@ public readonly struct AreaSkill
 
 
 /// <summary>
+/// Is sent by the client when: A player is performing an skill which affects an area of the map.
+/// Causes reaction on server side: It's forwarded to all surrounding players, so that the animation is visible. In the original server implementation, no damage is done yet for attack skills - there are separate hit packets.
+/// </summary>
+public readonly struct AreaSkillS21
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AreaSkillS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public AreaSkillS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AreaSkillS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private AreaSkillS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x1E;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 19;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the target x.
+    /// </summary>
+    public uint TargetX
+    {
+        get => ReadUInt32LittleEndian(this._data.Span[3..]);
+        set => WriteUInt32LittleEndian(this._data.Span[3..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the skill id.
+    /// </summary>
+    public ushort SkillId
+    {
+        get => (ushort)(this._data.Span[7] << 8 | this._data.Span[12] & 0xFF);
+        set
+        {
+              this._data.Span[7] = (byte)(value >> 8);
+              this._data.Span[12] = (byte)(value & 0xFF);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the target y.
+    /// </summary>
+    public uint TargetY
+    {
+        get => ReadUInt32LittleEndian(this._data.Span[8..]);
+        set => WriteUInt32LittleEndian(this._data.Span[8..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the rotation.
+    /// </summary>
+    public byte Rotation
+    {
+        get => this._data.Span[13];
+        set => this._data.Span[13] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the extra target id.
+    /// </summary>
+    public ushort ExtraTargetId
+    {
+        get => (ushort)(this._data.Span[14] << 8 | this._data.Span[16] & 0xFF);
+        set
+        {
+              this._data.Span[14] = (byte)(value >> 8);
+              this._data.Span[16] = (byte)(value & 0xFF);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the distance.
+    /// </summary>
+    public byte Distance
+    {
+        get => this._data.Span[15];
+        set => this._data.Span[15] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the target pos.
+    /// </summary>
+    public byte TargetPos
+    {
+        get => this._data.Span[17];
+        set => this._data.Span[17] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets animation counter which acts as a reference to the previously sent Area Skill Animation packet.
+    /// </summary>
+    public byte AnimationCounter
+    {
+        get => this._data.Span[18];
+        set => this._data.Span[18] = value;
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="AreaSkillS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator AreaSkillS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="AreaSkillS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(AreaSkillS21 packet) => packet._data; 
+}
+
+
+/// <summary>
 /// Is sent by the client when: An area skill was performed and the client decided to hit a target.
 /// Causes reaction on server side: The server is calculating the damage and applying it to the target. The attacker gets a response back with the caused damage.
 /// </summary>
@@ -15241,6 +15391,84 @@ public readonly struct MuHelperSaveDataRequest
 
 
 /// <summary>
+/// Is sent by the client when: The client want to save current MU Helper data.
+/// Causes reaction on server side: The server should save supplied MU Helper data.
+/// </summary>
+public readonly struct MuHelperSaveDataRequestS21
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MuHelperSaveDataRequestS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public MuHelperSaveDataRequestS21(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MuHelperSaveDataRequestS21"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private MuHelperSaveDataRequestS21(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (ushort)Math.Min(data.Length, Length);
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC2;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0xAE;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 517;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C2Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the helper data.
+    /// </summary>
+    public Span<byte> HelperData
+    {
+        get => this._data.Slice(5, 512).Span;
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="MuHelperSaveDataRequestS21"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator MuHelperSaveDataRequestS21(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="MuHelperSaveDataRequestS21"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(MuHelperSaveDataRequestS21 packet) => packet._data; 
+}
+
+
+/// <summary>
 /// Is sent by the client when: The client opened an quest NPC dialog and selected an available quests.
 /// Causes reaction on server side: If the quest is already active, it responds with the QuestProgress. If the quest is inactive, the server decides if the character can start the quest and responds with a QuestStepInfo with the StartingNumber. A character can run up to 3 concurrent quests at a time.
 /// </summary>
@@ -18029,6 +18257,110 @@ public readonly struct DuelChannelQuitRequest
     /// <param name="packet">The packet as struct.</param>
     /// <returns>The packet as byte span.</returns>
     public static implicit operator Memory<byte>(DuelChannelQuitRequest packet) => packet._data; 
+}
+
+
+/// <summary>
+/// Is sent by the client when: A player requested to spend a majestic tree on a skill.
+/// Causes reaction on server side: The server will try to add the skill and answer the client.
+/// </summary>
+public readonly struct MajesticSkillTreeAddRequest
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MajesticSkillTreeAddRequest"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public MajesticSkillTreeAddRequest(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MajesticSkillTreeAddRequest"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private MajesticSkillTreeAddRequest(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)Math.Min(data.Length, Length);
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x7E;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x01;
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 9;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1HeaderWithSubCode Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the section.
+    /// </summary>
+    public byte Section
+    {
+        get => this._data.Span[4];
+        set => this._data.Span[4] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the skill id.
+    /// </summary>
+    public ushort SkillId
+    {
+        get => ReadUInt16LittleEndian(this._data.Span[5..]);
+        set => WriteUInt16LittleEndian(this._data.Span[5..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the id.
+    /// </summary>
+    public ushort Id
+    {
+        get => ReadUInt16LittleEndian(this._data.Span[7..]);
+        set => WriteUInt16LittleEndian(this._data.Span[7..], value);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="MajesticSkillTreeAddRequest"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator MajesticSkillTreeAddRequest(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="MajesticSkillTreeAddRequest"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(MajesticSkillTreeAddRequest packet) => packet._data; 
 }
     /// <summary>
     /// The state of the trade button.

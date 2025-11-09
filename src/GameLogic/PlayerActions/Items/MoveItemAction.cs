@@ -73,7 +73,7 @@ public class MoveItemAction
                 await this.PartiallyStackAsync(player, item, targetItem).ConfigureAwait(false);
                 break;
             case Movement.CompleteStack when toItemStorage?.GetItem(toSlot) is { } targetItem:
-                await this.FullStackAsync(player, item, targetItem).ConfigureAwait(false);
+                await this.FullStackAsync(player, fromItemStorage!, item, targetItem).ConfigureAwait(false);
                 break;
             default:
                 await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(item)).ConfigureAwait(false);
@@ -94,11 +94,12 @@ public class MoveItemAction
         }
     }
 
-    private async ValueTask FullStackAsync(Player player, Item sourceItem, Item targetItem)
+    private async ValueTask FullStackAsync(Player player, IStorage fromItemStorage, Item sourceItem, Item targetItem)
     {
         targetItem.Durability += sourceItem.Durability;
+        await fromItemStorage.RemoveItemAsync(sourceItem).ConfigureAwait(false);
         await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(sourceItem)).ConfigureAwait(false);
-        await player.InvokeViewPlugInAsync<Views.Inventory.IItemRemovedPlugIn>(p => p.RemoveItemAsync(sourceItem.ItemSlot)).ConfigureAwait(false);
+        await player.InvokeViewPlugInAsync<IItemRemovedPlugIn>(p => p.RemoveItemAsync(sourceItem.ItemSlot)).ConfigureAwait(false);
         await player.InvokeViewPlugInAsync<IItemDurabilityChangedPlugIn>(p => p.ItemDurabilityChangedAsync(targetItem, false)).ConfigureAwait(false);
     }
 

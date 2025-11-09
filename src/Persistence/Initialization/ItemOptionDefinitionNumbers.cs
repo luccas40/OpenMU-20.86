@@ -224,4 +224,9 @@ internal static class ItemOptionDefinitionNumbers
     /// Gets the dark horse option number.
     /// </summary>
     public static short Horse => 0x82;
+
+    /// <summary>
+    /// Gets the dark horse option number.
+    /// </summary>
+    public static short DivineHorse => 0x83;
 }

@@ -103,7 +103,7 @@ public class GameMapTerrain
     {
         if (data.Length == 0x20000)
         {
-            ushort[] udata = MemoryMarshal.Cast<byte, ushort>(data[4..].ToArray()).ToArray();
+            ushort[] udata = MemoryMarshal.Cast<byte, ushort>(data.ToArray()).ToArray();
             for (int i = 0; i < udata.Length; i++)
             {
                 byte x = (byte)(i & 0xFF);

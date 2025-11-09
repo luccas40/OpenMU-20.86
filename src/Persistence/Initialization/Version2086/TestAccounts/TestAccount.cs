@@ -34,15 +34,19 @@ internal class TestAccount : AccountInitializerBase
         character.Attributes.First(a => a.Definition == Stats.BaseAgility).Value = 1010;
         character.Attributes.First(a => a.Definition == Stats.BaseEnergy).Value = 401;
         character.Attributes.First(a => a.Definition == Stats.BaseLeadership).Value = 1101;
-        character.LevelUpPoints = 1500; // for the added strength and agility
+        character.LevelUpPoints = 1500;
+        character.MasterLevelUpPoints = 400;
+        character.MajesticLevelUpPoints = 400;
 
-        //character.Inventory!.Items.Add(this.CreateWeapon(InventoryConstants.LeftHandSlot, 2, 12, 13, 4, true, true, Stats.ExcellentDamageChance)); // Exc Great Lord Scepter+13+16+L+ExcDmg
-        //character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.HelmSlot, 26, 7, Stats.MaximumHealth, 13, 4, true)); // Exc Ada Helm+13+16+L
-        //character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.ArmorSlot, 26, 8, Stats.ArmorDamageDecrease, 13, 4, true)); // Exc Ada Armor+13+16+L
-        //character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.PantsSlot, 26, 9, Stats.MoneyAmountRate, 13, 4, true)); // Exc Ada Pants+13+16+L
-        //character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.GlovesSlot, 26, 10, Stats.MaximumMana, 13, 4, true)); // Exc Ada Gloves+13+16+L
-        //character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.BootsSlot, 26, 11, Stats.DamageReflection, 13, 4, true)); // Exc Ada Boots+13+16+L
-        //character.Inventory.Items.Add(this.CreateWings(InventoryConstants.WingsSlot, 30, 13, 13)); // Cape +13
+        character.Inventory!.Items.Add(this.CreateWeapon(InventoryConstants.LeftHandSlot, 2, 50, 13, 4, true, true, Stats.ExcellentDamageChance)); // Exc Great Lord Scepter+13+16+L+ExcDmg
+        character.Inventory!.Items.Add(this.CreateWeapon(120, 2, 50, 0, 0, true, true, Stats.ExcellentDamageChance)); // Exc Great Lord Scepter+13+16+L+ExcDmg
+        character.Inventory!.Items.Add(this.CreateWeapon(121, 2, 50, 0, 0, true, true)); // Exc Great Lord Scepter+13+16+L+ExcDmg
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.HelmSlot, 360, 7, Stats.MaximumHealth, 13, 4, true)); // Exc Ada Helm+13+16+L
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.ArmorSlot, 360, 8, Stats.ArmorDamageDecrease, 13, 4, true)); // Exc Ada Armor+13+16+L
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.PantsSlot, 360, 9, Stats.MoneyAmountRate, 13, 4, true)); // Exc Ada Pants+13+16+L
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.GlovesSlot, 360, 10, Stats.MaximumMana, 13, 4, true)); // Exc Ada Gloves+13+16+L
+        character.Inventory.Items.Add(this.CreateArmorItem(InventoryConstants.BootsSlot, 360, 11, Stats.DamageReflection, 13, 4, true)); // Exc Ada Boots+13+16+L
+        character.Inventory.Items.Add(this.CreateWings(InventoryConstants.WingsSlot, 184, 13)); // Cape +13
 
         this.AddDarkLordItems(character.Inventory!);
         this.AddTestJewelsAndPotions(character.Inventory!);

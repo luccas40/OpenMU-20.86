@@ -91,6 +91,11 @@ public enum FieldType
     /// </summary>
     [XmlEnum("Structure[]")]
     StructureArray,
+
+    /// <summary>
+    /// The field is a ushort but with a catch, it separates the high and low bits in different indexes.
+    /// </summary>
+    ShortHighLowBitsSeparate,
 }
 
 /// <summary>
@@ -153,6 +158,18 @@ public class Field
     /// </summary>
     /// <value>The item count field.</value>
     public string? ItemCountField { get; set; }
+
+    /// <summary>
+    /// Gets or sets the index to place the higher bits of a ushort.
+    /// </summary>
+    /// <value>The index of the High Bits.</value>
+    public int? HighBitsIndex { get; set; }
+
+    /// <summary>
+    /// Gets or sets the index to place the lower bits of a ushort.
+    /// </summary>
+    /// <value>The Index of the low bits.</value>
+    public int? LowBitsIndex { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this field uses a custom implementation for the indexer, if this field is a struct array.

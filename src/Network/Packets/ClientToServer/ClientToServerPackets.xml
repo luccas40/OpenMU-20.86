@@ -34,6 +34,7 @@
 			<Length>6</Length>
 			<Direction>ClientToServer</Direction>
 			<SentWhen>This packet is sent by the client When it receives the Mount activation packet.</SentWhen>
+			<CausedReaction>Client activated any kind of mount, ex: DarkHorse, Muun mounts and Guardian Mounts.</CausedReaction>
 			<Fields>
 				<Field>
 					<Index>4</Index>
@@ -658,23 +659,23 @@
         </Field>
       </Fields>
     </Packet>
-    <Packet>
-      <HeaderType>C3Header</HeaderType>
-      <Code>30</Code>
-      <Name>TalkToNpcRequest</Name>
-      <Caption>Talk to NPC</Caption>
-      <Length>5</Length>
-      <Direction>ClientToServer</Direction>
-      <SentWhen>A player wants to talk to an NPC.</SentWhen>
-      <CausedReaction>Based on the NPC type, the server sends a response back to the game client. For example, if it's a merchant NPC, it sends back that a merchant dialog should be opened and which items are offered by this NPC.</CausedReaction>
-      <Fields>
-        <Field>
-          <Index>3</Index>
-          <Type>ShortBigEndian</Type>
-          <Name>NpcId</Name>
-        </Field>
-      </Fields>
-    </Packet>
+		<Packet>
+			<HeaderType>C3Header</HeaderType>
+			<Code>30</Code>
+			<Name>TalkToNpcRequest</Name>
+			<Caption>Talk to NPC</Caption>
+			<Length>5</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>A player wants to talk to an NPC.</SentWhen>
+			<CausedReaction>Based on the NPC type, the server sends a response back to the game client. For example, if it's a merchant NPC, it sends back that a merchant dialog should be opened and which items are offered by this NPC.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>NpcId</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>31</Code>
@@ -2490,6 +2491,62 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>1E</Code>
+			<Name>AreaSkillS21</Name>
+			<Length>19</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>A player is performing an skill which affects an area of the map.</SentWhen>
+			<CausedReaction>It's forwarded to all surrounding players, so that the animation is visible. In the original server implementation, no damage is done yet for attack skills - there are separate hit packets.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>TargetX</Name>
+				</Field>
+				<Field>
+					<Index>7</Index>					
+					<Type>ShortHighLowBitsSeparate</Type>
+					<Name>SkillId</Name>
+					<HighBitsIndex>7</HighBitsIndex>
+					<LowBitsIndex>12</LowBitsIndex>					
+				</Field>				
+				<Field>
+					<Index>8</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>TargetY</Name>
+				</Field>
+				<Field>
+					<Index>13</Index>
+					<Type>Byte</Type>
+					<Name>Rotation</Name>
+				</Field>
+				<Field>
+					<Index>14</Index>					
+					<Type>ShortHighLowBitsSeparate</Type>
+					<Name>ExtraTargetId</Name>
+					<HighBitsIndex>14</HighBitsIndex>
+					<LowBitsIndex>16</LowBitsIndex>
+				</Field>
+				<Field>
+					<Index>15</Index>
+					<Type>Byte</Type>
+					<Name>Distance</Name>
+				</Field>
+				<Field>
+					<Index>17</Index>
+					<Type>Byte</Type>
+					<Name>TargetPos</Name>
+				</Field>
+				<Field>
+					<Index>18</Index>
+					<Type>Byte</Type>
+					<Name>AnimationCounter</Name>
+					<Description>Animation counter which acts as a reference to the previously sent Area Skill Animation packet.</Description>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C3Header</HeaderType>
       <Code>DB</Code>
@@ -3775,6 +3832,23 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C2Header</HeaderType>
+			<Code>AE</Code>
+			<Name>MuHelperSaveDataRequestS21</Name>
+			<Length>517</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>The client want to save current MU Helper data.</SentWhen>
+			<CausedReaction>The server should save supplied MU Helper data.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>5</Index>
+					<Type>Binary</Type>
+					<Name>HelperData</Name>
+					<Length>512</Length>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1HeaderWithSubCode</HeaderType>
       <Code>F6</Code>
@@ -4389,6 +4463,33 @@
       <Fields>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>7E</Code>
+			<SubCode>01</SubCode>
+			<Name>MajesticSkillTreeAddRequest</Name>
+			<Length>9</Length>
+			<Direction>ClientToServer</Direction>
+			<SentWhen>A player requested to spend a majestic tree on a skill.</SentWhen>
+			<CausedReaction>The server will try to add the skill and answer the client.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>Section</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>SkillId</Name>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>Id</Name>
+				</Field>
+			</Fields>
+		</Packet>
   </Packets>
   <Enums>
     <Enum>

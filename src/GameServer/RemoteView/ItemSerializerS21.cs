@@ -59,43 +59,34 @@ public class ItemSerializerS21 : IItemSerializer
             targetStruct.Option = (byte)(itemOption.Level & 0xF);
         }
 
-        targetStruct.Unk = 0xFF;
-        targetStruct.Unk2 = 0xFF;
-        targetStruct.Unk3 = 0xFF;
-        targetStruct.Unk4 = 0xFF;
-        targetStruct.Unk5 = 0xFF;
-        targetStruct.Unk6 = 0xFF;
-        targetStruct.Unk7 = 0xFF;
-        targetStruct.Unk8 = 0xFF;
-        targetStruct.Excellent = GetExcellentByte(item);
-        targetStruct.Excellent |= GetFenrirByte(item);
-
-        /*
-        if (targetStruct.Options.HasFlag(OptionFlags.HasAncient)
-            && item.ItemSetGroups.FirstOrDefault(set => set.AncientSetDiscriminator != 0) is { } ancientSet)
+        var ancientSet = item.ItemSetGroups.FirstOrDefault(set => set.AncientSetDiscriminator != 0);
+        if (ancientSet != null)
         {
-            targetStruct.AncientDiscriminator = (byte)ancientSet.AncientSetDiscriminator;
+            targetStruct.Ancient |= (byte)(ancientSet.AncientSetDiscriminator & 3);
 
             // An ancient item may or may not have an ancient bonus option. Example without bonus: Gywen Pendant.
-            if (item.ItemOptions.FirstOrDefault(o => o.ItemOption?.OptionType == ItemOptionTypes.AncientBonus) is { } ancientBonus)
+            var ancientBonus = item.ItemOptions.FirstOrDefault(o => o.ItemOption?.OptionType == ItemOptionTypes.AncientBonus);
+            if (ancientBonus != null)
             {
-                targetStruct.AncientBonusLevel = (byte)ancientBonus.Level;
+                targetStruct.Ancient |= (byte)((ancientBonus.Level << 2) & 12);
             }
         }
 
-        if (targetStruct.Options.HasFlag(OptionFlags.HasHarmony))
-        {
-            targetStruct.Harmony = GetHarmonyByte(item);
-        }
+        target[6] = (byte)(GetHarmonyByte(item) | GetSocketBonusByte(item));
+        SetSocketBytes(target.Slice(7, MaximumSockets), item);
 
-        if (targetStruct.Options.HasFlag(OptionFlags.HasSockets))
-        {
-            targetStruct.SocketCount = (byte)item.SocketCount;
-            targetStruct.SocketBonus = GetSocketBonusByte(item);
-            SetSocketBytes(targetStruct.Sockets, item);
-        }
-        */
-        return 15;
+        targetStruct.Excellent = GetExcellentByte(item);
+        targetStruct.Excellent |= GetFenrirByte(item);
+
+        // targetStruct.IsExpiringItem = false;
+        // targetStruct.IsExpired = false;
+        // targetStruct.IsSocketItem = false;
+
+        // Maybe Legendary Related
+        targetStruct.Unk6 = 0xFF;
+        targetStruct.Unk7 = 0xFF;
+        targetStruct.Unk8 = 0xFF;
+        return this.NeededSpace;
     }
 
     /// <inheritdoc />
@@ -246,6 +237,14 @@ public class ItemSerializerS21 : IItemSerializer
     ///  Option 2 bit and continue
     ///  if option value is greater than 3
     ///  3rt byte 
+    ///  
+    /// 
+    /// 
+    /// 
+    /// byte 3 
+    /// id 1000 0000
+    /// excellent
+    /// 3c
     /// </summary>
     private readonly ref struct ItemStruct(Span<byte> data)
     {
@@ -257,9 +256,9 @@ public class ItemSerializerS21 : IItemSerializer
             set
             {
                 this._data[0] |= (byte)value;
-                this._data[3] |= (byte)((value & 0x100) >> 1);
-                this._data[5] |= (byte)((value & 0x1E00) >> 5);
-                this._data[5] |= (byte)((value & 0x2000) >> 13);
+                this._data[3] |= (byte)((value & 0x100) >> 1); // 1 bit 1000 0000
+                this._data[5] |= (byte)((value & 0x1E00) >> 5); // 4bites 1111 0000
+                this._data[5] |= (byte)((value & 0x2000) >> 13); // 1bit 0001
             }
         }
 
@@ -315,49 +314,74 @@ public class ItemSerializerS21 : IItemSerializer
             set => this._data[3] = (byte)((this._data[3] & 0xC0) | (value & 0x3F));
         }
 
-        public int Unk8
+
+        public int Ancient
+        {
+            get => this._data[4];
+            set => this._data[4] = Convert.ToByte(value);
+        }
+
+        public bool IsExpiringItem
+        {
+            get => (this._data[5] & 2) == 2;
+            set => this._data[5] = (byte)(this._data[5] & 0xFD | (value ? 2 : 0));
+        }
+
+        public bool IsExpired
+        {
+            get => (this._data[5] & 4) == 4;
+            set => this._data[5] = (byte)(this._data[5] & 0xFB | (value ? 4 : 0));
+        }
+
+        public bool IsSocketItem
+        {
+            get => (this._data[5] & 8) == 8;
+            set => this._data[5] = (byte)(this._data[5] & 0xF7 | (value ? 8 : 0));
+        }
+
+        public int Socket1
         {
             get => this._data[7];
             set => this._data[7] = Convert.ToByte(value);
         }
 
-        public int Unk
+        public int Socket2
         {
             get => this._data[8];
             set => this._data[8] = Convert.ToByte(value);
         }
 
-        public int Unk2
+        public int Socket3
         {
             get => this._data[9];
             set => this._data[9] = Convert.ToByte(value);
         }
 
-        public int Unk3
+        public int Socket4
         {
             get => this._data[10];
             set => this._data[10] = Convert.ToByte(value);
         }
 
-        public int Unk4
+        public int Socket5
         {
             get => this._data[11];
             set => this._data[11] = Convert.ToByte(value);
         }
 
-        public int Unk5
+        public int Unk6
         {
             get => this._data[12];
             set => this._data[12] = Convert.ToByte(value);
         }
 
-        public int Unk6
+        public int Unk7
         {
             get => this._data[13];
             set => this._data[13] = Convert.ToByte(value);
         }
 
-        public int Unk7
+        public int Unk8
         {
             get => this._data[14];
             set => this._data[14] = Convert.ToByte(value);

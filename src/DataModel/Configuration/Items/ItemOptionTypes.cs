@@ -82,4 +82,10 @@ public static class ItemOptionTypes
     /// </summary>
     /// <remarks>Applies only to the dark horse pet.</remarks>
     public static ItemOptionType DarkHorse { get; } = new() { Name = "Dark Horse Option", Id = new Guid("{D2295C44-E458-40F8-8555-87CFD9626616}"), IsVisible = true };
+
+    /// <summary>
+    /// Gets the divine horse option type.
+    /// </summary>
+    /// <remarks>Applies only to the dark horse pet.</remarks>
+    public static ItemOptionType DivineHorse { get; } = new() { Name = "Divine Horse Option", Id = new Guid("{820253B3-19C6-44F7-AA2C-14659C66F1E4}"), IsVisible = true };
 }

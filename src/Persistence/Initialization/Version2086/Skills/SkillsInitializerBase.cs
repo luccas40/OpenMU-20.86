@@ -10,7 +10,6 @@ using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.Persistence;
 using MUnique.OpenMU.Persistence.Initialization;
-using MUnique.OpenMU.Persistence.Initialization.CharacterClasses;
 using MUnique.OpenMU.Persistence.Initialization.Skills;
 using MUnique.OpenMU.Persistence.Initialization.Version2086.CharacterClasses;
 
@@ -62,6 +61,9 @@ internal abstract class SkillsInitializerBase : InitializerBase
         int levelRequirement = 0,
         int energyRequirement = 0,
         int leadershipRequirement = 0,
+        int strengthRequirement = 0,
+        int dexterityRequirement = 0,
+        int vitalityRequirement = 0,
         ElementalType elementalModifier = ElementalType.Undefined,
         SkillType skillType = SkillType.DirectHit,
         SkillTarget skillTarget = SkillTarget.Explicit,
@@ -70,6 +72,8 @@ internal abstract class SkillsInitializerBase : InitializerBase
         bool movesToTarget = false,
         bool movesTarget = false,
         int cooldownMinutes = 0,
+        (AttributeDefinition Stat, int Value)? scalingStat1 = default,
+        (AttributeDefinition Stat, int Value)? scalingStat2 = default,
         int wizardClass = 0, int knightClass = 0, int elfClass = 0, int magicGladiatorClass = 0, int darkLordClass = 0, int summonerClass = 0, int ragefighterClass = 0, int growLancerClass = 0, int runeWizardClass = 0, int slayerClass = 0, int gunCrusherClass = 0, int whiteWizardClass = 0, int lemuriaClass = 0, int illusionKnightClass = 0, int alchemistClass = 0, int crusaderClass = 0
         )
     {
@@ -84,8 +88,21 @@ internal abstract class SkillsInitializerBase : InitializerBase
         CreateSkillRequirementIfNeeded(skill, Stats.Level, levelRequirement);
         CreateSkillRequirementIfNeeded(skill, Stats.TotalLeadership, leadershipRequirement);
         CreateSkillRequirementIfNeeded(skill, Stats.TotalEnergy, energyRequirement);
+        CreateSkillRequirementIfNeeded(skill, Stats.TotalStrength, strengthRequirement);
+        CreateSkillRequirementIfNeeded(skill, Stats.TotalAgility, dexterityRequirement);
+        CreateSkillRequirementIfNeeded(skill, Stats.TotalVitality, vitalityRequirement);
         CreateSkillConsumeRequirementIfNeeded(skill, Stats.CurrentMana, manaConsumption);
         CreateSkillConsumeRequirementIfNeeded(skill, Stats.CurrentAbility, abilityConsumption);
+
+        if (scalingStat1 != null && scalingStat1.Value.Value > 0)
+        {
+            AddAttributeRelationship(skill, Stats.SkillDamageBonus, 1f / scalingStat1.Value.Value, scalingStat1.Value.Stat);
+        }
+
+        if (scalingStat2 != null && scalingStat2.Value.Value > 0)
+        {
+            AddAttributeRelationship(skill, Stats.SkillDamageBonus, 1f / scalingStat2.Value.Value, scalingStat2.Value.Stat);
+        }
 
         skill.Range = distance;
         skill.DamageType = damageType;
@@ -94,7 +111,7 @@ internal abstract class SkillsInitializerBase : InitializerBase
         skill.ImplicitTargetRange = implicitTargetRange;
         skill.Target = skillTarget;
         skill.TargetRestriction = targetRestriction;
-        var classes = GameConfiguration.DetermineCharacterClasses(false, wizardClass, knightClass, elfClass, magicGladiatorClass, darkLordClass, summonerClass, ragefighterClass, growLancerClass, runeWizardClass, slayerClass, gunCrusherClass, whiteWizardClass, lemuriaClass, illusionKnightClass, alchemistClass, crusaderClass);
+        var classes = this.GameConfiguration.DetermineCharacterClasses(false, wizardClass, knightClass, elfClass, magicGladiatorClass, darkLordClass, summonerClass, ragefighterClass, growLancerClass, runeWizardClass, slayerClass, gunCrusherClass, whiteWizardClass, lemuriaClass, illusionKnightClass, alchemistClass, crusaderClass);
         foreach (var characterClass in classes)
         {
             skill.QualifiedCharacters.Add(characterClass);
@@ -104,7 +121,7 @@ internal abstract class SkillsInitializerBase : InitializerBase
         {
             ApplyElementalModifier(elementalModifier, skill);
         }
-
+        //skill.Requirements.Add(CreateRequirement);
         skill.SetGuid(skill.Number);
     }
 
@@ -252,5 +269,11 @@ internal abstract class SkillsInitializerBase : InitializerBase
 
         var requirement = CreateRequirement(attribute, requiredValue);
         skill.Requirements.Add(requirement);
+    }
+
+    private void AddAttributeRelationship(Skill skill, AttributeDefinition targetAttribute, float multiplier, AttributeDefinition sourceAttribute, AggregateType aggregateType = AggregateType.AddRaw)
+    {
+        var relationship = CharacterClassHelper.CreateAttributeRelationship(this.Context, this.GameConfiguration, targetAttribute, multiplier, sourceAttribute, aggregateType: aggregateType);
+        skill.AttributeRelationships.Add(relationship);
     }
 }

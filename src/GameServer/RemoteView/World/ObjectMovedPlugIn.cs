@@ -192,7 +192,7 @@ public class ObjectMovedPlugIn : IObjectMovedPlugIn
                 return 0x15;
             case ClientLanguage.Filipino: return 0xD6;
             case ClientLanguage.Chinese:
-            case ClientLanguage.Korean: return 0xD7;
+            case ClientLanguage.Korean: return 0x15; //d7 // possible 
             case ClientLanguage.Thai: return 0xD9;
             default:
                 return (byte)PacketType.Teleport;

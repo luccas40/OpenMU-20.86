@@ -22,7 +22,7 @@
   <!-- Type mapping: -->
   <xsl:template match="pd:Type[. = 'Boolean']" mode="type">bool</xsl:template>
   <xsl:template match="pd:Type[. = 'Byte']" mode="type">byte</xsl:template>
-  <xsl:template match="pd:Type[. = 'ShortLittleEndian' or . = 'ShortBigEndian']" mode="type">ushort</xsl:template>
+  <xsl:template match="pd:Type[. = 'ShortLittleEndian' or . = 'ShortBigEndian' or . = 'ShortHighLowBitsSeparate']" mode="type">ushort</xsl:template>
   <xsl:template match="pd:Type[. = 'IntegerLittleEndian' or . = 'IntegerBigEndian']" mode="type">uint</xsl:template>
   <xsl:template match="pd:Type[. = 'LongLittleEndian' or . = 'LongBigEndian']" mode="type">ulong</xsl:template>
   <xsl:template match="pd:Type[. = 'Float']" mode="type">float</xsl:template>

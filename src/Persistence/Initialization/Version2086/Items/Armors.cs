@@ -2162,7 +2162,7 @@ public class Armors : InitializerBase
         armor.DropsFromMonsters = true;
         armor.Durability = durability;
         armor.ItemSlot = this.GameConfiguration.ItemSlotTypes.First(st => st.ItemSlots.Contains(slot));
-        this.CreateItemRequirementIfNeeded(armor, Stats.Level, levelRequirement);
+        this.CreateItemRequirementIfNeeded(armor, Stats.TotalLevel, levelRequirement);
         this.CreateItemRequirementIfNeeded(armor, Stats.TotalStrengthRequirementValue, strengthRequirement);
         this.CreateItemRequirementIfNeeded(armor, Stats.TotalAgilityRequirementValue, agilityRequirement);
         this.CreateItemRequirementIfNeeded(armor, Stats.TotalEnergyRequirementValue, energyRequirement);

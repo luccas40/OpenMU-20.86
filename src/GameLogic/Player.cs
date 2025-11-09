@@ -1953,7 +1953,11 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
             // Wings
             return TimeSpan.FromMilliseconds(300);
         }
-
+        else if (this.Inventory?.ActiveItems.Any(item => item.IsMount()) ?? false)
+        {
+            return TimeSpan.FromMilliseconds(300);
+        }
+        //uint32 MoveTime = this->GetIntData(UNIT_INT_MOVE_SPEED) + (this->HasSlowdownBuff() ? 300: 0);
         // TODO: Consider pets etc.
         return TimeSpan.FromMilliseconds(500);
     }
@@ -2334,6 +2338,15 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.CombatPowerMultiplier, 100)).ConfigureAwait(false);
         await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.MaximumMana, 100)).ConfigureAwait(false);
         await this.InvokeViewPlugInAsync<IUpdateStatsPlugIn>(u => u.UpdateStatsAsync(Stats.MaximumHealth, 100)).ConfigureAwait(false);
+        foreach (var item in this.Inventory!.ActiveItems)
+        {
+            await this.InvokeViewPlugInAsync<IItemUsedPlugIn>(u => u.ItemUsedAsync(item.ItemSlot, true)).ConfigureAwait(false);
+        }
+
+        await this.InvokeViewPlugInAsync<IUpdateCharacterMajesticTreeListPlugIn>(p => p.UpdateCharacterMajesticTreeListAsync()).ConfigureAwait(false);
+        await this.InvokeViewPlugInAsync<IUpdateCharacterMajesticTreeStatListPlugIn>(p => p.UpdateCharacterMajesticTreeStatListAsync()).ConfigureAwait(false);
+        // await this.InvokeViewPlugInAsync<IUpdateCharacterMajesticTreeDataPlugIn>(p => p.UpdateCharacterMajesticTreeDataAsync()).ConfigureAwait(false);
+
     }
 
     private void LogInvalidVaultItems()

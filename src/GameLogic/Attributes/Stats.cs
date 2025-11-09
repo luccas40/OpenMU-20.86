@@ -1381,7 +1381,9 @@ public class Stats
     public static AttributeDefinition MinimumSpecialAttackPower { get; } = new(new Guid("0434DBE2-D280-43AE-AF89-358D099D646F"), "Minimum Special Attack Power", "Part of Character Specialization that increases Attack Power (add) based on amount of basic attributes"); 
     public static AttributeDefinition MaximumSpecialAttackPower { get; } = new(new Guid("114D9B49-4C2F-47DF-9833-33D5672DD74C"), "Maximum Special Attack Power", "Part of Character Specialization that increases Attack Power (add) based on amount of basic attributes"); 
     
-    public static AttributeDefinition SpecialDefense { get; } = new(new Guid("52BAD2B2-0F74-46D4-A544-B3569B4B550F"), "Special Defense", "Part of Character Specialization that increases Defense (add) based on amount of basic attributes"); 
+    public static AttributeDefinition SpecialDefense { get; } = new(new Guid("52BAD2B2-0F74-46D4-A544-B3569B4B550F"), "Special Defense", "Part of Character Specialization that increases Defense (add) based on amount of basic attributes");
+    
+    public static AttributeDefinition ElementalDefense { get; } = new(new Guid("8C997B96-87BE-46EC-B5E9-BA9FF138D3F4"), "Elemental Defense", "Elemental System Defense");
 
     /// <summary>
     /// Gets the dictionary which relates the jewelry element resistance attribute to the correspondent DMG bonus attribute.

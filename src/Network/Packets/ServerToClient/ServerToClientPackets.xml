@@ -2090,6 +2090,51 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>1E</Code>
+			<Name>AreaSkillAnimationS21</Name>
+			<Length>12</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>An object performs a skill which has effect on an area.</SentWhen>
+			<CausedReaction>The animation is shown on the user interface.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>Byte</Type>
+					<Name>X</Name>
+				</Field>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>Y</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>Rotation</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>ShortHighLowBitsSeparate</Type>
+					<Name>SkillId</Name>
+					<HighBitsIndex>6</HighBitsIndex>
+					<LowBitsIndex>8</LowBitsIndex>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>ShortHighLowBitsSeparate</Type>
+					<Name>TargetId</Name>
+					<HighBitsIndex>7</HighBitsIndex>
+					<LowBitsIndex>9</LowBitsIndex>
+				</Field>
+				<Field>
+					<Index>10</Index>
+					<Type>ShortBigEndian</Type>
+					<Name>IDK</Name>
+				</Field>				
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C3Header</HeaderType>
       <Code>19</Code>
@@ -5052,6 +5097,156 @@
         </Enum>
       </Enums>
     </Packet>
+		<Packet>
+			<HeaderType>C1Header</HeaderType>
+			<Code>30</Code>
+			<Name>NpcWindowResponseS21</Name>
+			<Length>12</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>After the client talked to an NPC which should cause a dialog to open on the client side.</SentWhen>
+			<CausedReaction>The client opens the specified dialog.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>3</Index>
+					<Type>Enum</Type>
+					<TypeName>NpcWindow</TypeName>
+					<Name>Window</Name>
+				</Field>
+				<Field>
+					<Index>11</Index>
+					<Type>Byte</Type>
+					<Name>TabCount</Name>
+				</Field>
+			</Fields>
+			<Enums>
+				<Enum>
+					<Name>NpcWindow</Name>
+					<Description>Defines the kind of npc window which should be shown on the client.</Description>
+					<Values>
+						<EnumValue>
+							<Name>Merchant</Name>
+							<Description>A merchant window.</Description>
+							<Value>0</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>Merchant1</Name>
+							<Description>Another merchant window.</Description>
+							<Value>1</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>VaultStorage</Name>
+							<Description>A vault storage.</Description>
+							<Value>2</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>ChaosMachine</Name>
+							<Description>A chaos machine window.</Description>
+							<Value>3</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>DevilSquare</Name>
+							<Description>A devil square window.</Description>
+							<Value>4</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>BloodCastle</Name>
+							<Description>A blood castle window.</Description>
+							<Value>6</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>PetTrainer</Name>
+							<Description>The pet trainer window.</Description>
+							<Value>7</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>Lahap</Name>
+							<Description>The lahap window.</Description>
+							<Value>9</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>CastleSeniorNPC</Name>
+							<Description>The castle senior window.</Description>
+							<Value>12</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>ElphisRefinery</Name>
+							<Description>The elphis refinery window.</Description>
+							<Value>17</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>RefineStoneMaking</Name>
+							<Description>The refine stone making window.</Description>
+							<Value>18</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>RemoveJohOption</Name>
+							<Description>The jewel of harmony option removal window.</Description>
+							<Value>19</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>IllusionTemple</Name>
+							<Description>The illusion temple window.</Description>
+							<Value>20</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>ChaosCardCombination</Name>
+							<Description>The chaos card combination window.</Description>
+							<Value>21</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>CherryBlossomBranchesAssembly</Name>
+							<Description>The cherry blossom branches assembly window.</Description>
+							<Value>22</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>SeedMaster</Name>
+							<Description>The seed master window.</Description>
+							<Value>23</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>SeedResearcher</Name>
+							<Description>The seed researcher window.</Description>
+							<Value>24</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>StatReInitializer</Name>
+							<Description>The stat reinitializer window.</Description>
+							<Value>25</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>DelgadoLuckyCoinRegistration</Name>
+							<Description>The delgado lucky coin registration window.</Description>
+							<Value>32</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>DoorkeeperTitusDuelWatch</Name>
+							<Description>The doorkeeper titus duel watch window.</Description>
+							<Value>33</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>LugardDoppelgangerEntry</Name>
+							<Description>The lugard doppelganger entry window.</Description>
+							<Value>35</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>JerintGaionEvententry</Name>
+							<Description>The jerint gaion event entry window.</Description>
+							<Value>36</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>JuliaWarpMarketServer</Name>
+							<Description>The julia warp market server window.</Description>
+							<Value>37</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>CombineLuckyItem</Name>
+							<Description>The dialog window which allows to exchange or refine Lucky Item. Used by NPC "David".</Description>
+							<Value>38</Value>
+						</EnumValue>
+					</Values>
+				</Enum>
+			</Enums>
+		</Packet>
     <Packet>
       <HeaderType>C2Header</HeaderType>
       <Code>31</Code>
@@ -5103,6 +5298,62 @@
         </Enum>
       </Enums>
     </Packet>
+		<Packet>
+			<HeaderType>C2Header</HeaderType>
+			<Code>31</Code>
+			<Name>StoreItemListS21</Name>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The player opens a merchant npc or the vault. It's sent after the dialog was opened by another message.</SentWhen>
+			<CausedReaction>The client shows the items in the opened dialog.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Enum</Type>
+					<TypeName>ItemWindow</TypeName>
+					<Name>Type</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>ItemCount</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>Byte</Type>
+					<Name>TabIndex</Name>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>Structure[]</Type>
+					<TypeName>StoredItem</TypeName>
+					<Name>Items</Name>
+					<ItemCountField>ItemCount</ItemCountField>
+				</Field>
+			</Fields>
+			<Enums>
+				<Enum>
+					<Name>ItemWindow</Name>
+					<Description>Defines the kind of npc window which should be shown on the client.</Description>
+					<Values>
+						<EnumValue>
+							<Name>Normal</Name>
+							<Description>A normal window.</Description>
+							<Value>0</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>ChaosMachine</Name>
+							<Description>A chaos machine window.</Description>
+							<Value>3</Value>
+						</EnumValue>
+						<EnumValue>
+							<Name>ResurrectionFailed</Name>
+							<Description>A failed resurrection (of Dark Horse or Dark Raven) storage dialog.</Description>
+							<Value>5</Value>
+						</EnumValue>
+					</Values>
+				</Enum>
+			</Enums>
+		</Packet>
     <Packet>
       <HeaderType>C1HeaderWithSubCode</HeaderType>
       <Code>32</Code>
@@ -8256,6 +8507,27 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>F3</Code>
+			<SubCode>14</SubCode>
+			<Name>InventoryItemUpgradedS21</Name>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>An item in the inventory got upgraded by the player, e.g. by applying a jewel.</SentWhen>
+			<CausedReaction>The item is updated on the user interface.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>InventorySlot</Name>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>Binary</Type>
+					<Name>ItemData</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C1HeaderWithSubCode</HeaderType>
       <Code>F3</Code>
@@ -8714,6 +8986,59 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>F3</Code>
+			<SubCode>52</SubCode>
+			<Name>MasterSkillLevelUpdateS21</Name>
+			<Length>29</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>After a master skill level has been changed (usually increased).</SentWhen>
+			<CausedReaction>The level is updated in the master skill tree.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Boolean</Type>
+					<Name>Success</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>MasterLevelUpPoints</Name>
+				</Field>
+				<Field>
+					<Index>8</Index>
+					<Type>Byte</Type>
+					<Name>MasterSkillIndex</Name>
+					<Description>The index of the master skill on the clients master skill tree for the given character class.</Description>
+				</Field>
+				<Field>
+					<Index>12</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>MasterSkillNumber</Name>
+				</Field>
+				<Field>
+					<Index>16</Index>
+					<Type>Byte</Type>
+					<Name>Level</Name>
+				</Field>
+				<Field>
+					<Index>20</Index>
+					<Type>Float</Type>
+					<Name>DisplayValue</Name>
+				</Field>
+				<Field>
+					<Index>24</Index>
+					<Type>Float</Type>
+					<Name>DisplayValueOfNextLevel</Name>
+				</Field>
+				<Field>
+					<Index>28</Index>
+					<Type>Byte</Type>
+					<Name>Type</Name>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C2HeaderWithSubCode</HeaderType>
       <Code>F3</Code>
@@ -8767,6 +9092,64 @@
         </Structure>
       </Structures>
     </Packet>
+		<Packet>
+			<HeaderType>C2HeaderWithSubCode</HeaderType>
+			<Code>F3</Code>
+			<SubCode>53</SubCode>
+			<Name>MasterSkillListS21</Name>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>Usually after entering the game with a master character.</SentWhen>
+			<CausedReaction>The data is available in the master skill tree.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>8</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>MasterSkillCount</Name>
+				</Field>
+				<Field>
+					<Index>12</Index>
+					<Type>Structure[]</Type>
+					<TypeName>MasterSkillEntryS21</TypeName>
+					<Name>Skills</Name>
+					<ItemCountField>MasterSkillCount</ItemCountField>
+				</Field>
+			</Fields>
+			<Structures>
+				<Structure>
+					<Name>MasterSkillEntryS21</Name>
+					<Description>An entry in the master skill list.</Description>
+					<Length>16</Length>
+					<Fields>
+						<Field>
+							<Index>0</Index>
+							<Type>Byte</Type>
+							<Name>MasterSkillIndex</Name>
+							<Description>The index of the master skill on the clients master skill tree for the given character class.</Description>
+						</Field>
+						<Field>
+							<Index>1</Index>
+							<Type>Byte</Type>
+							<Name>Level</Name>
+						</Field>
+						<Field>
+							<Index>4</Index>
+							<Type>Float</Type>
+							<Name>DisplayValue</Name>
+						</Field>
+						<Field>
+							<Index>8</Index>
+							<Type>Float</Type>
+							<Name>DisplayValueOfNextLevel</Name>
+						</Field>
+						<Field>
+							<Index>12</Index>
+							<Type>Byte</Type>
+							<Name>Type</Name>
+						</Field>
+					</Fields>
+				</Structure>
+			</Structures>
+		</Packet>
     <Packet>
       <HeaderType>C1Header</HeaderType>
       <Code>0D</Code>
@@ -11147,6 +11530,71 @@
         </Field>
       </Fields>
     </Packet>
+		<Packet>
+			<HeaderType>C2Header</HeaderType>
+			<Code>AE</Code>
+			<Name>MuHelperConfigurationDataS21</Name>
+			<Length>517</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The server saved the users MU Helper data.</SentWhen>
+			<CausedReaction>The user wants to save the MU Helper data.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>5</Index>
+					<Type>Binary</Type>
+					<Name>HelperData</Name>
+					<Length>512</Length>
+				</Field>
+			</Fields>
+		</Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>E7</Code>
+			<SubCode>03</SubCode>
+			<Name>MiniMapInfoS21</Name>
+			<Length>43</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The server sends the minimap data.</SentWhen>
+			<CausedReaction>The user opened the minimap.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>Byte</Type>
+					<Name>Index</Name>
+				</Field>
+				<Field>
+					<Index>5</Index>
+					<Type>Byte</Type>
+					<Name>Group</Name>
+				</Field>
+				<Field>
+					<Index>6</Index>
+					<Type>Byte</Type>
+					<Name>Type</Name>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>Byte</Type>
+					<Name>Flag</Name>
+				</Field>
+				<Field>
+					<Index>8</Index>
+					<Type>Byte</Type>
+					<Name>X</Name>
+				</Field>
+				<Field>
+					<Index>9</Index>
+					<Type>Byte</Type>
+					<Name>Y</Name>
+				</Field>
+				<Field>
+					<Index>10</Index>
+					<Type>String</Type>
+					<Name>text</Name>
+					<Length>33</Length>
+				</Field>
+			</Fields>
+		</Packet>
     <Packet>
       <HeaderType>C2Header</HeaderType>
       <Code>C0</Code>
@@ -12462,6 +12910,142 @@
         </Enum>
       </Enums>
     </Packet>
+		<Packet>
+			<HeaderType>C2HeaderWithSubCode</HeaderType>
+			<Code>7E</Code>
+			<SubCode>2</SubCode>
+			<Name>MajesticTreeList</Name>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The character levels up or enter the world.</SentWhen>
+			<CausedReaction>The character leveled up.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>5</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>Points</Name>
+				</Field>
+				<Field>
+					<Index>7</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>Count</Name>
+				</Field>
+				<Field>
+					<Index>11</Index>
+					<Type>Structure[]</Type>
+					<TypeName>MajesticSkillEntry</TypeName>
+					<ItemCountField>Count</ItemCountField>
+					<Name>Skills</Name>
+				</Field>
+			</Fields>
+			<Structures>
+				<Structure>
+					<Name>MajesticSkillEntry</Name>
+					<Description>Description of the majestic skill.</Description>
+					<Length>12</Length>
+					<Fields>
+						<Field>
+							<Index>0</Index>
+							<Type>Byte</Type>
+							<Name>Section</Name>
+						</Field>
+						<Field>
+							<Index>1</Index>
+							<Type>ShortLittleEndian</Type>
+							<Name>Id</Name>
+						</Field>
+						<Field>
+							<Index>3</Index>
+							<Type>Byte</Type>
+							<Name>Level</Name>
+						</Field>
+						<Field>
+							<Index>4</Index>
+							<Type>Float</Type>
+							<Name>CurrentLevel</Name>
+						</Field>
+						<Field>
+							<Index>8</Index>
+							<Type>Float</Type>
+							<Name>NextLevel</Name>
+						</Field>
+					</Fields>
+				</Structure>
+			</Structures>
+		</Packet>
+		<Packet>
+			<HeaderType>C2HeaderWithSubCode</HeaderType>
+			<Code>7E</Code>
+			<SubCode>6</SubCode>
+			<Name>MajesticTreeStatList</Name>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The character levels up or enter the world.</SentWhen>
+			<CausedReaction>The character leveled up.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>5</Index>
+					<Type>IntegerLittleEndian</Type>
+					<Name>Count</Name>
+				</Field>
+				<Field>
+					<Index>9</Index>
+					<Type>Structure[]</Type>
+					<TypeName>MajesticStatEntry</TypeName>
+					<ItemCountField>Count</ItemCountField>
+					<Name>Skills</Name>
+				</Field>
+			</Fields>
+			<Structures>
+				<Structure>
+					<Name>MajesticStatEntry</Name>
+					<Description>Description of the majestic skill.</Description>
+					<Length>11</Length>
+					<Fields>
+						<Field>
+							<Index>0</Index>
+							<Type>Byte</Type>
+							<Name>Section</Name>
+						</Field>
+						<Field>
+							<Index>1</Index>
+							<Type>Byte</Type>
+							<Name>Id</Name>
+						</Field>
+						<Field>
+							<Index>2</Index>
+							<Type>Byte</Type>
+							<Name>Level</Name>
+						</Field>
+						<Field>
+							<Index>3</Index>
+							<Type>Float</Type>
+							<Name>CurrentLevel</Name>
+						</Field>
+						<Field>
+							<Index>7</Index>
+							<Type>Float</Type>
+							<Name>NextLevel</Name>
+						</Field>
+					</Fields>
+				</Structure>
+			</Structures>
+		</Packet>
+		<Packet>
+			<HeaderType>C1HeaderWithSubCode</HeaderType>
+			<Code>7E</Code>
+			<SubCode>3</SubCode>
+			<Name>MajesticTreeData</Name>
+			<Length>6</Length>
+			<Direction>ServerToClient</Direction>
+			<SentWhen>The character levels up or enter the world.</SentWhen>
+			<CausedReaction>The character leveled up.</CausedReaction>
+			<Fields>
+				<Field>
+					<Index>4</Index>
+					<Type>ShortLittleEndian</Type>
+					<Name>Points</Name>
+				</Field>
+			</Fields>
+		</Packet>
   </Packets>
   <Enums>
     <Enum>

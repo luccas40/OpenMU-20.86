@@ -88,10 +88,13 @@ public sealed class SkillList : ISkillList, IDisposable
         skillEntry.Level = 0;
         await this.AddLearnedSkillAsync(skillEntry).ConfigureAwait(false);
 
+        // we dont need to remove the skill in s21
+        /*
         if (skill.MasterDefinition?.ReplacedSkill is { } replacedSkill)
         {
             await this._player.InvokeViewPlugInAsync<ISkillListViewPlugIn>(p => p.RemoveSkillAsync(replacedSkill)).ConfigureAwait(false);
         }
+        */
     }
 
     /// <inheritdoc/>

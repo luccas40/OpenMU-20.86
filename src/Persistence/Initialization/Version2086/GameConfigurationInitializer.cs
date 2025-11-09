@@ -63,8 +63,7 @@ public class GameConfigurationInitializer : GameConfigurationInitializerBase
 
         new CharacterClassInitialization(this.Context, this.GameConfiguration).Initialize();
         new Version2086.Skills.SkillsInitializer(this.Context, this.GameConfiguration).Initialize();
-        new Version2086.Items.Orbs(this.Context, this.GameConfiguration).Initialize();
-        new Scrolls(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.Items.Scrolls(this.Context, this.GameConfiguration).Initialize();
         new EventTicketItems(this.Context, this.GameConfiguration).Initialize();
         new Version2086.Items.Wings(this.Context, this.GameConfiguration).Initialize();
         new Version2086.Items.Pets(this.Context, this.GameConfiguration).Initialize();
@@ -74,7 +73,7 @@ public class GameConfigurationInitializer : GameConfigurationInitializerBase
         new Version2086.Items.Armors(this.Context, this.GameConfiguration).Initialize();
         new Version2086.Items.Weapons(this.Context, this.GameConfiguration).Initialize();
         new Potions(this.Context, this.GameConfiguration).Initialize();
-        new Jewels(this.Context, this.GameConfiguration).Initialize();
+        new Version2086.Items.Jewels(this.Context, this.GameConfiguration).Initialize();
         new Misc(this.Context, this.GameConfiguration).Initialize();
         new PackedJewels(this.Context, this.GameConfiguration).Initialize();
         new Jewelery(this.Context, this.GameConfiguration).Initialize();

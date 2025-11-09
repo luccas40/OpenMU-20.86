@@ -48,6 +48,12 @@ public abstract class ItemModifyConsumeHandlerPlugIn : BaseConsumeHandlerPlugIn
 
         await this.ConsumeSourceItemAsync(player, item).ConfigureAwait(false);
 
+        // Season 21 we can stack jewel up to 50, so if we consume and theres still durability we need to tell the client
+        if (item.Durability() > 0)
+        {
+            await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(item)).ConfigureAwait(false);
+        }
+
         await player.InvokeViewPlugInAsync<IItemUpgradedPlugIn>(p => p.ItemUpgradedAsync(targetItem)).ConfigureAwait(false);
         return true;
     }

@@ -7,6 +7,7 @@ namespace MUnique.OpenMU.GameServer.MessageHandler.Items;
 using System.Runtime.InteropServices;
 using MUnique.OpenMU.GameLogic;
 using MUnique.OpenMU.GameLogic.PlayerActions.Items;
+using MUnique.OpenMU.GameServer.MessageHandler.MuHelper;
 using MUnique.OpenMU.Network.Packets.ClientToServer;
 using MUnique.OpenMU.Network.PlugIns;
 using MUnique.OpenMU.PlugIns;
@@ -16,8 +17,9 @@ using MUnique.OpenMU.PlugIns;
 /// </summary>
 [PlugIn(nameof(ItemUseHandlerPlugIn), "Packet handler for inventory item use packets.")]
 [Guid("32B23A20-A977-4674-A762-C1885693F296")]
+[BelongsToGroup(MuHelperGroupHandler.GroupKey)]
 [MinimumClient(21, 0, ClientLanguage.Korean)]
-internal class ItemUseHandlerPlugIn : IPacketHandlerPlugIn
+internal class ItemUseHandlerPlugIn : ISubPacketHandlerPlugIn
 {
     private readonly ItemUseAction _action = new();
 
@@ -25,7 +27,7 @@ internal class ItemUseHandlerPlugIn : IPacketHandlerPlugIn
     public bool IsEncryptionExpected => false;
 
     /// <inheritdoc/>
-    public byte Key => InventoryItemUse.Code;
+    public byte Key => InventoryItemUse.SubCode;
 
     /// <inheritdoc/>
     public async ValueTask HandlePacketAsync(Player player, Memory<byte> packet)

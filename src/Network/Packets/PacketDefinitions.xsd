@@ -108,6 +108,8 @@
       <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
       <xs:element minOccurs="0" maxOccurs="1" name="Length" type="xs:int" />
       <xs:element minOccurs="0" maxOccurs="1" name="DefaultValue" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="HighBitsIndex" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="LowBitsIndex" type="xs:int" />
       <xs:element minOccurs="0" maxOccurs="1" name="ItemCountField" type="xs:Name">
         <xs:annotation>
           <xs:documentation>The name of the item count field, if this field is of type Structure[].</xs:documentation>
@@ -126,6 +128,7 @@
       <xs:enumeration value="Byte" />
       <xs:enumeration value="ShortLittleEndian" />
       <xs:enumeration value="ShortBigEndian" />
+      <xs:enumeration value="ShortHighLowBitsSeparate" />
       <xs:enumeration value="IntegerLittleEndian" />
       <xs:enumeration value="IntegerBigEndian" />
       <xs:enumeration value="LongLittleEndian" />

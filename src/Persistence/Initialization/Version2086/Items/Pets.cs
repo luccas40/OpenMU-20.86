@@ -11,8 +11,9 @@ using MUnique.OpenMU.DataModel.Configuration.Items;
 using MUnique.OpenMU.GameLogic;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.Network;
-using MUnique.OpenMU.Persistence.Initialization.Skills;
 using MUnique.OpenMU.Persistence.Initialization.Version2086.CharacterClasses;
+using MUnique.OpenMU.Persistence.Initialization.Version2086.Skills;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// Initializer for pets.
@@ -36,37 +37,40 @@ public class Pets : InitializerBase
     public override void Initialize()
     {
 #pragma warning disable SA1117 // Parameters should be on same line or separete lines
-        this.CreatePet(0, 0, 1, 1, "Guardian Angel", 23, true, true,
+        this.CreatePet(13, 0, 0, 1, 1, "Guardian Angel", 23, true, true,
             (Stats.DamageReceiveDecrement, 0.8f, AggregateType.Multiplicate),
             (Stats.MaximumHealth, 50f, AggregateType.AddRaw));
-        this.CreatePet(1, 0, 1, 1, "Imp", 28, true, true,
+        this.CreatePet(13, 1, 0, 1, 1, "Imp", 28, true, true,
             (Stats.AttackDamageIncrease, 1.3f, AggregateType.Multiplicate));
-        this.CreatePet(2, 0, 1, 1, "Horn of Uniria", 25, true, true);
+        this.CreatePet(13, 2, 0, 1, 1, "Horn of Uniria", 25, true, true);
 
-        var dinorant = this.CreatePet(3, SkillNumber.FireBreath, 1, 1, "Horn of Dinorant", 110, false, true,
+        var dinorant = this.CreatePet(13, 3, SkillNumber.FireBreath, 1, 1, "Horn of Dinorant", 110, false, true,
             (Stats.IsDinorantEquipped, 1, AggregateType.AddRaw),
             (Stats.DamageReceiveDecrement, 0.9f, AggregateType.Multiplicate),
             (Stats.AttackDamageIncrease, 1.15f, AggregateType.Multiplicate));
         this.AddDinorantOptions(dinorant);
 
-        var darkHorse = this.CreatePet(4, SkillNumber.Earthshake, 1, 1, "Dark Horse", 218, false, false,
+        var darkHorse = this.CreatePet(13, 4, SkillNumber.Earthshake, 1, 1, "Dark Horse", 218, false, false,
             (Stats.IsHorseEquipped, 1, AggregateType.AddRaw));
         this.AddDarkHorseOptions(darkHorse);
         this.GameConfiguration.DetermineCharacterClasses(ClassConsts.ALL_DLS).ForEach(darkHorse.QualifiedCharacters.Add);
         darkHorse.PetExperienceFormula = PetExperienceFormula;
         darkHorse.MaximumItemLevel = 50;
 
-        var darkRaven = this.CreatePet(5, 0, 1, 1, "Dark Raven", 0, false, false);
+        CreateDivineHorse();
+        CreateDivineSpirits();
+
+        var darkRaven = this.CreatePet(13, 5, 0, 1, 1, "Dark Raven", 0, false, false);
         darkRaven.ItemSlot = this.GameConfiguration.ItemSlotTypes.First(st => st.ItemSlots.Contains(1));
         darkRaven.PetExperienceFormula = PetExperienceFormula;
         darkRaven.MaximumItemLevel = 50;
         this.GameConfiguration.DetermineCharacterClasses(ClassConsts.ALL_DLS).ForEach(darkRaven.QualifiedCharacters.Add);
 
-        var fenrir = this.CreatePet(37, SkillNumber.PlasmaStorm, 2, 2, "Horn of Fenrir", 300, false, true,
+        var fenrir = this.CreatePet(13, 37, SkillNumber.PlasmaStorm, 2, 2, "Horn of Fenrir", 300, false, true,
             (Stats.CanFly, 1.0f, AggregateType.AddRaw));
         this.AddFenrirOptions(fenrir);
 
-        this.CreatePet(64, 0, 1, 1, "Demon", 1, false, true,
+        this.CreatePet(13, 64, 0, 1, 1, "Demon", 1, false, true,
             (Stats.MinimumPhysBaseDmg, 1.4f, AggregateType.Multiplicate),
             (Stats.MaximumPhysBaseDmg, 1.4f, AggregateType.Multiplicate),
             (Stats.MinimumWizBaseDmg, 1.4f, AggregateType.Multiplicate),
@@ -74,17 +78,17 @@ public class Pets : InitializerBase
             (Stats.MinimumCurseBaseDmg, 1.4f, AggregateType.Multiplicate),
             (Stats.MaximumCurseBaseDmg, 1.4f, AggregateType.Multiplicate),
             (Stats.AttackSpeedAny, 10f, AggregateType.AddRaw));
-        this.CreatePet(65, 0, 1, 1, "Spirit of Guardian", 1, false, true,
+        this.CreatePet(13, 65, 0, 1, 1, "Spirit of Guardian", 1, false, true,
             (Stats.DamageReceiveDecrement, 0.7f, AggregateType.Multiplicate),
             (Stats.MaximumHealth, 50f, AggregateType.AddRaw));
-        this.CreatePet(67, 0, 1, 1, "Pet Rudolf", 28, false, true);
-        this.CreatePet(80, 0, 1, 1, "Pet Panda", 1, false, true,
+        this.CreatePet(13, 67, 0, 1, 1, "Pet Rudolf", 28, false, true);
+        this.CreatePet(13, 80, 0, 1, 1, "Pet Panda", 1, false, true,
             (Stats.BonusExperienceRate, 0.5f, AggregateType.AddRaw),
             (Stats.DefenseFinal, 50f, AggregateType.AddRaw));
-        this.CreatePet(106, 0, 1, 1, "Pet Unicorn", 28, false, true,
+        this.CreatePet(13, 106, 0, 1, 1, "Pet Unicorn", 28, false, true,
             (Stats.MoneyAmountRate, 1.5f, AggregateType.Multiplicate),
             (Stats.DefenseFinal, 50f, AggregateType.AddRaw));
-        this.CreatePet(123, 0, 1, 1, "Pet Skeleton", 1, false, true,
+        this.CreatePet(13, 123, 0, 1, 1, "Pet Skeleton", 1, false, true,
             (Stats.MinimumPhysBaseDmg, 1.2f, AggregateType.Multiplicate),
             (Stats.MaximumPhysBaseDmg, 1.2f, AggregateType.Multiplicate),
             (Stats.MinimumWizBaseDmg, 1.2f, AggregateType.Multiplicate),
@@ -206,12 +210,12 @@ public class Pets : InitializerBase
         BaseMapInitializer.RegisterDefaultDropItemGroup(ravenDrop);
     }
 
-    private ItemDefinition CreatePet(byte number, SkillNumber skillNumber, byte width, byte height, string name, int dropLevelAndLevelRequirement, bool dropsFromMonsters, bool addAllCharacterClasses, params (AttributeDefinition, float, AggregateType)[] basePowerUps)
+    private ItemDefinition CreatePet(byte group, byte number, SkillNumber skillNumber, byte width, byte height, string name, int dropLevelAndLevelRequirement, bool dropsFromMonsters, bool addAllCharacterClasses, params (AttributeDefinition, float, AggregateType)[] basePowerUps)
     {
         var pet = this.Context.CreateNew<ItemDefinition>();
-        pet.SetGuid(13, number);
+        pet.SetGuid(group, number);
         this.GameConfiguration.Items.Add(pet);
-        pet.Group = 13;
+        pet.Group = group; // 13
         pet.Number = number;
         pet.Width = width;
         pet.Height = height;
@@ -276,6 +280,47 @@ public class Pets : InitializerBase
         horseOptionDefinition.PossibleOptions.Add(this.CreateRelatedPetOption(ItemOptionTypes.DarkHorse, 2, Stats.DefenseBase, AggregateType.AddRaw, ItemOptionDefinitionNumbers.Horse, 5, (Stats.HorseLevel, 2), (Stats.TotalAgility, 1f / 20)));
 
         horse.PossibleItemOptions.Add(horseOptionDefinition);
+    }
+
+    private void CreateDivineHorse()
+    {
+        var divineHorse = this.CreatePet(20, 247, SkillNumber.Earthshake, 1, 1, "Divine Horse", 0, false, false,
+            (Stats.IsHorseEquipped, 1, AggregateType.AddRaw));
+
+        var horseOptionDefinition = this.Context.CreateNew<ItemOptionDefinition>();
+        horseOptionDefinition.SetGuid(ItemOptionDefinitionNumbers.DivineHorse);
+        this.GameConfiguration.ItemOptions.Add(horseOptionDefinition);
+
+        horseOptionDefinition.Name = "Divine Horse Options";
+        horseOptionDefinition.PossibleOptions.Add(this.CreateRelatedPetOption(ItemOptionTypes.DivineHorse, 1, Stats.DefenseFinal, AggregateType.Multiplicate, ItemOptionDefinitionNumbers.DivineHorse, 2.75f, (Stats.HorseLevel, 0.25f)));
+        horseOptionDefinition.PossibleOptions.Add(this.CreateRelatedPetOption(ItemOptionTypes.DivineHorse, 2, Stats.ElementalDefense, AggregateType.Multiplicate, ItemOptionDefinitionNumbers.DivineHorse, 1.75f, (Stats.HorseLevel, 0.25f)));
+
+        divineHorse.PossibleItemOptions.Add(horseOptionDefinition);
+        this.GameConfiguration.DetermineCharacterClasses(ClassConsts.ALL_DLS).ForEach(divineHorse.QualifiedCharacters.Add);
+        divineHorse.PetExperienceFormula = "( (level * 750000) * (level - 1) / 10 ) + (level - 1) * 1000000";
+        divineHorse.MaximumItemLevel = 50;
+    }
+
+    private void CreateDivineSpirits()
+    {
+        var spiritExpFormulas = "( (level * 750000) * (level - 1) / 10 ) + (level - 1) * 1000000";
+        var fireDivineSpirit = this.CreatePet(20, 248, 0, 1, 1, "Fire Divine Spirit", 0, false, false);
+        fireDivineSpirit.ItemSlot = this.GameConfiguration.ItemSlotTypes.First(st => st.ItemSlots.Contains(1));
+        fireDivineSpirit.PetExperienceFormula = spiritExpFormulas;
+        fireDivineSpirit.MaximumItemLevel = 50;
+        this.GameConfiguration.DetermineCharacterClasses(ClassConsts.ALL_DLS).ForEach(fireDivineSpirit.QualifiedCharacters.Add);
+
+        var iceDivineSpirit = this.CreatePet(20, 249, 0, 1, 1, "Ice Divine Spirit", 0, false, false);
+        iceDivineSpirit.ItemSlot = this.GameConfiguration.ItemSlotTypes.First(st => st.ItemSlots.Contains(1));
+        iceDivineSpirit.PetExperienceFormula = spiritExpFormulas;
+        iceDivineSpirit.MaximumItemLevel = 50;
+        this.GameConfiguration.DetermineCharacterClasses(ClassConsts.ALL_DLS).ForEach(iceDivineSpirit.QualifiedCharacters.Add);
+
+        var holyDivineSpirit = this.CreatePet(20, 250, 0, 1, 1, "Holy Divine Spirit", 0, false, false);
+        holyDivineSpirit.ItemSlot = this.GameConfiguration.ItemSlotTypes.First(st => st.ItemSlots.Contains(1));
+        holyDivineSpirit.PetExperienceFormula = spiritExpFormulas;
+        holyDivineSpirit.MaximumItemLevel = 50;
+        this.GameConfiguration.DetermineCharacterClasses(ClassConsts.ALL_DLS).ForEach(holyDivineSpirit.QualifiedCharacters.Add);
     }
 
     /// <summary>

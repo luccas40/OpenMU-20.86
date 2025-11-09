@@ -747,6 +747,34 @@ using static System.Buffers.Binary.BinaryPrimitives;</xsl:text>
 	  <xsl:text>, value);</xsl:text>
     </xsl:template>
 
+	<xsl:template match="pd:Field[pd:Type = 'ShortHighLowBitsSeparate' and pd:HighBitsIndex and pd:LowBitsIndex]" mode="get">
+		<xsl:value-of select="$newline"/>
+		<xsl:text>        get =&gt; </xsl:text>
+		<xsl:text>(ushort)(this._data[</xsl:text>
+		<xsl:value-of select="pd:HighBitsIndex"/>
+		<xsl:text>] &lt;&lt; 8</xsl:text>
+		<xsl:text> | this._data[</xsl:text>
+		<xsl:value-of select="pd:LowBitsIndex"/>
+		<xsl:text>] &amp; 0xFF</xsl:text>
+		<xsl:text>);</xsl:text>
+	</xsl:template>
+	<xsl:template match="pd:Field[pd:Type = 'ShortHighLowBitsSeparate' and pd:HighBitsIndex and pd:LowBitsIndex]" mode="set">
+		<xsl:value-of select="$newline"/>
+		<xsl:text>        set</xsl:text>
+		<xsl:value-of select="$newline"/>
+		<xsl:text>        {</xsl:text>
+		<xsl:value-of select="$newline"/>
+		<xsl:text>              this._data[</xsl:text>
+		<xsl:value-of select="pd:HighBitsIndex"/>
+		<xsl:text>] = (byte)(value &gt;&gt; 8);</xsl:text>
+		<xsl:value-of select="$newline"/>
+		<xsl:text>              this._data[</xsl:text>
+		<xsl:value-of select="pd:LowBitsIndex"/>
+		<xsl:text>] = (byte)(value &amp; 0xFF);</xsl:text>
+		<xsl:value-of select="$newline"/>
+		<xsl:text>        }</xsl:text>
+	</xsl:template>
+
     <xsl:template match="pd:Field[pd:Type = 'String']"  mode="get">
       <xsl:value-of select="$newline"/>
       <xsl:text>        get =&gt; this._data.ExtractString(</xsl:text><xsl:value-of select="pd:Index"/><xsl:text>, </xsl:text>

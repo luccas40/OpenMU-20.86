@@ -4,11 +4,12 @@
 
 namespace MUnique.OpenMU.GameLogic;
 
-using System.Diagnostics.CodeAnalysis;
 using MUnique.OpenMU.AttributeSystem;
 using MUnique.OpenMU.DataModel.Configuration.Items;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.Persistence;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Extension methods for <see cref="Item"/>.
@@ -289,7 +290,7 @@ public static class ItemExtensions
                 var itemOption = item.ItemOptions.FirstOrDefault(o => o.ItemOption?.OptionType == ItemOptionTypes.Option);
                 if (itemOption != null)
                 {
-                    value += itemOption.Level * 4;
+                    value += itemOption.Level * 5;
                 }
             }
 
@@ -370,17 +371,9 @@ public static class ItemExtensions
     public static int CalculateDropLevel(this ItemDefinition item, bool isAncient, bool isExcellent, int itemLevel)
     {
         int dropLevel = item.DropLevel;
-        if (isAncient)
-        {
-            dropLevel += 30;
-        }
-        else if (isExcellent)
+        if (isAncient || isExcellent)
         {
             dropLevel += 25;
-        }
-        else
-        {
-            // nothing to add
         }
 
         dropLevel += 3 * itemLevel;
@@ -406,7 +399,21 @@ public static class ItemExtensions
 
         var dropLevel = item.Definition!.CalculateDropLevel(item.IsAncient(), item.IsExcellent(), item.Level);
 
-        return (multiplier * dropLevel * requirementValue / 100) + 20;
+        if (item.Definition!.DropLevel < 220)
+        {
+            return (multiplier * dropLevel * requirementValue / 100) + 20;
+        }
+        else
+        {
+            if (item.IsExcellent())
+            {
+                return (int)(requirementValue + (requirementValue * 0.75f) + (requirementValue * 0.02f * item.Level));
+            }
+            else
+            {
+                return (int)(requirementValue + (requirementValue * 0.02f * item.Level));
+            }
+        }
     }
 
     private static int CalculateBookEnergyRequirement(this Item item, int energyRequirementValue)

@@ -26,13 +26,16 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
     {
         // Transformed, Original
         { 0x4d02, 0xF101 }, // Login Attempt
+        { 0x5726, 0xF300 }, // Request Character List
         { 0x5701, 0xF301 }, // Create Character Request
         { 0x5706, 0xF302 }, // Delete Character Request
-        { 0x5726, 0xF300 }, // Request Character List
-        { 0x5721, 0xF315 }, // Clicked Connect (Selected Character)
         { 0x5715, 0xF303 }, // Select Character Confirmation
+        { 0x5721, 0xF315 }, // Clicked Connect (Selected Character)
+        { 0x5760, 0xF326 }, // Request Event Notice?
+        { 0x5730, 0xF330 }, // Save Key Configuration
+        { 0x5731, 0xF352 }, // Master Skill Add
         { 0x96FF, 0xD4FF }, // Select Character Confirmation
-        { 0xA000, 0x24FF }, // Inventory Item move
+        { 0xA0FF, 0x24FF }, // Inventory Item move
         { 0xC3FF, 0x26FF }, // Inventory Consume
         { 0x83FF, 0xA9FF }, // Inventory Pet Info Request
         { 0xBF20, 0xBF20 }, // User Tries to Use Pet
@@ -49,26 +52,20 @@ public class S21PacketOpcodeDecryptor : PacketPipeReaderBase, IPipelinedDecrypto
         { 0x1CFF, 0x1CFF }, // Entered a gate
         { 0x40FF, 0x22FF }, // Pickup Item Request
         { 0xE5FF, 0x23FF }, // Item Drop Request
+        { 0x30FF, 0x30FF }, // Talk Npc
+        { 0x9AFF, 0x31FF }, // Close Npc Request
+        { 0x3FFF, 0x82FF }, // Vault Closed
+        { 0xC8FF, 0xA0FF }, // Quest Evolution Request Info < not done yet
+        { 0xE7FF, 0xE7FF }, // Open Close Map < not done yet
+        { 0x2227, 0xEC27 }, // not sure yet but related to login, sends after receives the JoinServer Packet
+        { 0xC732, 0x4C01 }, // C7 mining related Mining Success Request len 14
+        { 0xED00, 0xED00 }, // ED guild related Guild Matching List Reqeust len 8
+        { 0x1EFF, 0x1EFF }, // Area Skill
+        { 0xAEFF, 0xAEFF }, // SaveMuHelperConfiguration
+        { 0xBF51, 0xBF51 }, // MuHelper Toggle Status
+        { 0x7EFF, 0x7EFF }, // Majestic Skill Tree stuff
     };
-    /*
-    E5 - 54 len 6 // item drop from bag
-     *  Packet not Translated C-S>: E7 - 02 len 4
-     *  Packet not Translated C-S>: C7 - 01 len 14
-Packet not Translated C-S>: ED - 00 len 8
-Packet not Translated C-S>: 22 - 31 len 4
-    Packet not Translated C-S>: 22 - 31 len 4
-    Packet not Translated C-S>: E7 - 02 len 4
-Packet not Translated C-S>: E7 - 02 len 4
-Packet not Translated C-S>: 57 - 60 len 4
-Packet not Translated C-S>: 22 - 27 len 5
-Packet not Translated C-S>: 90 - 3D len 5
-    after trying to go back to character selection
-    Packet not Translated C-S>: 57 - 30 len 41
-Packet not Translated C-S>: 59 - 04 len 28
-Packet not Translated C-S>: E7 - 02 len 4
-Packet not Translated C-S>: 4D - 01 len 5
-Packet not Translated C-S>: 43 - 00 len 12
-     * */
+
     /// <summary>
     /// Initializes a new instance of the <see cref="S21PacketOpcodeDecryptor"/> class.
     /// </summary>

@@ -36,6 +36,7 @@ public static class FieldExtensions
                 return sizeof(long);
             case FieldType.ShortLittleEndian:
             case FieldType.ShortBigEndian:
+            case FieldType.ShortHighLowBit:
                 return sizeof(short);
             case FieldType.String:
             case FieldType.StructureArray:

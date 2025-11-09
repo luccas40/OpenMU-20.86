@@ -82,7 +82,19 @@ public static class ItemExtensions
         return item.Definition is { Group: 13, Number: 2 } or
                                   { Group: 13, Number: 3 } or
                                   { Group: 13, Number: 4 } or
-                                  { Group: 13, Number: 37 }; // or is Guardian Mount ItemKindB 79
+                                  { Group: 13, Number: 37 } or // or is Guardian Mount ItemKindB 79
+                                  { Group: 20, Number: 247 };
+    }
+
+    public static bool IsDlPet(this Item item)
+    {
+        return item.Definition is
+        { Group: 13, Number: 4 } or
+        { Group: 13, Number: 5 } or
+        { Group: 20, Number: 247 } or
+        { Group: 20, Number: 248 } or
+        { Group: 20, Number: 249 } or
+        { Group: 20, Number: 250 };
     }
 
     /// <summary>

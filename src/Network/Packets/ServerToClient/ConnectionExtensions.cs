@@ -479,6 +479,44 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="AreaSkillAnimationS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="x">The x.</param>
+    /// <param name="y">The y.</param>
+    /// <param name="rotation">The rotation.</param>
+    /// <param name="skillId">The skill id.</param>
+    /// <param name="targetId">The target id.</param>
+    /// <param name="iDK">The i d k.</param>
+    /// <remarks>
+    /// Is sent by the server when: An object performs a skill which has effect on an area.
+    /// Causes reaction on client side: The animation is shown on the user interface.
+    /// </remarks>
+    public static async ValueTask SendAreaSkillAnimationS21Async(this IConnection? connection, byte @x, byte @y, byte @rotation, ushort @skillId, ushort @targetId, ushort @iDK)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = AreaSkillAnimationS21Ref.Length;
+            var packet = new AreaSkillAnimationS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.X = @x;
+            packet.Y = @y;
+            packet.Rotation = @rotation;
+            packet.SkillId = @skillId;
+            packet.TargetId = @targetId;
+            packet.IDK = @iDK;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="SkillAnimation" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -2840,6 +2878,36 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="NpcWindowResponseS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="window">The window.</param>
+    /// <param name="tabCount">The tab count.</param>
+    /// <remarks>
+    /// Is sent by the server when: After the client talked to an NPC which should cause a dialog to open on the client side.
+    /// Causes reaction on client side: The client opens the specified dialog.
+    /// </remarks>
+    public static async ValueTask SendNpcWindowResponseS21Async(this IConnection? connection, NpcWindowResponseS21.NpcWindow @window, byte @tabCount)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = NpcWindowResponseS21Ref.Length;
+            var packet = new NpcWindowResponseS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Window = @window;
+            packet.TabCount = @tabCount;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="NpcItemBuyFailed" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -4386,6 +4454,36 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="InventoryItemUpgradedS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="inventorySlot">The inventory slot.</param>
+    /// <param name="itemData">The item data.</param>
+    /// <remarks>
+    /// Is sent by the server when: An item in the inventory got upgraded by the player, e.g. by applying a jewel.
+    /// Causes reaction on client side: The item is updated on the user interface.
+    /// </remarks>
+    public static async ValueTask SendInventoryItemUpgradedS21Async(this IConnection? connection, byte @inventorySlot, Memory<byte> @itemData)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = InventoryItemUpgradedS21Ref.GetRequiredSize(itemData.Length);
+            var packet = new InventoryItemUpgradedS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.InventorySlot = @inventorySlot;
+            @itemData.Span.CopyTo(packet.ItemData);
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="SummonHealthUpdate" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -4834,6 +4932,48 @@ public static class ConnectionExtensions
             packet.Level = @level;
             packet.DisplayValue = @displayValue;
             packet.DisplayValueOfNextLevel = @displayValueOfNextLevel;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="MasterSkillLevelUpdateS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="success">The success.</param>
+    /// <param name="masterLevelUpPoints">The master level up points.</param>
+    /// <param name="masterSkillIndex">The index of the master skill on the clients master skill tree for the given character class.</param>
+    /// <param name="masterSkillNumber">The master skill number.</param>
+    /// <param name="level">The level.</param>
+    /// <param name="displayValue">The display value.</param>
+    /// <param name="displayValueOfNextLevel">The display value of next level.</param>
+    /// <param name="type">The type.</param>
+    /// <remarks>
+    /// Is sent by the server when: After a master skill level has been changed (usually increased).
+    /// Causes reaction on client side: The level is updated in the master skill tree.
+    /// </remarks>
+    public static async ValueTask SendMasterSkillLevelUpdateS21Async(this IConnection? connection, bool @success, ushort @masterLevelUpPoints, byte @masterSkillIndex, uint @masterSkillNumber, byte @level, float @displayValue, float @displayValueOfNextLevel, byte @type)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MasterSkillLevelUpdateS21Ref.Length;
+            var packet = new MasterSkillLevelUpdateS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Success = @success;
+            packet.MasterLevelUpPoints = @masterLevelUpPoints;
+            packet.MasterSkillIndex = @masterSkillIndex;
+            packet.MasterSkillNumber = @masterSkillNumber;
+            packet.Level = @level;
+            packet.DisplayValue = @displayValue;
+            packet.DisplayValueOfNextLevel = @displayValueOfNextLevel;
+            packet.Type = @type;
 
             return packet.Header.Length;
         }
@@ -6353,6 +6493,74 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="MuHelperConfigurationDataS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="helperData">The helper data.</param>
+    /// <remarks>
+    /// Is sent by the server when: The server saved the users MU Helper data.
+    /// Causes reaction on client side: The user wants to save the MU Helper data.
+    /// </remarks>
+    public static async ValueTask SendMuHelperConfigurationDataS21Async(this IConnection? connection, Memory<byte> @helperData)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MuHelperConfigurationDataS21Ref.Length;
+            var packet = new MuHelperConfigurationDataS21Ref(connection.Output.GetSpan(length)[..length]);
+            @helperData.Span.CopyTo(packet.HelperData);
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="MiniMapInfoS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="index">The index.</param>
+    /// <param name="group">The group.</param>
+    /// <param name="type">The type.</param>
+    /// <param name="flag">The flag.</param>
+    /// <param name="x">The x.</param>
+    /// <param name="y">The y.</param>
+    /// <param name="text">Thetext.</param>
+    /// <remarks>
+    /// Is sent by the server when: The server sends the minimap data.
+    /// Causes reaction on client side: The user opened the minimap.
+    /// </remarks>
+    public static async ValueTask SendMiniMapInfoS21Async(this IConnection? connection, byte @index, byte @group, byte @type, byte @flag, byte @x, byte @y, string @text)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MiniMapInfoS21Ref.Length;
+            var packet = new MiniMapInfoS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.Index = @index;
+            packet.Group = @group;
+            packet.Type = @type;
+            packet.Flag = @flag;
+            packet.X = @x;
+            packet.Y = @y;
+            packet.text = @text;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="FriendAdded" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -7073,6 +7281,34 @@ public static class ConnectionExtensions
             var packet = new MapEventStateRef(connection.Output.GetSpan(length)[..length]);
             packet.Enable = @enable;
             packet.Event = @event;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="MajesticTreeData" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="points">The points.</param>
+    /// <remarks>
+    /// Is sent by the server when: The character levels up or enter the world.
+    /// Causes reaction on client side: The character leveled up.
+    /// </remarks>
+    public static async ValueTask SendMajesticTreeDataAsync(this IConnection? connection, ushort @points)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MajesticTreeDataRef.Length;
+            var packet = new MajesticTreeDataRef(connection.Output.GetSpan(length)[..length]);
+            packet.Points = @points;
 
             return packet.Header.Length;
         }

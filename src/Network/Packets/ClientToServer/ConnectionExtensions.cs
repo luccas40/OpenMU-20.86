@@ -65,7 +65,7 @@ public static class ConnectionExtensions
     /// <param name="mountId">The mount id.</param>
     /// <remarks>
     /// Is sent by the client when: This packet is sent by the client When it receives the Mount activation packet.
-    /// Causes reaction on server side: 
+    /// Causes reaction on server side: Client activated any kind of mount, ex: DarkHorse, Muun mounts and Guardian Mounts.
     /// </remarks>
     public static async ValueTask SendMuunMountRequestAsync(this IConnection? connection, ushort @mountId)
     {
@@ -3229,6 +3229,48 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="AreaSkillS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="targetX">The target x.</param>
+    /// <param name="skillId">The skill id.</param>
+    /// <param name="targetY">The target y.</param>
+    /// <param name="rotation">The rotation.</param>
+    /// <param name="extraTargetId">The extra target id.</param>
+    /// <param name="distance">The distance.</param>
+    /// <param name="targetPos">The target pos.</param>
+    /// <param name="animationCounter">Animation counter which acts as a reference to the previously sent Area Skill Animation packet.</param>
+    /// <remarks>
+    /// Is sent by the client when: A player is performing an skill which affects an area of the map.
+    /// Causes reaction on server side: It's forwarded to all surrounding players, so that the animation is visible. In the original server implementation, no damage is done yet for attack skills - there are separate hit packets.
+    /// </remarks>
+    public static async ValueTask SendAreaSkillS21Async(this IConnection? connection, uint @targetX, ushort @skillId, uint @targetY, byte @rotation, ushort @extraTargetId, byte @distance, byte @targetPos, byte @animationCounter)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = AreaSkillS21Ref.Length;
+            var packet = new AreaSkillS21Ref(connection.Output.GetSpan(length)[..length]);
+            packet.TargetX = @targetX;
+            packet.SkillId = @skillId;
+            packet.TargetY = @targetY;
+            packet.Rotation = @rotation;
+            packet.ExtraTargetId = @extraTargetId;
+            packet.Distance = @distance;
+            packet.TargetPos = @targetPos;
+            packet.AnimationCounter = @animationCounter;
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="AreaSkill075" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -4806,6 +4848,34 @@ public static class ConnectionExtensions
     }
 
     /// <summary>
+    /// Sends a <see cref="MuHelperSaveDataRequestS21" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="helperData">The helper data.</param>
+    /// <remarks>
+    /// Is sent by the client when: The client want to save current MU Helper data.
+    /// Causes reaction on server side: The server should save supplied MU Helper data.
+    /// </remarks>
+    public static async ValueTask SendMuHelperSaveDataRequestS21Async(this IConnection? connection, Memory<byte> @helperData)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MuHelperSaveDataRequestS21Ref.Length;
+            var packet = new MuHelperSaveDataRequestS21Ref(connection.Output.GetSpan(length)[..length]);
+            @helperData.Span.CopyTo(packet.HelperData);
+
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Sends a <see cref="QuestSelectRequest" /> to this connection.
     /// </summary>
     /// <param name="connection">The connection.</param>
@@ -5703,6 +5773,38 @@ public static class ConnectionExtensions
         {
             var length = DuelChannelQuitRequestRef.Length;
             var packet = new DuelChannelQuitRequestRef(connection.Output.GetSpan(length)[..length]);
+            return packet.Header.Length;
+        }
+
+        await connection.SendAsync(WritePacket).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends a <see cref="MajesticSkillTreeAddRequest" /> to this connection.
+    /// </summary>
+    /// <param name="connection">The connection.</param>
+    /// <param name="section">The section.</param>
+    /// <param name="skillId">The skill id.</param>
+    /// <param name="id">The id.</param>
+    /// <remarks>
+    /// Is sent by the client when: A player requested to spend a majestic tree on a skill.
+    /// Causes reaction on server side: The server will try to add the skill and answer the client.
+    /// </remarks>
+    public static async ValueTask SendMajesticSkillTreeAddRequestAsync(this IConnection? connection, byte @section, ushort @skillId, ushort @id)
+    {
+        if (connection is null)
+        {
+            return;
+        }
+
+        int WritePacket()
+        {
+            var length = MajesticSkillTreeAddRequestRef.Length;
+            var packet = new MajesticSkillTreeAddRequestRef(connection.Output.GetSpan(length)[..length]);
+            packet.Section = @section;
+            packet.SkillId = @skillId;
+            packet.Id = @id;
+
             return packet.Header.Length;
         }
 

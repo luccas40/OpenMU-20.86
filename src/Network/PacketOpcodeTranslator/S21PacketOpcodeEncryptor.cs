@@ -36,8 +36,12 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xF303, 0x8122 }, // CharacterJoin
         { 0xF310, 0x8101 }, // CharacterInventory
         { 0xF311, 0x8113 }, // Character Skill List Update
+        { 0xF314, 0x8115 }, // Inventory Item Upgraded
         { 0xF315, 0x8123 }, // Character Select Confirm
+        { 0xF330, 0x8106 }, // Apply Key Configuration
         { 0xF350, 0x8114 }, // Master Infos
+        { 0xF352, 0x8140 }, // Master Skill Level Update
+        { 0xF353, 0x8111 }, // Master Skill List
         { 0x12FF, 0x12FF }, // Add Player to Scope
         { 0x13FF, 0x13FF }, // Add Creature to Scope
         { 0x14FF, 0x14FF }, // Remove Object from Scope
@@ -51,6 +55,7 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0xEC30, 0xC755 }, // Update Character Attack and Magic Speed
         { 0xEC63, 0xC726 }, // Update Character Damage and Combat Power / subcode 63 is made of, there wasnt a subcode for s16
         { 0xD4FF, 0x5AFF }, // Object in Scope Moved
+        { 0x15FF, 0xC1FF }, // Object in Scope Moved Instant
         { 0xA9FF, 0x32FF }, // Pet Info Response
         { 0xBF20, 0xBF20 }, // Item Use Response
         { 0x4E14, 0x4E14 }, // Muun Single Mount
@@ -70,6 +75,16 @@ public class S21PacketOpcodeEncryptor : PacketPipeReaderBase, IPipelinedEncrypto
         { 0x22FF, 0xC2FF }, // Item PickUp Answer
         { 0x21FF, 0x21FF }, // Ground Item Remove
         { 0x23FF, 0x83FF }, // Drop Bag Item Response
+        { 0x31FF, 0x31FF }, // Store Item List
+        { 0x30FF, 0x4DFF }, // Npc Window Response
+        { 0x0FFF, 0x0FFF }, // Weather Update
+        { 0x81FF, 0xA2FF }, // Vault Update Money
+        { 0x83FF, 0x22FF }, // Vault Protection Information
+        { 0x1EFF, 0x1EFF }, // Area Skill Animation
+        { 0xAEFF, 0xAEFF }, // Mu Helper Configuration Data
+        { 0xBF51, 0xBF51 }, // MuHelper Toggle Status
+        { 0xE703, 0xE703 }, // Minimap Data Send
+        { 0x7EFF, 0x7EFF }, // Majestic Tree, not needed to translate
 
         // { 0x8E03, 0x8E03 }, // Warp result (testing)
     };

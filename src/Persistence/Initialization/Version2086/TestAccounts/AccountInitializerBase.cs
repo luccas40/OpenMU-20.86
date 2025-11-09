@@ -98,6 +98,7 @@ internal abstract class AccountInitializerBase : InitializerBase
         account.LoginName = this.AccountName;
         account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(this.AccountName);
         account.Vault = this.Context.CreateNew<ItemStorage>();
+        account.IsVaultExtended = true;
         this.AddVaultItems(account);
 
         if (this.CreateKnight() is { } knight)
@@ -223,6 +224,8 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <param name="name">The name.</param>
     /// <param name="characterClass">The character class.</param>
     /// <param name="level">The level.</param>
+    /// <param name="masterLevel">The Master Level.</param>
+    /// <param name="majesticLevel">The Majestic Level.</param>
     /// <param name="slot">The slot.</param>
     /// <returns>The created character.</returns>
     protected virtual Character CreateCharacter(string name, CharacterClassNumber characterClass, int level, int masterLevel, int majesticLevel, byte slot)
@@ -232,6 +235,7 @@ internal abstract class AccountInitializerBase : InitializerBase
         character.Name = name;
         character.CharacterSlot = slot;
         character.CreateDate = DateTime.UtcNow;
+        character.InventoryExtensions = 2;
         character.KeyConfiguration = new byte[30];
         foreach (
             var attribute in
@@ -264,6 +268,7 @@ internal abstract class AccountInitializerBase : InitializerBase
             {
                 character.Attributes.Add(this.Context.CreateNew<StatAttribute>(Stats.MasterLevel.GetPersistent(this.GameConfiguration), masterLevel));
             }
+
             character.Experience = GameConfigurationInitializerBase.CalculateNeededExperience(level);
             if (majesticLevel > 0)
             {
@@ -343,7 +348,7 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <param name="optionLevel">The option level.</param>
     /// <param name="luck">If set to <c>true</c>, the item should have luck.</param>
     /// <returns>The created item.</returns>
-    protected Item CreateArmorItem(byte itemSlot, byte setNumber, byte group, AttributeDefinition? targetExcellentOption = null, byte level = 0, byte optionLevel = 0, bool luck = false)
+    protected Item CreateArmorItem(byte itemSlot, short setNumber, byte group, AttributeDefinition? targetExcellentOption = null, byte level = 0, byte optionLevel = 0, bool luck = false)
     {
         var item = this.Context.CreateNew<Item>();
         item.Definition = this.GameConfiguration.Items.First(def => def.Group == group && def.Number == setNumber);
@@ -409,17 +414,6 @@ internal abstract class AccountInitializerBase : InitializerBase
         inventory.Items.Add(this.CreateJewelOfLife(33));
         inventory.Items.Add(this.CreateJewelOfLife(34));
         inventory.Items.Add(this.CreateJewelOfLife(35));
-        inventory.Items.Add(this.CreateHealthPotion(36, 0));
-        inventory.Items.Add(this.CreateHealthPotion(37, 1));
-        inventory.Items.Add(this.CreateHealthPotion(38, 2));
-        inventory.Items.Add(this.CreateHealthPotion(39, 3));
-        inventory.Items.Add(this.CreateManaPotion(40, 0));
-        inventory.Items.Add(this.CreateManaPotion(41, 1));
-        inventory.Items.Add(this.CreateManaPotion(42, 2));
-        inventory.Items.Add(this.CreateAlcohol(43));
-        inventory.Items.Add(this.CreateShieldPotion(44, 0));
-        inventory.Items.Add(this.CreateShieldPotion(45, 1));
-        inventory.Items.Add(this.CreateShieldPotion(46, 2));
     }
 
     /// <summary>
@@ -492,9 +486,14 @@ internal abstract class AccountInitializerBase : InitializerBase
         inventory.Items.Add(this.CreateOrb(50, 24));
         inventory.Items.Add(this.CreateOrb(60, 35));
         inventory.Items.Add(this.CreateOrb(61, 48));
+        inventory.Items.Add(this.ItemHelper.CreateItem(62, 67, 15, 1, 0));
         inventory.Items.Add(this.CreateFullOptionJewellery(62, 8)); // Ring of Ice
         inventory.Items.Add(this.CreateFullOptionJewellery(63, 9)); // Ring of Poison
         inventory.Items.Add(this.CreateFullOptionJewellery(64, 12)); // Pendant of Lightning
+        inventory.Items.Add(this.ItemHelper.CreateItem(122, 247, 20, 255, 0));
+        inventory.Items.Add(this.ItemHelper.CreateItem(123, 248, 20, 255, 0));
+        inventory.Items.Add(this.ItemHelper.CreateItem(124, 249, 20, 255, 0));
+        inventory.Items.Add(this.ItemHelper.CreateItem(125, 250, 20, 255, 0));
         inventory.Items.Add(this.CreateHorse(52));
         var darkRaven = this.CreatePet(53, 5);
         darkRaven.Level = 1;
@@ -623,11 +622,11 @@ internal abstract class AccountInitializerBase : InitializerBase
     /// <param name="itemSlot">The item slot.</param>
     /// <param name="itemNumber">The item number.</param>
     /// <returns>The created jewel.</returns>
-    protected Item CreateJewel(byte itemSlot, byte itemNumber)
+    protected Item CreateJewel(byte itemSlot, byte itemNumber, int durability = 1)
     {
         var jewel = this.Context.CreateNew<Item>();
         jewel.Definition = this.GameConfiguration.Items.FirstOrDefault(def => def.Group == 14 && def.Number == itemNumber);
-        jewel.Durability = 1;
+        jewel.Durability = durability;
         jewel.ItemSlot = itemSlot;
         return jewel;
     }
@@ -790,17 +789,17 @@ internal abstract class AccountInitializerBase : InitializerBase
 
     private Item CreateJewelOfBless(byte itemSlot)
     {
-        return this.CreateJewel(itemSlot, 13);
+        return this.CreateJewel(itemSlot, 13, 50);
     }
 
     private Item CreateJewelOfSoul(byte itemSlot)
     {
-        return this.CreateJewel(itemSlot, 14);
+        return this.CreateJewel(itemSlot, 14, 50);
     }
 
     private Item CreateJewelOfLife(byte itemSlot)
     {
-        return this.CreateJewel(itemSlot, 16);
+        return this.CreateJewel(itemSlot, 16, 50);
     }
 
     private Item CreateJewelOfCreation(byte itemSlot)

@@ -207,7 +207,468 @@
         </EnumValue>
       </Values>
     </Enum>
-    <Enum>
+		<Enum>
+			<Name>CharacterClassNumberS21</Name>
+			<Description>Defines the values which are used for the character classes on client side.</Description>
+			<Values>
+				<EnumValue>
+					<Name>DarkWizard</Name>
+					<Description>Value for the dark wizard character class. Bits: 0b0000_0000_0000</Description>
+					<Value>0</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>SoulMaster</Name>
+					<Description>Value for the soul master character class. Bits: 0b0000_0000_1000</Description>
+					<Value>8</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>GrandMaster</Name>
+					<Description>Value for the grand master character class. Bits: 0b0000_0000_1100</Description>
+					<Value>12</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>SoulWizard</Name>
+					<Description>Value for the soul wizard advanced class. Bits: 0b0000_0000_1110</Description>
+					<Value>14</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DarknessWizard</Name>
+					<Description>Value for the darkness wizard advanced class. Bits: 0b0000_0000_1111</Description>
+					<Value>15</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DarkKnight</Name>
+					<Description>Value for the dark knight character class. Bits: 0b0000_0001_0000</Description>
+					<Value>16</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>BladeKnight</Name>
+					<Description>Value for the blade knight character class. Bits: 0b0000_0001_1000</Description>
+					<Value>24</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>BladeMaster</Name>
+					<Description>Value for the blade master advanced class. Bits: 0b0000_0001_1100</Description>
+					<Value>28</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DragonKnight</Name>
+					<Description>Value for the dragon knight advanced class. Bits: 0b0000_0001_1110</Description>
+					<Value>30</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>IgnitionKnight</Name>
+					<Description>Value for the ignition knight ultimate class. Bits: 0b0000_0001_1111</Description>
+					<Value>31</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>FairyElf</Name>
+					<Description>Value for the fairy elf character class. Bits: 0b0000_0010_0000</Description>
+					<Value>32</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MuseElf</Name>
+					<Description>Value for the muse elf character class. Bits: 0b0000_0010_1000</Description>
+					<Value>40</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>HighElf</Name>
+					<Description>Value for the high elf advanced class. Bits: 0b0000_0010_1100</Description>
+					<Value>44</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>NobleElf</Name>
+					<Description>Value for the noble elf advanced class. Bits: 0b0000_0010_1110</Description>
+					<Value>46</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>RoyalElf</Name>
+					<Description>Value for the royal elf ultimate class. Bits: 0b0000_0010_1111</Description>
+					<Value>47</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MagicGladiator</Name>
+					<Description>Value for the magic gladiator character class. Bits: 0b0000_0011_0000</Description>
+					<Value>48</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DuelMaster</Name>
+					<Description>Value for the duel master advanced class. Bits: 0b0000_0011_1100</Description>
+					<Value>60</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MagicKnight</Name>
+					<Description>Value for the magic knight advanced class. Bits: 0b0000_0011_1110</Description>
+					<Value>62</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DupleKnight</Name>
+					<Description>Value for the duple knight ultimate class. Bits: 0b0000_0011_1111</Description>
+					<Value>63</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DarkLord</Name>
+					<Description>Value for the dark lord character class. Bits: 0b0000_0100_0000</Description>
+					<Value>64</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>LordEmperor</Name>
+					<Description>Value for the lord emperor advanced class. Bits: 0b0000_0100_1100</Description>
+					<Value>76</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>EmpireLord</Name>
+					<Description>Value for the empire lord advanced class. Bits: 0b0000_0100_1110</Description>
+					<Value>78</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>ForceEmpire</Name>
+					<Description>Value for the force empire ultimate class. Bits: 0b0000_0100_1111</Description>
+					<Value>79</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>Summoner</Name>
+					<Description>Value for the summoner character class. Bits: 0b0000_0101_0000</Description>
+					<Value>80</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>BloodySummoner</Name>
+					<Description>Value for the bloody summoner advanced class. Bits: 0b0000_0101_1000</Description>
+					<Value>88</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DimensionMaster</Name>
+					<Description>Value for the dimension master advanced class. Bits: 0b0000_0101_1100</Description>
+					<Value>92</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>DimensionSummoner</Name>
+					<Description>Value for the dimension summoner elite class. Bits: 0b0000_0101_1110</Description>
+					<Value>94</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>EndlessSummoner</Name>
+					<Description>Value for the endless summoner ultimate class. Bits: 0b0000_0101_1111</Description>
+					<Value>95</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>RageFighter</Name>
+					<Description>Value for the rage fighter character class. Bits: 0b0000_0110_0000</Description>
+					<Value>96</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>FistMaster</Name>
+					<Description>Value for the fist master advanced class. Bits: 0b0000_0110_1100</Description>
+					<Value>108</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>FistBlazer</Name>
+					<Description>Value for the fist blazer elite class. Bits: 0b0000_0110_1110</Description>
+					<Value>110</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>BloodyFighter</Name>
+					<Description>Value for the bloody fighter ultimate class. Bits: 0b0000_0110_1111</Description>
+					<Value>111</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>GrowLancer</Name>
+					<Description>Value for the grow lancer character class. Bits: 0b0000_0111_0000</Description>
+					<Value>112</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MirageLancer</Name>
+					<Description>Value for the mirage lancer advanced class. Bits: 0b0000_0111_1100</Description>
+					<Value>124</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>ShiningLancer</Name>
+					<Description>Value for the shining lancer elite class. Bits: 0b0000_0111_1110</Description>
+					<Value>126</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>ArcaneLancer</Name>
+					<Description>Value for the arcane lancer ultimate class. Bits: 0b0000_0111_1111</Description>
+					<Value>127</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>RuneWizard</Name>
+					<Description>Value for the rune wizard character class. Bits: 0b0000_1000_0000</Description>
+					<Value>128</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>RuneSpellMaster</Name>
+					<Description>Value for the rune spell master advanced class. Bits: 0b0000_1000_1000</Description>
+					<Value>136</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>GrandRuneMaster</Name>
+					<Description>Value for the grand rune master advanced class. Bits: 0b0000_1000_1100</Description>
+					<Value>140</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MajesticRuneWizard</Name>
+					<Description>Value for the majestic rune wizard elite class. Bits: 0b0000_1000_1110</Description>
+					<Value>142</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>InfinityRuneWizard</Name>
+					<Description>Value for the infinity rune wizard ultimate class. Bits: 0b0000_1000_1111</Description>
+					<Value>143</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>Slayer</Name>
+					<Description>Value for the slayer character class. Bits: 0b0000_1001_0000</Description>
+					<Value>144</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>RoyalSlayer</Name>
+					<Description>Value for the royal slayer advanced class. Bits: 0b0000_1001_1000</Description>
+					<Value>152</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MasterSlayer</Name>
+					<Description>Value for the master slayer advanced class. Bits: 0b0000_1001_1100</Description>
+					<Value>156</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>Slaughterer</Name>
+					<Description>Value for the slaughterer elite class. Bits: 0b0000_1001_1110</Description>
+					<Value>158</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>RogueSlayer</Name>
+					<Description>Value for the rogue slayer ultimate class. Bits: 0b0000_1001_1111</Description>
+					<Value>159</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>GunCrusher</Name>
+					<Description>Value for the gun crusher character class. Bits: 0b0000_1010_0000</Description>
+					<Value>160</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>GunBreaker</Name>
+					<Description>Value for the gun breaker advanced class. Bits: 0b0000_1010_1000</Description>
+					<Value>168</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MasterGunBreaker</Name>
+					<Description>Value for the master gun breaker advanced class. Bits: 0b0000_1010_1100</Description>
+					<Value>172</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>HeistGunCrusher</Name>
+					<Description>Value for the heist gun crusher elite class. Bits: 0b0000_1010_1110</Description>
+					<Value>174</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MagnusGunCrusher</Name>
+					<Description>Value for the magnus gun crusher ultimate class. Bits: 0b0000_1010_1111</Description>
+					<Value>175</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>WhiteWizard</Name>
+					<Description>Value for the white wizard character class. Bits: 0b0000_1011_0000</Description>
+					<Value>176</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>LightMaster</Name>
+					<Description>Value for the light master advanced class. Bits: 0b0000_1011_1000</Description>
+					<Value>184</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>ShineWizard</Name>
+					<Description>Value for the shine wizard advanced class. Bits: 0b0000_1011_1100</Description>
+					<Value>188</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>LuminousWizard</Name>
+					<Description>Value for the luminous wizard elite class. Bits: 0b0000_1011_1110</Description>
+					<Value>190</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>GloryWizard</Name>
+					<Description>Value for the glory wizard ultimate class. Bits: 0b0000_1011_1111</Description>
+					<Value>191</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>Lemuria</Name>
+					<Description>Value for the lemuria character class. Bits: 0b0000_1100_0000</Description>
+					<Value>192</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>WoMage</Name>
+					<Description>Value for the wo mage advanced class. Bits: 0b0000_1100_1000</Description>
+					<Value>200</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>ArchMage</Name>
+					<Description>Value for the arch mage advanced class. Bits: 0b0000_1100_1100</Description>
+					<Value>204</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MysticMage</Name>
+					<Description>Value for the mystic mage elite class. Bits: 0b0000_1100_1110</Description>
+					<Value>206</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>BattleMage</Name>
+					<Description>Value for the battle mage ultimate class. Bits: 0b0000_1100_1111</Description>
+					<Value>207</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>IllusionKnight</Name>
+					<Description>Value for the illusion knight character class. Bits: 0b0000_1101_0000</Description>
+					<Value>208</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MirageKnight</Name>
+					<Description>Value for the mirage knight advanced class. Bits: 0b0000_1101_1000</Description>
+					<Value>216</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>IllusionMaster</Name>
+					<Description>Value for the illusion master advanced class. Bits: 0b0000_1101_1100</Description>
+					<Value>220</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MysticKnight</Name>
+					<Description>Value for the mystic knight elite class. Bits: 0b0000_1101_1110</Description>
+					<Value>222</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>PhantomPainKnight</Name>
+					<Description>Value for the phantom pain knight ultimate class. Bits: 0b0000_1101_1111</Description>
+					<Value>223</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>Alchemist</Name>
+					<Description>Value for the alchemist character class. Bits: 0b0000_1110_0000</Description>
+					<Value>224</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>AlchemicMagician</Name>
+					<Description>Value for the alchemic magician advanced class. Bits: 0b0000_1110_1000</Description>
+					<Value>232</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>AlchemicMaster</Name>
+					<Description>Value for the alchemic master advanced class. Bits: 0b0000_1110_1100</Description>
+					<Value>236</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>AlchemicForce</Name>
+					<Description>Value for the alchemic force elite class. Bits: 0b0000_1110_1110</Description>
+					<Value>238</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>Creator</Name>
+					<Description>Value for the creator ultimate class. Bits: 0b0000_1110_1111</Description>
+					<Value>239</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>Crusader</Name>
+					<Description>Value for the crusader character class. Bits: 0b0000_1111_0000</Description>
+					<Value>240</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>ImpactCrusader</Name>
+					<Description>Value for the impact crusader advanced class. Bits: 0b0000_1111_1000</Description>
+					<Value>248</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>MasterPaladin</Name>
+					<Description>Value for the master paladin advanced class. Bits: 0b0000_1111_1100</Description>
+					<Value>252</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>SacredPaladin</Name>
+					<Description>Value for the sacred paladin elite class. Bits: 0b0000_1111_1110</Description>
+					<Value>254</Value>
+				</EnumValue>
+
+				<EnumValue>
+					<Name>TemplarCommander</Name>
+					<Description>Value for the templar commander ultimate class. Bits: 0b0000_1111_1111</Description>
+					<Value>255</Value>
+				</EnumValue>
+			</Values>
+		</Enum>
+		<Enum>
       <Name>CharacterStatAttribute</Name>
       <Description>Defines the type of a character stat attribute.</Description>
       <Values>

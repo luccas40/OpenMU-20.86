@@ -678,14 +678,14 @@ internal class Weapons : InitializerBase
 
         if (combatPower > 0)
         {
-            var combatPowerUp = this.CreateItemBasePowerUpDefinition(Stats.CombatPowerMultiplier, combatPower, AggregateType.AddRaw);
+            var combatPowerUp = this.CreateItemBasePowerUpDefinition(Stats.CombatPowerMultiplier, (float)combatPower / 100, AggregateType.AddRaw);
             item.BasePowerUpAttributes.Add(combatPowerUp);
         }
 
         var speedPowerUp = this.CreateItemBasePowerUpDefinition(Stats.AttackSpeedByWeapon, attackSpeed, AggregateType.AddRaw);
         item.BasePowerUpAttributes.Add(speedPowerUp);
 
-        this.CreateItemRequirementIfNeeded(item, Stats.Level, levelRequirement);
+        this.CreateItemRequirementIfNeeded(item, Stats.TotalLevel, levelRequirement);
         this.CreateItemRequirementIfNeeded(item, Stats.TotalStrengthRequirementValue, strengthRequirement);
         this.CreateItemRequirementIfNeeded(item, Stats.TotalAgilityRequirementValue, agilityRequirement);
         this.CreateItemRequirementIfNeeded(item, Stats.TotalEnergyRequirementValue, energyRequirement);

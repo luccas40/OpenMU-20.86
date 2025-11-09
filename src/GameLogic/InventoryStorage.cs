@@ -89,8 +89,6 @@ public class InventoryStorage : Storage, IInventoryStorage
         }
     }
 
-    
-
     /// <inheritdoc/>
     public Item? EquippedAmmunitionItem
     {
@@ -116,11 +114,17 @@ public class InventoryStorage : Storage, IInventoryStorage
         var item = this.GetItem(slot);
         if (item == null)
         {
-            return false;
+            return true;
         }
 
         if (item.IsMount())
         {
+            if (active == item.IsActive)
+            {
+                // nothing to do here, just sync the client
+                return true;
+            }
+
             if (active && this.ActiveItems.Any(i => i.IsMount()))
             {
                 return false; // Only one mount can be active at a time
@@ -144,9 +148,21 @@ public class InventoryStorage : Storage, IInventoryStorage
 
             return true;
         }
-        else if (item.IsDarkRaven())
+        else if (item.IsDlPet() && !item.IsMount())
         {
-            // TODO
+            if (active == item.IsActive)
+            {
+                // nothing to do here, just sync the client
+                return true;
+            }
+
+            if (active && this.ActiveItems.Any(i => i.IsDlPet() && !i.IsMount()))
+            {
+                return false; // Only one spirit can be active at a time
+            }
+
+            item.IsActive = active;
+            return true;
         }
 
         return false;
